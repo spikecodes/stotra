@@ -5,5 +5,5 @@ import viteLogo from "/vite.svg";
 export default function Navbar() {
   const [count, setCount] = useState(0);
 
-  return <nav className="Navbar">Hello</nav>;
+  return <nav className="Navbar">Navigation bar</nav>;
 }

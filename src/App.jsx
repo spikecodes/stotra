@@ -1,90 +1,48 @@
-import { useRef, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-// import './App.css';
+import { useEffect, useRef, useState, createContext } from "react";
 import Navbar from "./Navbar";
+import Transaction from "./Transaction";
+import Ledger from "./Ledger";
+import StockFinder from "./StockFinder";
+
+export const LedgerContext = createContext([]);
 
 function App() {
-  // Available stocks dict with ticker and price
-  const [availableStocks, setAvailableStocks] = useState({
-    AAPL: 120,
-    GOOG: 533,
-    MSFT: 81,
-    TSLA: 299,
-  });
+  const [ledger, setLedger] = useState([]);
 
   // Stock format: {ticker, count, price}
-  const [stocks, setStocks] = useState([]);
+  const [selectedAction, setSelectedAction] = useState("buy");
+  const [selelectedStock, setSelectedStock] = useState({
+    ticker: "",
+    price: 0,
+  });
 
-  const [search, setSearch] = useState("");
+  const [selectedPrice, setSelectedPrice] = useState(0);
 
   return (
     <>
       <Navbar />
-      {/* Search input field using the search state defined above */}
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+
+      <h1>Stock Trading Simulator</h1>
+
+      <h2>Find stocks</h2>
+      <StockFinder
+        onSelectAction={setSelectedAction}
+        onSelectStock={setSelectedStock}
       />
 
-      {/* List available stocks where stock ticker equals the search value*/}
-      <ul>
-        {Object.keys(availableStocks).map((ticker) => {
-          console.log(ticker + " " + search);
-          if (ticker.toLowerCase().includes(search.toLowerCase())) {
-            return (
-              <div>
-                <button
-                  onClick={() => {
-                    // Check if stock is already in portfolio
-                    const stock = stocks.find(
-                      (stock) => stock.ticker === ticker
-                    );
-                    if (stock) {
-                      // If stock is in portfolio, update the count
-                      setStocks(
-                        stocks.map((stock) => {
-                          if (stock.ticker === ticker) {
-                            return {
-                              ...stock,
-                              count: stock.count + 1,
-                            };
-                          }
-                          return stock;
-                        })
-                      );
-                    } else {
-                      // If stock is not in portfolio, add it
-                      setStocks([
-                        ...stocks,
-                        {
-                          ticker,
-                          count: 1,
-                          price: availableStocks[ticker],
-                        },
-                      ]);
-                    }
-                  }}
-                >
-                  {ticker} {availableStocks[ticker]}
-                </button>
-              </div>
-            );
-          }
-        })}
-      </ul>
+      <h2>Make a transaction</h2>
+      <LedgerContext.Provider value={{ ledger, setLedger }}>
+        <Transaction
+          action={selectedAction}
+          stock={selelectedStock}
+          count={1}
+        />
+      </LedgerContext.Provider>
 
-      {/* List of stocks in portfolio */}
-      <p className="Portfolio">Portfolio:</p>
-      <ul>
-        {stocks.map((stock) => (
-          <li>
-            {stock.ticker} {stock.count} {stock.price} - {"$"}
-            {stock.count * stock.price}
-          </li>
-        ))}
-      </ul>
+      <h2>View your ledger</h2>
+      <LedgerContext.Provider value={{ ledger, setLedger }}>
+        <Ledger />
+      </LedgerContext.Provider>
     </>
   );
 }
