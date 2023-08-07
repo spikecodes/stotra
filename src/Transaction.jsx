@@ -25,13 +25,15 @@ export default function Transaction(props) {
 
   useEffect(() => {
     setAction(props.action);
-    setCount(props.count);
-    setStock(props.stock);
-  }, [props]);
+  }, [props.action]);
 
   useEffect(() => {
-    console.log(action);
-  }, [action]);
+    setStock(props.stock);
+  }, [props.action]);
+
+  useEffect(() => {
+    setCount(props.count);
+  }, [props.action]);
 
   return (
     <form className="Transaction" onSubmit={(e) => e.preventDefault()}>
@@ -84,6 +86,7 @@ export default function Transaction(props) {
       <FormControl className="Transaction__submit">
         <Button
           onClick={() => {
+            console.log(action);
             setLedger([
               ...ledger,
               {
