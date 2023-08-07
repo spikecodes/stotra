@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Transaction from "./Transaction";
 import Ledger from "./Ledger";
 import StockFinder from "./StockFinder";
+import { Container, Heading, Box } from "@chakra-ui/react";
 
 export const LedgerContext = createContext([]);
 
@@ -19,31 +20,45 @@ function App() {
   const [selectedPrice, setSelectedPrice] = useState(0);
 
   return (
-    <>
+    <Container>
       <Navbar />
 
-      <h1>Stock Trading Simulator</h1>
+      <Heading as="h1" size="lg">
+        Stock Trading Simulator
+      </Heading>
 
-      <h2>Find stocks</h2>
-      <StockFinder
-        onSelectAction={setSelectedAction}
-        onSelectStock={setSelectedStock}
-      />
-
-      <h2>Make a transaction</h2>
-      <LedgerContext.Provider value={{ ledger, setLedger }}>
-        <Transaction
-          action={selectedAction}
-          stock={selelectedStock}
-          count={1}
+      <Box borderWidth="1px" borderRadius="lg" p="5">
+        <Heading as="h2" size="md">
+          Find stocks
+        </Heading>
+        <StockFinder
+          onSelectAction={setSelectedAction}
+          onSelectStock={setSelectedStock}
         />
-      </LedgerContext.Provider>
+      </Box>
 
-      <h2>View your ledger</h2>
-      <LedgerContext.Provider value={{ ledger, setLedger }}>
-        <Ledger />
-      </LedgerContext.Provider>
-    </>
+      <Box borderWidth="1px" borderRadius="lg" p="5">
+        <Heading as="h2" size="md">
+          Make a transaction
+        </Heading>
+        <LedgerContext.Provider value={{ ledger, setLedger }}>
+          <Transaction
+            action={selectedAction}
+            stock={selelectedStock}
+            count={1}
+          />
+        </LedgerContext.Provider>
+      </Box>
+
+      <Box borderWidth="1px" borderRadius="lg" p="5">
+        <Heading as="h2" size="md">
+          View your ledger
+        </Heading>
+        <LedgerContext.Provider value={{ ledger, setLedger }}>
+          <Ledger />
+        </LedgerContext.Provider>
+      </Box>
+    </Container>
   );
 }
 

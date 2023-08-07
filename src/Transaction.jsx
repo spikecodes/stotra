@@ -29,18 +29,18 @@ export default function Transaction(props) {
     setStock(props.stock);
   }, [props]);
 
+  useEffect(() => {
+    console.log(action);
+  }, [action]);
+
   return (
     <form className="Transaction" onSubmit={(e) => e.preventDefault()}>
       <FormControl className="Transaction__action">
         <FormLabel as="legend">Action</FormLabel>
-        <RadioGroup defaultValue="Itachi">
+        <RadioGroup value={action} onChange={setAction}>
           <HStack spacing="24px">
-            <Radio value="buy" onChange={(e) => setAction(e.target.value)}>
-              Buy
-            </Radio>
-            <Radio value="sell" onChange={(e) => setAction(e.target.value)}>
-              Sell
-            </Radio>
+            <Radio value="buy">Buy</Radio>
+            <Radio value="sell">Sell</Radio>
           </HStack>
         </RadioGroup>
       </FormControl>
