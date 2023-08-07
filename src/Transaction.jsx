@@ -1,5 +1,13 @@
 import { LedgerContext } from "./App";
-import { Input, FormControl, FormLabel } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  HStack,
+} from "@chakra-ui/react";
 import { useEffect, useContext, useState } from "react";
 
 export default function Transaction(props) {
@@ -22,33 +30,22 @@ export default function Transaction(props) {
   }, [props]);
 
   return (
-    <FormControl className="Transaction" onSubmit={(e) => e.preventDefault()}>
-      <div className="Transaction__action">
-        <label>
-          <Input
-            width="auto"
-            type="radio"
-            name="action"
-            value="buy"
-            checked={action === "buy"}
-            onChange={(e) => setAction(e.target.value)}
-          />
-          Buy
-        </label>
-        <label>
-          <Input
-            width="auto"
-            type="radio"
-            name="action"
-            value="sell"
-            checked={action === "sell"}
-            onChange={(e) => setAction(e.target.value)}
-          />
-          Sell
-        </label>
-      </div>
-      <div className="Transaction__ticker">
-        <label>
+    <form className="Transaction" onSubmit={(e) => e.preventDefault()}>
+      <FormControl className="Transaction__action">
+        <FormLabel as="legend">Action</FormLabel>
+        <RadioGroup defaultValue="Itachi">
+          <HStack spacing="24px">
+            <Radio value="buy" onChange={(e) => setAction(e.target.value)}>
+              Buy
+            </Radio>
+            <Radio value="sell" onChange={(e) => setAction(e.target.value)}>
+              Sell
+            </Radio>
+          </HStack>
+        </RadioGroup>
+      </FormControl>
+      <FormControl className="Transaction__ticker">
+        <FormLabel>
           Ticker:
           <Input
             width="auto"
@@ -56,10 +53,10 @@ export default function Transaction(props) {
             value={stock.ticker}
             onChange={(e) => setStock({ ...stock, ticker: e.target.value })}
           />
-        </label>
-      </div>
-      <div className="Transaction__count">
-        <label>
+        </FormLabel>
+      </FormControl>
+      <FormControl className="Transaction__count">
+        <FormLabel>
           Count:
           <Input
             width="auto"
@@ -67,10 +64,10 @@ export default function Transaction(props) {
             value={count}
             onChange={(e) => setCount(e.target.value)}
           />
-        </label>
-      </div>
-      <div className="Transaction__price">
-        <label>
+        </FormLabel>
+      </FormControl>
+      <FormControl className="Transaction__price">
+        <FormLabel>
           Price:
           <Input
             width="auto"
@@ -79,11 +76,13 @@ export default function Transaction(props) {
             onChange={(e) => setStock({ ...stock, price: e.target.value })}
             readOnly
           />
-        </label>
-      </div>
-      <div className="Transaction__total">Total: {count * stock.price}</div>
-      <div className="Transaction__submit">
-        <button
+        </FormLabel>
+      </FormControl>
+      <FormControl className="Transaction__total">
+        Total: {count * stock.price}
+      </FormControl>
+      <FormControl className="Transaction__submit">
+        <Button
           onClick={() => {
             setLedger([
               ...ledger,
@@ -97,8 +96,8 @@ export default function Transaction(props) {
           }}
         >
           Submit
-        </button>
-      </div>
-    </FormControl>
+        </Button>
+      </FormControl>
+    </form>
   );
 }
