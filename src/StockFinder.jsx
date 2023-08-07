@@ -47,6 +47,7 @@ export default function StockFinder(props) {
                 <Button
                   size="sm"
                   onClick={() => {
+                    console.log("BUY");
                     props.onSelectStock({
                       ticker,
                       price: availableStocks[ticker],

@@ -29,11 +29,11 @@ export default function Transaction(props) {
 
   useEffect(() => {
     setStock(props.stock);
-  }, [props.action]);
+  }, [props.stock]);
 
   useEffect(() => {
     setCount(props.count);
-  }, [props.action]);
+  }, [props.count]);
 
   return (
     <form className="Transaction" onSubmit={(e) => e.preventDefault()}>
