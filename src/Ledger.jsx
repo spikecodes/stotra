@@ -11,6 +11,7 @@ import {
 import { LedgerContext } from "./App";
 import { useContext, useEffect } from "react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import StockCard from "./StockCard";
 
 export default function Ledger() {
   const { ledger, setLedger } = useContext(LedgerContext);
@@ -20,7 +21,7 @@ export default function Ledger() {
   return (
     <Box className="Ledger">
       {/* List of stocks in ledger */}
-      <UnorderedList spacing={1}>
+      <UnorderedList spacing={1} styleType="none">
         {ledger.map((transaction) => {
           var count_abs = Math.abs(transaction.count);
           return (
@@ -35,11 +36,11 @@ export default function Ledger() {
                     {transaction.count > 0 ? "BOUGHT" : "SOLD"}
                   </TagLabel>
                 </Tag>
-                <Text>
-                  {count_abs} share{count_abs > 1 ? "s" : ""} of{" "}
-                  {transaction.ticker} at ${transaction.price} for $
-                  {Math.abs(transaction.count) * transaction.price} total
-                </Text>
+                <StockCard
+                  ticker={transaction.ticker}
+                  price={transaction.price}
+                  count={count_abs}
+                />
               </HStack>
             </ListItem>
           );
