@@ -4,6 +4,7 @@ import Transaction from "./Transaction";
 import Ledger from "./Ledger";
 import StockFinder from "./StockFinder";
 import { Container, Heading, Box } from "@chakra-ui/react";
+import Portfolio from "./Portfolio";
 
 export const LedgerContext = createContext([]);
 
@@ -20,7 +21,7 @@ function App() {
   const [selectedPrice, setSelectedPrice] = useState(0);
 
   return (
-    <Container>
+    <Container maxW="container.sm">
       <Navbar />
 
       <Heading as="h1" size="lg">
@@ -49,6 +50,10 @@ function App() {
           />
         </LedgerContext.Provider>
       </Box>
+
+      <LedgerContext.Provider value={{ ledger, setLedger }}>
+        <Portfolio />
+      </LedgerContext.Provider>
 
       <Box borderWidth="1px" borderRadius="lg" p="5">
         <Heading as="h2" size="md">

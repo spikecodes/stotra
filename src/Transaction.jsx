@@ -1,5 +1,6 @@
 import { LedgerContext } from "./App";
 import {
+  Box,
   Input,
   Button,
   FormControl,
@@ -7,6 +8,10 @@ import {
   RadioGroup,
   Radio,
   HStack,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { useEffect, useContext, useState } from "react";
 
@@ -23,6 +28,8 @@ export default function Transaction(props) {
   const [count, setCount] = useState(props.count || 1);
   const [price, setPrice] = useState(props.price || 0);
 
+  const [status, setStatus] = useState("");
+
   useEffect(() => {
     setAction(props.action);
   }, [props.action]);
@@ -34,6 +41,13 @@ export default function Transaction(props) {
   useEffect(() => {
     setCount(props.count);
   }, [props.count]);
+
+  // Hide alert after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStatus("");
+    }, 10000);
+  }, [status]);
 
   return (
     <form className="Transaction" onSubmit={(e) => e.preventDefault()}>
@@ -86,7 +100,23 @@ export default function Transaction(props) {
       <FormControl className="Transaction__submit">
         <Button
           onClick={() => {
-            console.log(action);
+            // How many stocks do we own of this ticker?
+            var currentlyOwn = ledger
+              .filter((transaction) => {
+                return transaction.ticker === stock.ticker;
+              })
+              .reduce((total, transaction) => {
+                return total + transaction.count;
+              }, 0);
+
+            // If we are selling, make sure we have enough stocks to sell
+            if (action === "sell" && currentlyOwn < count) {
+              setStatus("insufficient stocks");
+              return;
+            } else {
+              setStatus("success");
+            }
+
             setLedger([
               ...ledger,
               {
@@ -101,6 +131,32 @@ export default function Transaction(props) {
           Submit
         </Button>
       </FormControl>
+
+      {status == "insufficient stocks" ? (
+        <Alert status="error" borderRadius="lg" mt="2">
+          <AlertIcon />
+          <Box>
+            <AlertTitle>Insufficient stocks to sell</AlertTitle>
+            <AlertDescription>
+              You are trying to sell stocks that you do not own.
+            </AlertDescription>
+          </Box>
+        </Alert>
+      ) : null}
+
+      {status == "success" ? (
+        <Alert status="success" borderRadius="lg" mt="2">
+          <AlertIcon />
+          <Box>
+            <AlertTitle>Successfully submitted</AlertTitle>
+            <AlertDescription>
+              {action === "buy" ? "Bought " : "Sold "}
+              {count} share{count > 1 ? "s" : ""} of {stock.ticker}{" "}
+              {action === "buy" ? "for" : "at"} ${stock.price} each.
+            </AlertDescription>
+          </Box>
+        </Alert>
+      ) : null}
     </form>
   );
 }
