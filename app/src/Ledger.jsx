@@ -9,7 +9,7 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { LedgerContext } from "./App";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import StockCard from "./StockCard";
 

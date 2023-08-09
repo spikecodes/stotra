@@ -1,0 +1,15 @@
+{
+  "name": "node-starter",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.17.1",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.4.2",
+    "yahoo-finance2": "^2.4.3"
+  }
+}

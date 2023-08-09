@@ -30,8 +30,6 @@ function getPortfolioValue(ledger) {
 export default function Portfolio(props) {
   const { ledger, setLedger } = useContext(LedgerContext);
 
-  if (ledger.length === 0) return;
-
   return (
     <Box className="Portfolio" borderWidth="1px" borderRadius="lg" p="5">
       <StatGroup>
