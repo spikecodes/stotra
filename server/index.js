@@ -1,34 +1,21 @@
+const path = require("path");
+const morgan = require("morgan"); //import morgan
+const { log } = require("mercedlogger"); // import mercedlogger's log function
+const cors = require("cors");
 const express = require("express");
 const app = express();
-const path = require("path");
-const mongoose = require("mongoose");
-require("dotenv").config();
 
-const port = 3010;
+const PORT = process.env.PORT || 3010;
 
-// Read password from dotenv file
-const password = process.env.STOTA_MONGODB_PASSWORD;
+const Database = require("./db");
 
-const uri =
-  "mongodb+srv://" +
-  process.env.STOTA_MONGODB_USERNAME +
-  ":" +
-  password +
-  "@" +
-  process.env.STOTA_MONGODB_CLUSTER +
-  "/?authMechanism=DEFAULT&retryWrites=true&w=majority";
-
-mongoose.connect(uri, { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("Connected to Database");
-});
-
+// Middleware
+app.use(cors);
+app.use(morgan("tiny"));
 app.use(express.json());
 
 app.use("/api/stocks", require("./routes/stocks"));
 
-app.listen(port, async () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(PORT, async () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
 });
