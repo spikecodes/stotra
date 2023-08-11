@@ -6,6 +6,7 @@ import {
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";
 
 const customTheme = extendTheme(
   withDefaultColorScheme({ colorScheme: "teal" })
@@ -13,8 +14,10 @@ const customTheme = extendTheme(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ChakraProvider theme={customTheme}>
-      <App />
-    </ChakraProvider>
+    <BrowserRouter>
+      <ChakraProvider theme={customTheme}>
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

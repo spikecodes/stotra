@@ -1,4 +1,4 @@
-import { LedgerContext } from "./App";
+import { LedgerContext } from "../App";
 import {
   Box,
   Input,

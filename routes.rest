@@ -1,1 +1,14 @@
-GET http://localhost:3010
+POST http://localhost:3010/api/auth/signup
+content-type: application/json
+{
+    "username": "sample",
+    "password": "sample"
+}
+
+POST http://localhost:3010/api/auth/signin
+content-type: application/json
+{
+    "username": "sample",
+    "password": "sample"
+}
+

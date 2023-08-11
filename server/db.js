@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+
 require("dotenv").config();
 
 // Read password from dotenv file
@@ -17,26 +19,12 @@ mongoose.connect(uri, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 
-const UserScheme = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-      lowercase: true,
-      trim: true,
-    },
-    password: { type: String, required: true },
-  },
-  { collection: "users" }
-);
-
-exports.User = mongoose.model("User", UserScheme);
-
 db.on("error", console.error.bind(console, "connection error:"));
 
 db.once("open", () => {
   console.log("Connected to Database");
 });
 
-export default db;
+exports.user = require("./models/user.model");
+
+module.exports = db;

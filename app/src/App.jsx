@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, createContext } from "react";
-import Navbar from "./Navbar";
-import Transaction from "./Transaction";
-import Ledger from "./Ledger";
-import StockFinder from "./StockFinder";
-import { Container, Heading, Box } from "@chakra-ui/react";
-import Portfolio from "./Portfolio";
+import Navbar from "./components/Navbar";
+import Transaction from "./components/Transaction";
+import Ledger from "./components/Ledger";
+import StockFinder from "./components/StockFinder";
+import { Container, Heading, Box, Spacer } from "@chakra-ui/react";
+import Portfolio from "./pages/Portfolio";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 export const LedgerContext = createContext([]);
 
@@ -34,9 +36,10 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <Container maxW="container.md" pt="100">
-        <BrowserRouter>
+      <Container maxW="container.xl">
+        <Navbar />
+        <Spacer h="10" />
+        <Box>
           <Routes>
             <Route
               path="/"
@@ -46,6 +49,10 @@ function App() {
                 </LedgerContext.Provider>
               }
             ></Route>
+
+            <Route path="/login" element={<Login />}></Route>
+
+            <Route path="/signup" element={<Signup />}></Route>
 
             {/* <Route path="/find-stocks">
               <Box borderWidth="1px" borderRadius="lg" p="5">
@@ -89,7 +96,7 @@ function App() {
               </Box>
             </Route> */}
           </Routes>
-        </BrowserRouter>
+        </Box>
       </Container>
     </>
   );

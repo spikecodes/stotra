@@ -18,7 +18,7 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
-import { LedgerContext } from "./App";
+import { LedgerContext } from "../App";
 
 function getPortfolioValue(ledger) {
   return ledger.reduce((total, transaction) => {
