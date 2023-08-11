@@ -14,7 +14,12 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -25,8 +30,11 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [status, setStatus] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(username, password);
     axios
       .post("http://localhost:3010/api/auth/signup", { username, password })
       .then((res) => {
@@ -52,6 +60,25 @@ export default function Signup() {
             to enjoy all of our cool features ✌️
           </Text>
         </Stack>
+        {status == "success" && (
+          <Alert status="success">
+            <AlertIcon />
+            <AlertTitle>Account created!</AlertTitle>
+            <AlertDescription display="flex">
+              Login
+              <Stack align="center" color="teal" ml="1">
+                <Link to="/login">here</Link>
+              </Stack>
+              .
+            </AlertDescription>
+          </Alert>
+        )}
+        {status != "" && status != "success" && (
+          <Alert status="error">
+            <AlertIcon />
+            {status}
+          </Alert>
+        )}
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
@@ -97,7 +124,7 @@ export default function Signup() {
                 </Button>
               </Stack>
               <Stack pt={6}>
-                <Stack align={"center"} color="teal">
+                <Stack align="center" color="teal">
                   Already a user? <Link to="/login">Login</Link>
                 </Stack>
               </Stack>

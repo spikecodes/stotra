@@ -1,14 +1,22 @@
 POST http://localhost:3010/api/auth/signup
 content-type: application/json
+
 {
     "username": "sample",
     "password": "sample"
 }
+
+###
 
 POST http://localhost:3010/api/auth/signin
 content-type: application/json
+
 {
     "username": "sample",
     "password": "sample"
 }
 
+###
+
+GET http://localhost:3010/api/test/user
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDY3Zjg3Yjk4NmFlYWIwOTFkNzEyOCIsImlhdCI6MTY5MTc4MTQwOCwiZXhwIjoxNjkxODY3ODA4fQ.9bLFli22yyUG7mHKzTNicTUk_In3X13nZnBV4wPKriw
