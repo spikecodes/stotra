@@ -19,7 +19,7 @@ const availableStocks = [
 	{ ticker: "MSFT", name: "Microsoft Corporation" },
 	{ ticker: "AMZN", name: "Amazon.com, Inc." },
 	{ ticker: "GOOG", name: "Alphabet Inc." },
-	{ ticker: "FB", name: "Facebook, Inc." },
+	{ ticker: "META", name: "Meta Platforms Inc." },
 	{ ticker: "TSLA", name: "Tesla, Inc." },
 	{ ticker: "NFLX", name: "Netflix, Inc." },
 ];

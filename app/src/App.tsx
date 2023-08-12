@@ -6,7 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import StockView from "./components/StockView";
+import StockView from "./pages/StockView";
 import Ledger from "./components/Ledger";
 
 type Transaction = {
@@ -52,8 +52,8 @@ function App() {
 
 	return (
 		<>
+			<Navbar />
 			<Container maxW="container.xl">
-				<Navbar />
 				<Spacer h="10" />
 				<Box>
 					<Routes>

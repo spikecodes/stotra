@@ -67,14 +67,14 @@ export default function StockChart(props: { ticker: string }) {
 	const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
 	useEffect(() => {
-		// const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
-		// 	function () {
-		// 		return (
-		// 			formatter.format(this.y as number) +
-		// 			"</b><br/>" +
-		// 			moment(this.x).format("MMMM Do YYYY, h:mm")
-		// 		);
-		// 	};
+		const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
+			function () {
+				return (
+					formatter.format(this.y as number) +
+					"</b><br/>" +
+					moment(this.x).format("MMMM Do YYYY, h:mm")
+				);
+			};
 
 		axios
 			.get(`http://localhost:3010/api/stocks/${props.ticker}/historical`)

@@ -6,9 +6,11 @@ import {
 	StatNumber,
 	StatHelpText,
 	StatArrow,
+	Heading,
+	Spacer,
 } from "@chakra-ui/react";
 import axios from "axios";
-import StockChart from "./StockChart";
+import StockChart from "../components/StockChart";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -20,7 +22,7 @@ function StockView() {
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
-		{ ticker, price: 0, changePercent: 0 },
+		{ longName: "", ticker, price: 0, changePercent: 0 },
 	);
 
 	useEffect(() => {
@@ -38,19 +40,25 @@ function StockView() {
 	return (
 		<>
 			{stock.price > 0 && (
-				<Stat>
-					<StatLabel>{stock.ticker}</StatLabel>
-					<StatNumber>{formatter.format(stock.price)}</StatNumber>
-					<StatHelpText>
-						<StatArrow
-							type={stock.changePercent > 0 ? "increase" : "decrease"}
-						/>
-						{stock.changePercent.toFixed(2)}%
-					</StatHelpText>
-				</Stat>
-			)}
+				<>
+					<Stat>
+						<Heading size="md" fontWeight="md">
+							{stock.longName}
+						</Heading>
+						<Heading size="xl">{formatter.format(stock.price)}</Heading>
+						<Heading size="md">
+							<StatArrow
+								type={stock.changePercent > 0 ? "increase" : "decrease"}
+							/>
+							{stock.changePercent.toFixed(2)}%
+						</Heading>
+					</Stat>
 
-			<StockChart ticker={ticker as string} />
+					<Spacer height={5} />
+
+					<StockChart ticker={ticker as string} />
+				</>
+			)}
 		</>
 	);
 }

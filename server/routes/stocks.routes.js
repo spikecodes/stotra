@@ -8,9 +8,10 @@ module.exports = router;
 router.get("/:ticker/info", async (req, res) => {
 	const ticker = req.params.ticker;
 	const quote = await yahooFinance.quote(ticker);
-	const { regularMarketPrice, regularMarketChangePercent } = quote;
+	const { regularMarketPrice, regularMarketChangePercent, longName } = quote;
 
 	res.send({
+		longName,
 		price: regularMarketPrice,
 		changePercent: regularMarketChangePercent,
 	});
