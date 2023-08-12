@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import {
 	Stat,
@@ -27,8 +27,6 @@ function StockView() {
 		axios
 			.get(`http://localhost:3010/api/stocks/${ticker}`)
 			.then((res) => {
-				console.log(res.data);
-				console.log("yeet");
 				setStock({ ...res.data });
 				console.log(stock);
 			})
@@ -44,7 +42,9 @@ function StockView() {
 					<StatLabel>{stock.ticker}</StatLabel>
 					<StatNumber>{formatter.format(stock.price)}</StatNumber>
 					<StatHelpText>
-						<StatArrow type="{stock.changePercent > 0 ? 'increase' : 'decrease'}" />
+						<StatArrow
+							type={stock.changePercent > 0 ? "increase" : "decrease"}
+						/>
 						{stock.changePercent.toFixed(2)}%
 					</StatHelpText>
 				</Stat>

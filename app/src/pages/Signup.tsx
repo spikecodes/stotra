@@ -21,7 +21,7 @@ import {
 	Link,
 } from "@chakra-ui/react";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import auth from "../auth";
@@ -69,8 +69,8 @@ export default function Signup() {
 						<AlertTitle>Account created!</AlertTitle>
 						<AlertDescription display="flex">
 							Redirecting to
-							<Link align="center" ml="1">
-								<RouterLink to="/login">login</RouterLink>
+							<Link as={RouterLink} to="/login" ml="1">
+								login
 							</Link>
 							...
 						</AlertDescription>
@@ -123,8 +123,8 @@ export default function Signup() {
 							</Stack>
 							<HStack pt={2}>
 								<Text>Already a user?</Text>
-								<Link>
-									<RouterLink to="/login">Login</RouterLink>
+								<Link as={RouterLink} to="/login">
+									Login
 								</Link>
 							</HStack>
 						</Stack>

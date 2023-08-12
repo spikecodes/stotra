@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, createContext } from "react";
+import React, { useEffect, useRef, useState, createContext } from "react";
 import Navbar from "./components/Navbar";
 import Transaction from "./components/Transaction";
 import Ledger from "./components/Ledger";
@@ -11,7 +11,21 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StockView from "./components/StockView";
 
-export const LedgerContext = createContext([]);
+type Transaction = {
+	id: number;
+	ticker: string;
+	price: number;
+	count: number;
+};
+
+interface ILedgerContext {
+	ledger: Array<Transaction>;
+	setLedger?: (transactions: Array<Transaction>) => void;
+}
+
+export const LedgerContext = createContext<ILedgerContext>({
+	ledger: [],
+});
 
 export function currentPortfolioValue(ledger) {
 	// Send request to backend to get portfolio value
@@ -25,6 +39,9 @@ export function portfolioValueAtDate(ledger, date) {
 
 function App() {
 	const [ledger, setLedger] = useState([]);
+	const changeLedger = (newLedger) => {
+		setLedger(newLedger);
+	};
 
 	// Stock format: {ticker, count, price}
 	const [selectedAction, setSelectedAction] = useState("buy");
@@ -45,7 +62,9 @@ function App() {
 						<Route
 							path="/"
 							element={
-								<LedgerContext.Provider value={{ ledger, setLedger }}>
+								<LedgerContext.Provider
+									value={{ ledger, setLedger: changeLedger }}
+								>
 									<Dashboard />
 								</LedgerContext.Provider>
 							}

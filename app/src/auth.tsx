@@ -2,6 +2,8 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 class Auth {
+	static instance: Auth;
+
 	constructor() {
 		if (Auth.instance) {
 			return Auth.instance;
@@ -11,20 +13,23 @@ class Auth {
 		return this;
 	}
 
-	getUsername() {
+	getUsername(): string | null {
 		return localStorage.getItem("username");
 	}
 
-	getToken() {
+	getToken(): string | null {
 		return localStorage.getItem("jwt");
 	}
 
-	isAuthenticated() {
+	isAuthenticated(): boolean {
 		// Check if jwt and username are stored in localStorage
-		return localStorage.getItem("jwt") && localStorage.getItem("username");
+		return (
+			localStorage.getItem("jwt") !== null &&
+			localStorage.getItem("username") !== null
+		);
 	}
 
-	async signup(username, password) {
+	async signup(username, password): Promise<string> {
 		try {
 			const res = await axios.post("http://localhost:3010/api/auth/signup", {
 				username,
@@ -36,7 +41,7 @@ class Auth {
 		}
 	}
 
-	login(username, password) {
+	login(username, password): Promise<string> {
 		return axios
 			.post("http://localhost:3010/api/auth/login", { username, password })
 			.then((res) => {
@@ -58,7 +63,7 @@ class Auth {
 			});
 	}
 
-	logout() {
+	logout(): void {
 		// Clear jwt and username from localStorage
 		localStorage.removeItem("jwt");
 		localStorage.removeItem("username");

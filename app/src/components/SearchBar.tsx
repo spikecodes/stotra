@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { MutableRefObject, RefObject, useRef, useState } from "react";
 import {
 	Popover,
 	PopoverTrigger,
@@ -33,7 +33,8 @@ function SearchBar() {
 
 	const [search, setSearch] = useState("");
 
-	const initialFocusRef = useRef();
+	const initialFocusRef =
+		useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
 
 	return (
 		<Popover
