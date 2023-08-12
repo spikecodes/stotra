@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import reactLogo from "../assets/react.svg";
 import {
 	HStack,
 	Input,
@@ -14,14 +13,22 @@ import {
 	PopoverArrow,
 	PopoverCloseButton,
 	Icon,
+	IconButton,
+	useColorMode,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import auth from "../auth";
-import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import {
+	CheckIcon,
+	ChevronDownIcon,
+	SunIcon,
+	TimeIcon,
+} from "@chakra-ui/icons";
 
 export default function Navbar() {
 	const location = useLocation();
 	const [username, setUsername] = useState(auth.getUsername());
+	const { colorMode, toggleColorMode } = useColorMode();
 
 	useEffect(() => {
 		console.log("Navbar: ", location.pathname);
@@ -34,10 +41,11 @@ export default function Navbar() {
 		<HStack
 			className="Navbar"
 			borderWidth="1px"
+			borderTopWidth="0px"
 			p="5"
-			bg="white"
 			display="flex"
 			justifyContent="space-between"
+			borderBottomRadius="md"
 		>
 			{/* Logo */}
 			<Link to="/">
@@ -48,32 +56,41 @@ export default function Navbar() {
 			<Input placeholder="Search" w="auto" />
 
 			{/* Account */}
-			{username ? (
-				<Popover>
-					<PopoverTrigger>
-						<Button>
-							<ChevronDownIcon />
-							<Text>{username}</Text>
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent width="auto">
-						<PopoverArrow />
-						<PopoverCloseButton />
-						<PopoverBody>
-							<Button
-								onClick={() => {
-									auth.logout();
-									setUsername("");
-								}}
-							>
-								Logout
+			<HStack spacing="2">
+				<IconButton
+					variant="outline"
+					aria-label="Toggle dark mode"
+					icon={<SunIcon />}
+					onClick={() => toggleColorMode()}
+				/>
+				{username ? (
+					<Popover>
+						<PopoverTrigger>
+							<Button>
+								<ChevronDownIcon />
+								<Text>{username}</Text>
 							</Button>
-						</PopoverBody>
-					</PopoverContent>
-				</Popover>
-			) : (
-				<Link to="/login">Login</Link>
-			)}
+						</PopoverTrigger>
+						<PopoverContent width="auto">
+							<PopoverArrow />
+							<PopoverCloseButton />
+							<PopoverBody>
+								<Button
+									variant="ghost"
+									onClick={() => {
+										auth.logout();
+										setUsername("");
+									}}
+								>
+									Logout
+								</Button>
+							</PopoverBody>
+						</PopoverContent>
+					</Popover>
+				) : (
+					<Link to="/login">Login</Link>
+				)}
+			</HStack>
 		</HStack>
 	);
 }
