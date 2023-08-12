@@ -18,6 +18,7 @@ import {
 	AlertTitle,
 	AlertDescription,
 	Link,
+	useToast,
 } from "@chakra-ui/react";
 
 import React, { useState, useEffect } from "react";
@@ -26,6 +27,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import auth from "../auth";
 
 export default function Signup() {
+	const toast = useToast();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -39,19 +41,35 @@ export default function Signup() {
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 
-	const [status, setStatus] = useState("");
-
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call signup function from auth.js
-		let res = await auth.signup(username, password);
-		// Show alert with status of signup attempt
-		setStatus(res);
-		if (res === "success") {
-			// Wait 1.5s before redirecting to login
-			await new Promise((res) => setTimeout(res, 1500));
-			navigate("/login");
-		}
+		auth
+			.signup(username, password)
+			.then((res) => {
+				// Show alert with status of signup attempt
+				if (res === "success") {
+					toast({
+						title: `Account created! Redirecting to login...`,
+						status: "success",
+						isClosable: true,
+					});
+					navigate("/login");
+				} else {
+					toast({
+						title: `${res}`,
+						status: "error",
+						isClosable: true,
+					});
+				}
+			})
+			.catch((err) => {
+				toast({
+					title: `${err}`,
+					status: "error",
+					isClosable: true,
+				});
+			});
 	};
 
 	return (

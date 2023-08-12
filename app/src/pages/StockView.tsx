@@ -1,14 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
-import {
-	Stat,
-	StatLabel,
-	StatNumber,
-	StatHelpText,
-	StatArrow,
-	Heading,
-	Spacer,
-} from "@chakra-ui/react";
+import { Stat, StatArrow, Heading, Spacer } from "@chakra-ui/react";
 import axios from "axios";
 import StockChart from "../components/StockChart";
 

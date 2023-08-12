@@ -12,20 +12,18 @@ import {
 	Text,
 	InputGroup,
 	InputRightElement,
-	Alert,
-	AlertIcon,
-	AlertTitle,
-	AlertDescription,
 	Link,
 	HStack,
+	useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import auth from "../auth";
 import { useReducer } from "react";
 
 export default function Login() {
+	const toast = useToast();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -40,19 +38,35 @@ export default function Login() {
 		{ username: "", password: "", showPassword: false },
 	);
 
-	const [status, setStatus] = useState("");
-
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call login function from auth.js
-		let res = await auth.login(loginData.username, loginData.password);
-		// Show alert with status of login attempt
-		setStatus(res);
-		if (res === "success") {
-			// Wait 1.5s before redirecting to dashboard
-			await new Promise((res) => setTimeout(res, 1500));
-			navigate("/");
-		}
+		auth
+			.login(loginData.username, loginData.password)
+			.then((res) => {
+				// Show alert with status of login attempt
+				if (res === "success") {
+					toast({
+						title: `Logged in! Redirecting to dashboard...`,
+						status: "success",
+						isClosable: true,
+					});
+					navigate("/");
+				} else {
+					toast({
+						title: `${res}`,
+						status: "error",
+						isClosable: true,
+					});
+				}
+			})
+			.catch((err) => {
+				toast({
+					title: `${err}`,
+					status: "error",
+					isClosable: true,
+				});
+			});
 	};
 
 	return (
@@ -67,25 +81,6 @@ export default function Login() {
 						</Link>
 					</HStack>
 				</Stack>
-				{status === "success" && (
-					<Alert status="success" borderRadius="md">
-						<AlertIcon />
-						<AlertTitle>Logged in!</AlertTitle>
-						<AlertDescription display="flex">
-							Redirecting to
-							<Link as={RouterLink} to="/" ml="1">
-								dashboard
-							</Link>
-							...
-						</AlertDescription>
-					</Alert>
-				)}
-				{status !== "" && status !== "success" && (
-					<Alert status="error" borderRadius="md">
-						<AlertIcon />
-						{status}
-					</Alert>
-				)}
 				<Box rounded={"lg"} boxShadow={"lg"} p={8}>
 					<form>
 						<Stack spacing={4}>
