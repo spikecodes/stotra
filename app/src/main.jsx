@@ -10,6 +10,15 @@ import { BrowserRouter } from "react-router-dom";
 
 const customTheme = extendTheme(
 	withDefaultColorScheme({ colorScheme: "teal" }),
+	{
+		components: {
+			Link: {
+				baseStyle: {
+					color: "teal.500",
+				},
+			},
+		},
+	},
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(

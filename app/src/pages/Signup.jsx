@@ -18,10 +18,11 @@ import {
 	AlertIcon,
 	AlertTitle,
 	AlertDescription,
+	Link,
 } from "@chakra-ui/react";
 
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import auth from "../auth";
 
@@ -68,9 +69,9 @@ export default function Signup() {
 						<AlertTitle>Account created!</AlertTitle>
 						<AlertDescription display="flex">
 							Redirecting to
-							<Stack align="center" color="teal" ml="1">
-								<Link to="/login">login</Link>
-							</Stack>
+							<Link align="center" ml="1">
+								<RouterLink to="/login">login</RouterLink>
+							</Link>
 							...
 						</AlertDescription>
 					</Alert>
@@ -120,11 +121,12 @@ export default function Signup() {
 									Sign up
 								</Button>
 							</Stack>
-							<Stack pt={6}>
-								<Stack align="center" color="teal">
-									Already a user? <Link to="/login">Login</Link>
-								</Stack>
-							</Stack>
+							<HStack pt={2}>
+								<Text>Already a user?</Text>
+								<Link>
+									<RouterLink to="/login">Login</RouterLink>
+								</Link>
+							</HStack>
 						</Stack>
 					</form>
 				</Box>

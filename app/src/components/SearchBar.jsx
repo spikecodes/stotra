@@ -13,10 +13,20 @@ import {
 	Input,
 	List,
 	ListItem,
+	Text,
+	HStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-const availableStocks = ["AMZN", "GOOG", "MSFT"];
+const availableStocks = [
+	{ ticker: "AAPL", name: "Apple Inc." },
+	{ ticker: "MSFT", name: "Microsoft Corporation" },
+	{ ticker: "AMZN", name: "Amazon.com, Inc." },
+	{ ticker: "GOOG", name: "Alphabet Inc." },
+	{ ticker: "FB", name: "Facebook, Inc." },
+	{ ticker: "TSLA", name: "Tesla, Inc." },
+	{ ticker: "NFLX", name: "Netflix, Inc." },
+];
 
 function SearchBar() {
 	const { isOpen, onToggle } = useDisclosure();
@@ -49,13 +59,20 @@ function SearchBar() {
 					{/* List of stocks */}
 					<List>
 						{availableStocks
-							.filter((stock) =>
-								stock.toLowerCase().includes(search.toLowerCase()),
+							.filter(
+								(stock) =>
+									stock.ticker.toLowerCase().includes(search.toLowerCase()) ||
+									stock.name.toLowerCase().includes(search.toLowerCase()),
 							)
 							.map((stock) => {
 								return (
-									<ListItem key={stock}>
-										<Link to={`/stocks/${stock}`}>{stock}</Link>
+									<ListItem key={stock.ticker} width="100%" height={7}>
+										<Link to={`/stocks/${stock.ticker}`}>
+											<HStack>
+												<Text fontWeight="bold">{stock.ticker}</Text>
+												<Text>{stock.name}</Text>
+											</HStack>
+										</Link>
 									</ListItem>
 								);
 							})}

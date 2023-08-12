@@ -18,8 +18,10 @@ import {
 	AlertIcon,
 	AlertTitle,
 	AlertDescription,
+	Link,
+	HStack,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import auth from "../auth";
@@ -60,9 +62,13 @@ export default function Login() {
 			<Stack spacing={8} mx={"auto"} maxW={"lg"} px={6}>
 				<Stack align={"center"}>
 					<Heading fontSize={"4xl"}>Sign in to your account</Heading>
-					<Stack color="teal">
-						<Link to="/signup">Or create an account</Link>
-					</Stack>
+					<HStack spacing="1">
+						<Text>Or</Text>
+
+						<Link>
+							<RouterLink to="/signup">create an account</RouterLink>
+						</Link>
+					</HStack>
 				</Stack>
 				{status === "success" && (
 					<Alert status="success" borderRadius="md">
