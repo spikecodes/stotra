@@ -11,12 +11,6 @@ class Auth {
 		return this;
 	}
 
-	storeLoginData(jwt, username) {
-		// Store jwt and username in localStorage
-		localStorage.setItem("jwt", jwt);
-		localStorage.setItem("username", username);
-	}
-
 	getUsername() {
 		return localStorage.getItem("username");
 	}
@@ -48,9 +42,9 @@ class Auth {
 			.then((res) => {
 				console.log(res);
 				if (res.data.accessToken !== undefined) {
-					this.username = username;
-					this.jwt = res.data.accessToken;
-					this.storeLoginData(res.data.accessToken, username);
+					// Store jwt and username in localStorage
+					localStorage.setItem("jwt", res.data.accessToken);
+					localStorage.setItem("username", username);
 					return "success";
 				} else {
 					return "Invalid credentials.";
@@ -65,9 +59,6 @@ class Auth {
 	}
 
 	logout() {
-		// Clear jwt and username from state
-		this.username = null;
-		this.jwt = null;
 		// Clear jwt and username from localStorage
 		localStorage.removeItem("jwt");
 		localStorage.removeItem("username");
