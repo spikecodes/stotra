@@ -2,9 +2,10 @@ const path = require("path");
 const morgan = require("morgan"); //import morgan
 const { log } = require("mercedlogger"); // import mercedlogger's log function
 const cors = require("cors");
+const rateLimit = require("express-rate-limit").rateLimit;
+const { createHandler } = require("graphql-http/lib/use/express");
 const express = require("express");
 const app = express();
-const rateLimit = require("express-rate-limit").rateLimit;
 
 const PORT = process.env.PORT || 3010;
 
@@ -46,6 +47,10 @@ const createAccountLimiter = rateLimit({
 app.use("/api/", apiLimiter);
 // app.use("/api/auth/login", loginLimiter);
 app.use("/api/auth/signup", createAccountLimiter);
+
+// GraphQL API
+const schema = require("./models/stocks.graphql");
+app.all("/graphql", createHandler({ schema }));
 
 // Stocks routes
 app.use("/api/stocks", require("./routes/stocks.routes"));
