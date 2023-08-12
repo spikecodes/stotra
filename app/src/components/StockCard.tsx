@@ -1,22 +1,8 @@
-import {
-	Button,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
-	Text,
-} from "@chakra-ui/react";
-import {
-	Stat,
-	StatLabel,
-	StatNumber,
-	StatHelpText,
-	StatArrow,
-	StatGroup,
-} from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter } from "@chakra-ui/react";
+import { Stat, StatLabel, StatNumber, StatHelpText } from "@chakra-ui/react";
 import React from "react";
 
-export default function StockCard(props) {
+export default function StockCard(props: any) {
 	return (
 		<Card className="StockCard">
 			<CardBody>

@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState, createContext } from "react";
+import React, { useState, createContext } from "react";
 import Navbar from "./components/Navbar";
 import Transaction from "./components/Transaction";
-import Ledger from "./components/Ledger";
-import StockFinder from "./components/StockFinder";
-import { Container, Heading, Box, Spacer } from "@chakra-ui/react";
-import Portfolio from "./pages/Portfolio";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Container, Box, Spacer, Heading } from "@chakra-ui/react";
+import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StockView from "./components/StockView";
+import Ledger from "./components/Ledger";
 
 type Transaction = {
 	id: number;
@@ -27,30 +25,30 @@ export const LedgerContext = createContext<ILedgerContext>({
 	ledger: [],
 });
 
-export function currentPortfolioValue(ledger) {
+export function currentPortfolioValue(_ledger: Transaction[]) {
 	// Send request to backend to get portfolio value
 	return 100_000;
 }
 
-export function portfolioValueAtDate(ledger, date) {
+export function portfolioValueAtDate(_ledger: Transaction[], _date: Date) {
 	// Send request to backend to get portfolio value at date
 	return 50_000;
 }
 
 function App() {
-	const [ledger, setLedger] = useState([]);
-	const changeLedger = (newLedger) => {
+	const [ledger, setLedger] = useState<Transaction[]>([]);
+	const changeLedger = (newLedger: Transaction[]) => {
 		setLedger(newLedger);
 	};
 
 	// Stock format: {ticker, count, price}
-	const [selectedAction, setSelectedAction] = useState("buy");
-	const [selelectedStock, setSelectedStock] = useState({
-		ticker: "",
-		price: 0,
-	});
+	// const [selectedAction, setSelectedAction] = useState("buy");
+	// const [selelectedStock, setSelectedStock] = useState({
+	// 	ticker: "",
+	// 	price: 0,
+	// });
 
-	const [selectedPrice, setSelectedPrice] = useState(0);
+	// const [selectedPrice, setSelectedPrice] = useState(0);
 
 	return (
 		<>
@@ -105,18 +103,21 @@ function App() {
 
             <LedgerContext.Provider value={{ ledger, setLedger }}>
               <Portfolio />
-            </LedgerContext.Provider>
+            </LedgerContext.Provider>*/}
 
-            <Route path="/view-ledger">
-              <Box borderWidth="1px" borderRadius="lg" p="5">
-                <Heading as="h2" size="md">
-                  View your ledger
-                </Heading>
-                <LedgerContext.Provider value={{ ledger, setLedger }}>
-                  <Ledger />
-                </LedgerContext.Provider>
-              </Box>
-            </Route> */}
+						<Route
+							path="/view-ledger"
+							element={
+								<Box borderWidth="1px" borderRadius="lg" p="5">
+									<Heading as="h2" size="md">
+										View your ledger
+									</Heading>
+									<LedgerContext.Provider value={{ ledger, setLedger }}>
+										<Ledger />
+									</LedgerContext.Provider>
+								</Box>
+							}
+						></Route>
 					</Routes>
 				</Box>
 			</Container>

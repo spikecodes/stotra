@@ -1,7 +1,5 @@
 import {
 	Box,
-	HStack,
-	Heading,
 	Tabs,
 	TabList,
 	TabPanels,
@@ -18,9 +16,9 @@ import {
 import PortfolioPreview from "./PortfolioPreview";
 
 export default function StockChart() {
-	const { ledger, setLedger } = useContext(LedgerContext);
+	const { ledger } = useContext(LedgerContext);
 
-	const [portfolioValue, setPortfolioValue] = useState(
+	const [_portfolioValue, setPortfolioValue] = useState(
 		currentPortfolioValue(ledger),
 	);
 
@@ -28,16 +26,13 @@ export default function StockChart() {
 	const yesterday = new Date();
 	yesterday.setDate(yesterday.getDate() - 1);
 
-	const [oldValue, setOldValue] = useState(
+	const [_oldValue, setOldValue] = useState(
 		portfolioValueAtDate(ledger, yesterday),
 	);
 
 	useEffect(() => {
 		setPortfolioValue(currentPortfolioValue(ledger));
 	}, [ledger]);
-
-	// Percentage change
-	var percentChange = (portfolioValue - oldValue) / oldValue;
 
 	return (
 		<Box className="Dashboard">

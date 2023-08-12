@@ -1,16 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	HStack,
-	Input,
 	Text,
 	Popover,
-	PopoverHeader,
 	PopoverTrigger,
 	PopoverContent,
 	PopoverBody,
 	Button,
 	PopoverArrow,
-	PopoverCloseButton,
 	IconButton,
 	useColorMode,
 } from "@chakra-ui/react";

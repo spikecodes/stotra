@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
 	Stat,
 	StatLabel,
@@ -10,25 +10,26 @@ import {
 	Table,
 	Thead,
 	Tbody,
-	Tfoot,
 	Tag,
 	Tr,
 	Th,
 	Td,
 	TableCaption,
-	TableContainer,
 } from "@chakra-ui/react";
 import { LedgerContext } from "../App";
 
-function getPortfolioValue(ledger) {
-	return ledger.reduce((total, transaction) => {
-		// Look up current price of stock
-		return total + transaction.price * transaction.count;
-	}, 0);
+function getPortfolioValue(ledger: any[]) {
+	return ledger.reduce(
+		(total: number, transaction: { price: number; count: number }) => {
+			// Look up current price of stock
+			return total + transaction.price * transaction.count;
+		},
+		0,
+	);
 }
 
-export default function Portfolio(props) {
-	const { ledger, setLedger } = useContext(LedgerContext);
+export default function Portfolio() {
+	const { ledger } = useContext(LedgerContext);
 
 	return (
 		<Box className="Portfolio" borderWidth="1px" borderRadius="lg" p="5">

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useContext, useState } from "react";
 
-export default function Transaction(props) {
+export default function Transaction(props: any) {
 	const { ledger, setLedger } = useContext(LedgerContext);
 
 	const [action, setAction] = useState(props.action || "buy");
@@ -26,7 +26,7 @@ export default function Transaction(props) {
 		},
 	);
 	const [count, setCount] = useState(props.count || 1);
-	const [price, setPrice] = useState(props.price || 0);
+	// const [price, setPrice] = useState(props.price || 0);
 
 	const [status, setStatus] = useState("");
 
@@ -44,7 +44,7 @@ export default function Transaction(props) {
 
 	// Hide alert after 5 seconds
 	useEffect(() => {
-		const timer = setTimeout(() => {
+		setTimeout(() => {
 			setStatus("");
 		}, 10000);
 	}, [status]);

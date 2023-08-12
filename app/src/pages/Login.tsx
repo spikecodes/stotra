@@ -6,12 +6,10 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
-	Checkbox,
 	Stack,
 	Button,
 	Heading,
 	Text,
-	useColorModeValue,
 	InputGroup,
 	InputRightElement,
 	Alert,
@@ -38,13 +36,13 @@ export default function Login() {
 	}, []);
 
 	const [loginData, setLoginData] = useReducer(
-		(state, newState) => ({ ...state, ...newState }),
+		(state: any, newState: any) => ({ ...state, ...newState }),
 		{ username: "", password: "", showPassword: false },
 	);
 
 	const [status, setStatus] = useState("");
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call login function from auth.js
 		let res = await auth.login(loginData.username, loginData.password);

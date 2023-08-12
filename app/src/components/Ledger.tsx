@@ -5,7 +5,6 @@ import {
 	Tag,
 	TagLabel,
 	TagLeftIcon,
-	Text,
 	UnorderedList,
 } from "@chakra-ui/react";
 import { LedgerContext } from "../App";
@@ -14,7 +13,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import StockCard from "./StockCard";
 
 export default function Ledger() {
-	const { ledger, setLedger } = useContext(LedgerContext);
+	const { ledger } = useContext(LedgerContext);
 
 	if (ledger.length === 0) return;
 

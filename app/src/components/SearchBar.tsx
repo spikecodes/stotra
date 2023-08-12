@@ -1,14 +1,10 @@
-import React, { MutableRefObject, RefObject, useRef, useState } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import {
 	Popover,
 	PopoverTrigger,
 	PopoverContent,
-	PopoverHeader,
 	PopoverBody,
-	PopoverFooter,
 	PopoverArrow,
-	PopoverCloseButton,
-	PopoverAnchor,
 	useDisclosure,
 	Input,
 	List,

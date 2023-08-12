@@ -13,7 +13,6 @@ import {
 	Button,
 	Heading,
 	Text,
-	useColorModeValue,
 	Alert,
 	AlertIcon,
 	AlertTitle,
@@ -42,7 +41,7 @@ export default function Signup() {
 
 	const [status, setStatus] = useState("");
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call signup function from auth.js
 		let res = await auth.signup(username, password);

@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookie from "js-cookie";
 
 class Auth {
 	static instance: Auth;
@@ -29,19 +28,19 @@ class Auth {
 		);
 	}
 
-	async signup(username, password): Promise<string> {
+	async signup(username: string, password: string): Promise<string> {
 		try {
-			const res = await axios.post("http://localhost:3010/api/auth/signup", {
+			await axios.post("http://localhost:3010/api/auth/signup", {
 				username,
 				password,
 			});
 			return "success";
-		} catch (err) {
+		} catch (err: any) {
 			return err.response.data.message;
 		}
 	}
 
-	login(username, password): Promise<string> {
+	login(username: string, password: any): Promise<string> {
 		return axios
 			.post("http://localhost:3010/api/auth/login", { username, password })
 			.then((res) => {

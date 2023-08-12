@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	List,
-	Input,
-	ListItem,
-	ListIcon,
-	OrderedList,
-	UnorderedList,
-} from "@chakra-ui/react";
+import { Box, Button, Input, ListItem, UnorderedList } from "@chakra-ui/react";
 
-export default function StockFinder(props) {
+export default function StockFinder(props: any) {
 	const [search, setSearch] = useState("");
 
 	// Available stocks dict with ticker and price
-	const [availableStocks, setAvailableStocks] = useState({
+	const [availableStocks] = useState<any>({
 		AAPL: 120,
 		GOOG: 533,
 		MSFT: 81,
@@ -72,6 +62,8 @@ export default function StockFinder(props) {
 								</Button>
 							</ListItem>
 						);
+					} else {
+						return null;
 					}
 				})}
 			</UnorderedList>

@@ -6,7 +6,6 @@ import {
 	StatNumber,
 	StatHelpText,
 	StatArrow,
-	StatGroup,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -19,7 +18,7 @@ function StockView() {
 	const { ticker } = useParams();
 
 	const [stock, setStock] = useReducer(
-		(state, newState) => ({ ...state, ...newState }),
+		(state: any, newState: any) => ({ ...state, ...newState }),
 		{ ticker, price: 0, changePercent: 0 },
 	);
 
