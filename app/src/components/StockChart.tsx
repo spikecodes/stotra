@@ -1,91 +1,109 @@
-import {
-	Box,
-	Tabs,
-	TabList,
-	TabPanels,
-	Tab,
-	TabPanel,
-	Spacer,
-} from "@chakra-ui/react";
-import React, { useState, useEffect, useContext } from "react";
-import {
-	LedgerContext,
-	currentPortfolioValue,
-	portfolioValueAtDate,
-} from "../App";
-import PortfolioPreview from "./PortfolioPreview";
+import React, { useState, useRef, useEffect } from "react";
+import moment from "moment";
+import * as Highcharts from "highcharts/highstock";
+import HighchartsReact from "highcharts-react-official";
+import axios from "axios";
 
-export default function StockChart() {
-	const { ledger } = useContext(LedgerContext);
+const formatter = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+});
 
-	const [_portfolioValue, setPortfolioValue] = useState(
-		currentPortfolioValue(ledger),
-	);
+export default function StockChart(props: { ticker: string }) {
+	const [options, setOptions] = useState<Highcharts.Options>({
+		rangeSelector: {
+			selected: 1,
+		},
+		colors: ["teal"],
+		title: {
+			text: "",
+		},
+		yAxis: [
+			{
+				height: "75%",
+				labels: {
+					formatter: (point: any) => formatter.format(point.value as number),
+					x: -5,
+					style: {
+						color: "#000",
+						position: "absolute",
+					},
+					align: "left",
+				},
+				title: {
+					text: " ",
+				},
+			},
+		],
+		// tooltip: {
+		// 	shared: true,
+		// 	formatter: tooltipFormatter,
+		// },
+		plotOptions: {
+			series: {
+				showInNavigator: true,
+				gapSize: 6,
+			},
+		},
+		chart: {
+			height: 600,
+		},
+		credits: {
+			enabled: false,
+		},
+		xAxis: {
+			type: "datetime",
+		},
+		navigator: {
+			maskFill: "rgb(0, 128, 128, 0.25)",
+			series: {
+				color: "teal",
+				fillOpacity: 0.1,
+				lineWidth: 2,
+			},
+		},
+	} as any);
 
-	// Get yesterday's date
-	const yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
-
-	const [_oldValue, setOldValue] = useState(
-		portfolioValueAtDate(ledger, yesterday),
-	);
+	const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
 	useEffect(() => {
-		setPortfolioValue(currentPortfolioValue(ledger));
-	}, [ledger]);
+		// const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
+		// 	function () {
+		// 		return (
+		// 			formatter.format(this.y as number) +
+		// 			"</b><br/>" +
+		// 			moment(this.x).format("MMMM Do YYYY, h:mm")
+		// 		);
+		// 	};
+
+		axios
+			.get(`http://localhost:3010/api/stocks/${props.ticker}/historical`)
+			.then((res) => {
+				setOptions({
+					...options,
+					series: [
+						{
+							name: "Price",
+							type: "spline",
+							id: "stock_chart",
+
+							data: res.data,
+							lineWidth: 2,
+							tooltip: {
+								valueDecimals: 2,
+							},
+						},
+					],
+				});
+			});
+	}, []);
 
 	return (
-		<Box className="Dashboard">
-			<PortfolioPreview />
-			<Spacer h="50" />
-			<Tabs
-				onChange={(index) => {
-					switch (index) {
-						case 0:
-							let yesterday = new Date();
-							yesterday.setDate(yesterday.getDate() - 1);
-							setOldValue(portfolioValueAtDate(ledger, yesterday));
-							break;
-						case 1:
-							let last_week = new Date();
-							last_week.setDate(last_week.getDate() - 1);
-							setOldValue(portfolioValueAtDate(ledger, last_week));
-							break;
-						case 2:
-							let last_month = new Date();
-							last_month.setDate(last_month.getDate() - 1);
-							setOldValue(portfolioValueAtDate(ledger, last_month));
-							break;
-						case 3:
-							let last_year = new Date();
-							last_year.setDate(last_year.getDate() - 1);
-							setOldValue(portfolioValueAtDate(ledger, last_year));
-							break;
-					}
-				}}
-			>
-				<TabPanels>
-					<TabPanel>
-						<p>DAY!</p>
-					</TabPanel>
-					<TabPanel>
-						<p>WEEK!</p>
-					</TabPanel>
-					<TabPanel>
-						<p>MONTH!</p>
-					</TabPanel>
-					<TabPanel>
-						<p>YEAR!</p>
-					</TabPanel>
-				</TabPanels>
-
-				<TabList>
-					<Tab>1D</Tab>
-					<Tab>1W</Tab>
-					<Tab>1M</Tab>
-					<Tab>1Y</Tab>
-				</TabList>
-			</Tabs>
-		</Box>
+		<HighchartsReact
+			constructorType={"stockChart"}
+			highcharts={Highcharts}
+			options={options}
+			ref={chartComponentRef}
+		/>
 	);
 }

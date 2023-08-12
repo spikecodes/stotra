@@ -34,4 +34,4 @@ const schema = new GraphQLSchema({
 	}),
 });
 
-export default schema;
+module.exports = schema;

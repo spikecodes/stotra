@@ -20,3 +20,11 @@ content-type: application/json
 
 GET http://localhost:3010/api/test/user
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDZmYWFkZWJmYWEzOGIzZmEzNmRkOSIsImlhdCI6MTY5MTgxMDQ4MCwiZXhwIjoxNjkxODk2ODgwfQ.oaEHq5u1dTkSdV-L659pKPwpe3w25iYCqJKROv21r6w
+
+###
+
+GET http://localhost:3010/api/stocks/AAPL/info
+
+###
+
+GET http://localhost:3010/api/stocks/AAPL/historical

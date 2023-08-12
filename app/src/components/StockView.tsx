@@ -8,6 +8,7 @@ import {
 	StatArrow,
 } from "@chakra-ui/react";
 import axios from "axios";
+import StockChart from "./StockChart";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -24,7 +25,7 @@ function StockView() {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3010/api/stocks/${ticker}`)
+			.get(`http://localhost:3010/api/stocks/${ticker}/info`)
 			.then((res) => {
 				setStock({ ...res.data });
 				console.log(stock);
@@ -48,6 +49,8 @@ function StockView() {
 					</StatHelpText>
 				</Stat>
 			)}
+
+			<StockChart ticker={ticker as string} />
 		</>
 	);
 }
