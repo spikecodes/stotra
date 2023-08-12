@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
 	HStack,
 	Input,
 	Text,
 	Popover,
+	PopoverHeader,
 	PopoverTrigger,
 	PopoverContent,
 	PopoverBody,
@@ -13,12 +14,15 @@ import {
 	IconButton,
 	useColorMode,
 } from "@chakra-ui/react";
+
 import { Link, useLocation } from "react-router-dom";
 import auth from "../auth";
 import { ChevronDownIcon, SunIcon } from "@chakra-ui/icons";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
 	const location = useLocation();
+
 	const [username, setUsername] = useState(auth.getUsername());
 	const { toggleColorMode } = useColorMode();
 
@@ -43,7 +47,7 @@ export default function Navbar() {
 			</Link>
 
 			{/* Search */}
-			<Input placeholder="Search" w="auto" />
+			<SearchBar />
 
 			{/* Account */}
 			<HStack spacing="2">

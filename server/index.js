@@ -48,7 +48,7 @@ app.use("/api/", apiLimiter);
 app.use("/api/auth/signup", createAccountLimiter);
 
 // Stocks routes
-app.use("/api/stocks", require("./routes/stocks"));
+app.use("/api/stocks", require("./routes/stocks.routes"));
 
 // User routes
 require("./routes/auth.routes")(app);

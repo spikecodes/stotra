@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import StockView from "./components/StockView";
 
 export const LedgerContext = createContext([]);
 
@@ -53,6 +54,8 @@ function App() {
 						<Route path="/login" element={<Login />}></Route>
 
 						<Route path="/signup" element={<Signup />}></Route>
+
+						<Route path="/stocks/:ticker" element={<StockView />}></Route>
 
 						{/* <Route path="/find-stocks">
               <Box borderWidth="1px" borderRadius="lg" p="5">
