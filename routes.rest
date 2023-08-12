@@ -8,7 +8,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3010/api/auth/signin
+POST http://localhost:3010/api/auth/login
 content-type: application/json
 
 {

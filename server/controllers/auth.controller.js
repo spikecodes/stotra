@@ -40,7 +40,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+exports.login = (req, res) => {
   User.findOne({
     username: req.body.username,
   })
@@ -57,7 +57,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!",
+          message: "Incorret password",
         });
       }
 

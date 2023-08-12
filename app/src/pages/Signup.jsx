@@ -21,28 +21,30 @@ import {
 } from "@chakra-ui/react";
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import axios from "axios";
+import auth from "../auth";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const [status, setStatus] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(username, password);
-    axios
-      .post("http://localhost:3010/api/auth/signup", { username, password })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // Call signup function from auth.js
+    let res = await auth.signup(username, password);
+    // Show alert with status of signup attempt
+    setStatus(res);
+    if (res === "success") {
+      // Wait 1.5s before redirecting to login
+      await new Promise((res) => setTimeout(res, 1500));
+      navigate("/login");
+    }
   };
 
   return (
@@ -60,21 +62,21 @@ export default function Signup() {
             to enjoy all of our cool features ✌️
           </Text>
         </Stack>
-        {status == "success" && (
-          <Alert status="success">
+        {status === "success" && (
+          <Alert status="success" borderRadius="md">
             <AlertIcon />
             <AlertTitle>Account created!</AlertTitle>
             <AlertDescription display="flex">
-              Login
+              Redirecting to
               <Stack align="center" color="teal" ml="1">
-                <Link to="/login">here</Link>
+                <Link to="/login">login</Link>
               </Stack>
-              .
+              ...
             </AlertDescription>
           </Alert>
         )}
-        {status != "" && status != "success" && (
-          <Alert status="error">
+        {status !== "" && status !== "success" && (
+          <Alert status="error" borderRadius="md">
             <AlertIcon />
             {status}
           </Alert>

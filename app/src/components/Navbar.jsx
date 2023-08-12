@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "../assets/react.svg";
 import { HStack, Input, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import auth from "../auth";
 
 export default function Navbar() {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    // Update username when auth.username changes
+    setCount(count + 1);
+  }, [auth.username]);
 
   return (
     <HStack
@@ -24,12 +30,17 @@ export default function Navbar() {
       <Input placeholder="Search" w="auto" />
 
       {/* Account */}
-      <HStack spacing="0.5em">
-        <Link to="/login">
-          <img src={reactLogo} alt="React Logo" width="20px" />
-          <Text>Account</Text>
-        </Link>
-      </HStack>
+      <Link to="/login">
+        |{auth.getUsername()}|
+        {auth.username ? (
+          <HStack spacing="2">
+            <img src={reactLogo} alt="React Logo" width="20px" />
+            <Text>{auth.username}</Text>
+          </HStack>
+        ) : (
+          "Login"
+        )}
+      </Link>
     </HStack>
   );
 }
