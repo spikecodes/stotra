@@ -1,62 +1,77 @@
 import axios from "axios";
+import Cookie from "js-cookie";
 
 class Auth {
-  constructor() {
-    if (Auth.instance) {
-      return Auth.instance;
-    }
+	constructor() {
+		if (Auth.instance) {
+			return Auth.instance;
+		}
 
-    this.jwt = null;
-    this.username = null;
-    Auth.instance = this;
-    return this;
-  }
+		Auth.instance = this;
+		return this;
+	}
 
-  async signup(username, password) {
-    try {
-      const res = await axios.post("http://localhost:3010/api/auth/signup", {
-        username,
-        password,
-      });
-      console.log(res);
-      return "success";
-    } catch (err) {
-      console.log(err);
-      return err.response.data.message;
-    }
-  }
+	storeLoginData(jwt, username) {
+		// Store jwt and username in localStorage
+		localStorage.setItem("jwt", jwt);
+		localStorage.setItem("username", username);
+	}
 
-  async login(username, password) {
-    try {
-      const res = await axios.post("http://localhost:3010/api/auth/login", {
-        username,
-        password,
-      });
-      console.log("da");
-      if (res.data.accessToken !== undefined) {
-        this.jwt = res.data.accessToken;
-        this.username = username;
-        console.log(this.username);
+	getUsername() {
+		return localStorage.getItem("username");
+	}
 
-        return "success";
-      } else {
-        return "Invalid credentials.";
-      }
-    } catch (err) {
-      console.log(err);
-      return err.response.data.message;
-    }
-  }
+	getToken() {
+		return localStorage.getItem("jwt");
+	}
 
-  getUsername() {
-    console.log(this.username);
-    return this.username;
-  }
+	isAuthenticated() {
+		// Check if jwt and username are stored in localStorage
+		return localStorage.getItem("jwt") && localStorage.getItem("username");
+	}
 
-  logout() {
-    this.jwt = null;
-    this.username = null;
-  }
+	async signup(username, password) {
+		try {
+			const res = await axios.post("http://localhost:3010/api/auth/signup", {
+				username,
+				password,
+			});
+			return "success";
+		} catch (err) {
+			return err.response.data.message;
+		}
+	}
+
+	login(username, password) {
+		return axios
+			.post("http://localhost:3010/api/auth/login", { username, password })
+			.then((res) => {
+				console.log(res);
+				if (res.data.accessToken !== undefined) {
+					this.username = username;
+					this.jwt = res.data.accessToken;
+					this.storeLoginData(res.data.accessToken, username);
+					return "success";
+				} else {
+					return "Invalid credentials.";
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				return err.response
+					? err.response.data.message
+					: "Could not connect to server.";
+			});
+	}
+
+	logout() {
+		// Clear jwt and username from state
+		this.username = null;
+		this.jwt = null;
+		// Clear jwt and username from localStorage
+		localStorage.removeItem("jwt");
+		localStorage.removeItem("username");
+	}
 }
 
 const authInstance = new Auth();

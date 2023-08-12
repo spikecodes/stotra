@@ -13,48 +13,48 @@ import Signup from "./pages/Signup";
 export const LedgerContext = createContext([]);
 
 export function currentPortfolioValue(ledger) {
-  // Send request to backend to get portfolio value
-  return 100_000;
+	// Send request to backend to get portfolio value
+	return 100_000;
 }
 
 export function portfolioValueAtDate(ledger, date) {
-  // Send request to backend to get portfolio value at date
-  return 50_000;
+	// Send request to backend to get portfolio value at date
+	return 50_000;
 }
 
 function App() {
-  const [ledger, setLedger] = useState([]);
+	const [ledger, setLedger] = useState([]);
 
-  // Stock format: {ticker, count, price}
-  const [selectedAction, setSelectedAction] = useState("buy");
-  const [selelectedStock, setSelectedStock] = useState({
-    ticker: "",
-    price: 0,
-  });
+	// Stock format: {ticker, count, price}
+	const [selectedAction, setSelectedAction] = useState("buy");
+	const [selelectedStock, setSelectedStock] = useState({
+		ticker: "",
+		price: 0,
+	});
 
-  const [selectedPrice, setSelectedPrice] = useState(0);
+	const [selectedPrice, setSelectedPrice] = useState(0);
 
-  return (
-    <>
-      <Container maxW="container.xl">
-        <Navbar />
-        <Spacer h="10" />
-        <Box>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <LedgerContext.Provider value={{ ledger, setLedger }}>
-                  <Dashboard />
-                </LedgerContext.Provider>
-              }
-            ></Route>
+	return (
+		<>
+			<Container maxW="container.xl">
+				<Navbar />
+				<Spacer h="10" />
+				<Box>
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<LedgerContext.Provider value={{ ledger, setLedger }}>
+									<Dashboard />
+								</LedgerContext.Provider>
+							}
+						></Route>
 
-            <Route path="/login" element={<Login />}></Route>
+						<Route path="/login" element={<Login />}></Route>
 
-            <Route path="/signup" element={<Signup />}></Route>
+						<Route path="/signup" element={<Signup />}></Route>
 
-            {/* <Route path="/find-stocks">
+						{/* <Route path="/find-stocks">
               <Box borderWidth="1px" borderRadius="lg" p="5">
                 <Heading as="h2" size="md">
                   Find stocks
@@ -95,11 +95,11 @@ function App() {
                 </LedgerContext.Provider>
               </Box>
             </Route> */}
-          </Routes>
-        </Box>
-      </Container>
-    </>
-  );
+					</Routes>
+				</Box>
+			</Container>
+		</>
+	);
 }
 
 export default App;
