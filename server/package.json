@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "nodemon index.js"
+		"start": "nodemon index.js --ignore swagger-output.json"
 	},
 	"dependencies": {
 		"axios": "^1.4.0",
@@ -21,5 +21,8 @@
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.0",
 		"yahoo-finance2": "^2.4.3"
+	},
+	"devDependencies": {
+		"swagger-autogen": "^2.23.5"
 	}
 }

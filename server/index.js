@@ -9,6 +9,10 @@ const app = express();
 
 const PORT = process.env.PORT || 3010;
 
+// Docs
+const { swaggerDocs } = require("./utils/swagger");
+
+// Database
 const Database = require("./utils/db");
 const UserSchema = require("./models/user.model");
 
@@ -56,4 +60,5 @@ app.use(require("./routes"));
 
 app.listen(PORT, async () => {
 	console.log(`Example app listening at http://localhost:${PORT}`);
+	swaggerDocs(app, PORT);
 });

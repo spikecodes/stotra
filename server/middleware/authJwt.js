@@ -2,11 +2,18 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 
 verifyToken = (req, res, next) => {
-	let token = req.headers["authorization"].split("Bearer ")[1];
+	/* #swagger.security = [{
+		"bearerAuth": []
+	}] 
+	#swagger.autoHeaders=false
+	*/
+	let token = req.headers["authorization"];
 
 	if (!token) {
 		return res.status(403).send({ message: "No token provided" });
 	}
+
+	token = token.split(" ")[1];
 
 	jwt.verify(token, config.secret, (err, decoded) => {
 		if (err) {

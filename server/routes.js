@@ -6,6 +6,28 @@ const userController = require("./controller/user.controller");
 const stocksController = require("./controller/stocks.controller");
 
 // Auth routes
+/**
+ * @openapi
+ * /ice-cream:
+ *   post:
+ *     description: This is where you can give some background as to why this route is being created or perhaps reference a ticket number.
+ *     tags:
+ *       - Ice Cream
+ *     summary: This should create a new ice cream.
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *       in: body
+ *       schema:
+ *         type: object
+ *         properties:
+ *           flavor:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Receive back flavor and flavor Id.
+ */
 router.post(
 	"/api/auth/signup",
 	[verifySignUp.checkDuplicateUsername],
