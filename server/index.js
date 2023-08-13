@@ -9,7 +9,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3010;
 
-const Database = require("./db");
+const Database = require("./utils/db");
 const UserSchema = require("./models/user.model");
 
 // Middleware
@@ -23,7 +23,6 @@ const apiLimiter = rateLimit({
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-	// store: ... , // Use an external store for more precise rate limiting
 });
 
 // const loginLimiter = rateLimit({
@@ -52,12 +51,8 @@ app.use("/api/auth/signup", createAccountLimiter);
 const schema = require("./models/stocks.graphql");
 app.all("/graphql", createHandler({ schema }));
 
-// Stocks routes
-app.use("/api/stocks", require("./routes/stocks.routes"));
-
-// User routes
-require("./routes/auth.routes")(app);
-require("./routes/user.routes")(app);
+// REST Routes
+app.use(require("./routes"));
 
 app.listen(PORT, async () => {
 	console.log(`Example app listening at http://localhost:${PORT}`);

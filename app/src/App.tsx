@@ -9,11 +9,12 @@ import Signup from "./pages/Signup";
 import StockView from "./pages/StockView";
 import Ledger from "./components/Ledger";
 
-type Transaction = {
-	id: number;
+export type Transaction = {
 	ticker: string;
 	price: number;
-	count: number;
+	quantity: number;
+	date: Date;
+	type: "buy" | "sell";
 };
 
 interface ILedgerContext {

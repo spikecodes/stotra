@@ -5,6 +5,8 @@ import {
 	portfolioValueAtDate,
 } from "../App";
 import { Box, Heading } from "@chakra-ui/react";
+import { Transaction } from "../App";
+import calculatePortfolioValue from "../accounts";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",

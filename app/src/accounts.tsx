@@ -1,14 +1,15 @@
+import { Transaction } from "./App";
 import axios from "axios";
 
-class Auth {
-	static instance: Auth;
+class Accounts {
+	static instance: Accounts;
 
 	constructor() {
-		if (Auth.instance) {
-			return Auth.instance;
+		if (Accounts.instance) {
+			return Accounts.instance;
 		}
 
-		Auth.instance = this;
+		Accounts.instance = this;
 		return this;
 	}
 
@@ -18,6 +19,37 @@ class Auth {
 
 	getToken(): string | null {
 		return localStorage.getItem("jwt");
+	}
+
+	calculatePortfolioValue(): Promise<number> {
+		return axios
+			.get("http://localhost:3010/api/user/ledger", {
+				headers: { Authorization: `Bearer ${this.getToken()}` },
+			})
+			.then((res) => {
+				let ledger = res.data.ledger;
+				return ledger.reduce((sum: number, stock: Transaction) => {
+					return sum + stock.price * stock.quantity;
+				}, 0);
+			})
+			.catch((err) => {
+				console.log(err);
+				return 0;
+			});
+	}
+
+	getCashBalance(): Promise<number> {
+		return axios
+			.get("http://localhost:3010/api/user/holdings", {
+				headers: { Authorization: `Bearer ${this.getToken()}` },
+			})
+			.then((res) => {
+				return res.data.cash;
+			})
+			.catch((err) => {
+				console.log(err);
+				return 0;
+			});
 	}
 
 	isAuthenticated(): boolean {
@@ -69,5 +101,5 @@ class Auth {
 	}
 }
 
-const authInstance = new Auth();
+const authInstance = new Accounts();
 export default authInstance;

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
-import auth from "../auth";
+import auth from "../accounts";
 import { ChevronDownIcon, SunIcon } from "@chakra-ui/icons";
 import SearchBar from "./SearchBar";
 

@@ -35,12 +35,25 @@ const formatter = new Intl.NumberFormat("en-US", {
 function StockView() {
 	const { ticker } = useParams();
 
-	const [shares, setShares] = useState(0);
+	const [shares, setShares] = useState(1);
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
 		{ longName: "", ticker, price: 0, changePercent: 0 },
 	);
+
+	const buyStock = () => {
+		axios
+			.post(`http://localhost:3010/api/stocks/${ticker}/buy`, {
+				shares,
+			})
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	useEffect(() => {
 		axios

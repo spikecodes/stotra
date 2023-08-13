@@ -19,7 +19,7 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import auth from "../auth";
+import accounts from "../accounts";
 import { useReducer } from "react";
 
 export default function Login() {
@@ -27,7 +27,7 @@ export default function Login() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (auth.isAuthenticated()) {
+		if (accounts.isAuthenticated()) {
 			// Redirect to home if already authenticated
 			navigate("/");
 		}
@@ -41,7 +41,7 @@ export default function Login() {
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call login function from auth.js
-		auth
+		accounts
 			.login(loginData.username, loginData.password)
 			.then((res) => {
 				// Show alert with status of login attempt

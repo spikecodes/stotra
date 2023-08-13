@@ -24,14 +24,14 @@ import {
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import auth from "../auth";
+import accounts from "../accounts";
 
 export default function Signup() {
 	const toast = useToast();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (auth.isAuthenticated()) {
+		if (accounts.isAuthenticated()) {
 			// Redirect to home if already authenticated
 			navigate("/");
 		}
@@ -44,7 +44,7 @@ export default function Signup() {
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		// Call signup function from auth.js
-		auth
+		accounts
 			.signup(username, password)
 			.then((res) => {
 				// Show alert with status of signup attempt
