@@ -9,18 +9,25 @@ import Signup from "./pages/Signup";
 import StockView from "./pages/StockView";
 
 export type Transaction = {
-	ticker: string;
+	symbol: string;
 	purchasePrice: number;
 	quantity: number;
 	date: Date;
 	type: "buy" | "sell";
 };
 
+export type Position = {
+	symbol: string;
+	purchasePrice: number;
+	purchaseDate: Date;
+	quantity: number;
+};
+
 function App() {
-	// Stock format: {ticker, count, price}
+	// Stock format: {symbol, count, price}
 	// const [selectedAction, setSelectedAction] = useState("buy");
 	// const [selelectedStock, setSelectedStock] = useState({
-	// 	ticker: "",
+	// 	symbol: "",
 	// 	price: 0,
 	// });
 
@@ -39,7 +46,7 @@ function App() {
 
 						<Route path="/signup" element={<Signup />}></Route>
 
-						<Route path="/stocks/:ticker" element={<StockView />}></Route>
+						<Route path="/stocks/:symbol" element={<StockView />}></Route>
 
 						{/* <Route path="/find-stocks">
               <Box borderWidth="1px" borderRadius="lg" p="5">

@@ -49,17 +49,17 @@ router.get(
 );
 
 // Stocks routes
-router.get("/api/stocks/:ticker/info", stocksController.getInfo);
-router.get("/api/stocks/:ticker/historical", stocksController.getHistorical);
+router.get("/api/stocks/:symbol/info", stocksController.getInfo);
+router.get("/api/stocks/:symbol/historical", stocksController.getHistorical);
 
 router.post(
-	"/api/stocks/:ticker/buy",
+	"/api/stocks/:symbol/buy",
 	[authJwt.verifyToken],
 	stocksController.buyStock,
 );
 
 router.post(
-	"/api/stocks/:ticker/sell",
+	"/api/stocks/:symbol/sell",
 	[authJwt.verifyToken],
 	stocksController.sellStock,
 );

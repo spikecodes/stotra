@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Position = new Schema({
-	ticker: {
+	symbol: {
 		type: String,
 		required: true,
-		uppercase: true, // Ensure tickers are stored in uppercase
+		uppercase: true, // Ensure symbols are stored in uppercase
 		trim: true, // Remove any potential whitespace
 	},
 	purchasePrice: {

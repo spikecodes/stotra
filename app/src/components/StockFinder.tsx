@@ -4,7 +4,7 @@ import { Box, Button, Input, ListItem, UnorderedList } from "@chakra-ui/react";
 export default function StockFinder(props: any) {
 	const [search, setSearch] = useState("");
 
-	// Available stocks dict with ticker and price
+	// Available stocks dict with symbol and price
 	const [availableStocks] = useState<any>({
 		AAPL: 120,
 		GOOG: 533,
@@ -23,23 +23,23 @@ export default function StockFinder(props: any) {
 			/>
 
 			<UnorderedList>
-				{Object.keys(availableStocks).map((ticker) => {
+				{Object.keys(availableStocks).map((symbol) => {
 					if (
 						search != "" &&
-						ticker.toLowerCase().includes(search.toLowerCase())
+						symbol.toLowerCase().includes(search.toLowerCase())
 					) {
 						return (
-							<ListItem key={ticker}>
+							<ListItem key={symbol}>
 								<label>
-									{ticker} - ${availableStocks[ticker]}
+									{symbol} - ${availableStocks[symbol]}
 								</label>
 
 								<Button
 									size="sm"
 									onClick={() => {
 										props.onSelectStock({
-											ticker,
-											price: availableStocks[ticker],
+											symbol,
+											price: availableStocks[symbol],
 										});
 										props.onSelectAction("buy");
 									}}
@@ -52,8 +52,8 @@ export default function StockFinder(props: any) {
 									size="sm"
 									onClick={() => {
 										props.onSelectStock({
-											ticker,
-											price: availableStocks[ticker],
+											symbol,
+											price: availableStocks[symbol],
 										});
 										props.onSelectAction("sell");
 									}}

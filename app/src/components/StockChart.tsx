@@ -9,7 +9,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 	currency: "USD",
 });
 
-export default function StockChart(props: { ticker: string }) {
+export default function StockChart(props: { symbol: string }) {
 	const [options, setOptions] = useState<Highcharts.Options>({
 		rangeSelector: {
 			selected: 1,
@@ -77,7 +77,7 @@ export default function StockChart(props: { ticker: string }) {
 			};
 
 		axios
-			.get(`http://localhost:3010/api/stocks/${props.ticker}/historical`)
+			.get(`http://localhost:3010/api/stocks/${props.symbol}/historical`)
 			.then((res) => {
 				setOptions({
 					...options,

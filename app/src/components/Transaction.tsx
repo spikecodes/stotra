@@ -18,7 +18,7 @@ export default function Transaction(props: any) {
 	const [action, setAction] = useState(props.action || "buy");
 	const [stock, setStock] = useState(
 		props.stock || {
-			ticker: "",
+			symbol: "",
 			price: 0,
 		},
 	);
@@ -57,14 +57,14 @@ export default function Transaction(props: any) {
 					</HStack>
 				</RadioGroup>
 			</FormControl>
-			<FormControl className="Transaction__ticker">
+			<FormControl className="Transaction__symbol">
 				<FormLabel>
-					Ticker:
+					symbol:
 					<Input
 						width="auto"
 						type="text"
-						value={stock.ticker}
-						onChange={(e) => setStock({ ...stock, ticker: e.target.value })}
+						value={stock.symbol}
+						onChange={(e) => setStock({ ...stock, symbol: e.target.value })}
 					/>
 				</FormLabel>
 			</FormControl>
@@ -117,7 +117,7 @@ export default function Transaction(props: any) {
 						<AlertTitle>Successfully submitted</AlertTitle>
 						<AlertDescription>
 							{action === "buy" ? "Bought " : "Sold "}
-							{count} share{count > 1 ? "s" : ""} of {stock.ticker}{" "}
+							{count} share{count > 1 ? "s" : ""} of {stock.symbol}{" "}
 							{action === "buy" ? "for" : "at"} ${stock.price} each.
 						</AlertDescription>
 					</Box>

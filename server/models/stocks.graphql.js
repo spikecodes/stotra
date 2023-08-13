@@ -9,7 +9,7 @@ const {
  * Construct a GraphQL schema and define the necessary resolvers.
  *
  * type Stock {
- *   ticker: String
+ *   symbol: String
  *   price: Float
  *   changePercent: Float
  * }
@@ -18,7 +18,7 @@ const schema = new GraphQLSchema({
 	query: new GraphQLObjectType({
 		name: "Stock",
 		fields: {
-			ticker: {
+			symbol: {
 				type: GraphQLString,
 				resolve: () => "AAPL",
 			},

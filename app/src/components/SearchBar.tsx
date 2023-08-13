@@ -15,13 +15,13 @@ import {
 import { Link } from "react-router-dom";
 
 const availableStocks = [
-	{ ticker: "AAPL", name: "Apple Inc." },
-	{ ticker: "MSFT", name: "Microsoft Corporation" },
-	{ ticker: "AMZN", name: "Amazon.com, Inc." },
-	{ ticker: "GOOG", name: "Alphabet Inc." },
-	{ ticker: "META", name: "Meta Platforms Inc." },
-	{ ticker: "TSLA", name: "Tesla, Inc." },
-	{ ticker: "NFLX", name: "Netflix, Inc." },
+	{ symbol: "AAPL", name: "Apple Inc." },
+	{ symbol: "MSFT", name: "Microsoft Corporation" },
+	{ symbol: "AMZN", name: "Amazon.com, Inc." },
+	{ symbol: "GOOG", name: "Alphabet Inc." },
+	{ symbol: "META", name: "Meta Platforms Inc." },
+	{ symbol: "TSLA", name: "Tesla, Inc." },
+	{ symbol: "NFLX", name: "Netflix, Inc." },
 ];
 
 function SearchBar() {
@@ -58,15 +58,15 @@ function SearchBar() {
 						{availableStocks
 							.filter(
 								(stock) =>
-									stock.ticker.toLowerCase().includes(search.toLowerCase()) ||
+									stock.symbol.toLowerCase().includes(search.toLowerCase()) ||
 									stock.name.toLowerCase().includes(search.toLowerCase()),
 							)
 							.map((stock) => {
 								return (
-									<ListItem key={stock.ticker} width="100%" height={7}>
-										<Link to={`/stocks/${stock.ticker}`}>
+									<ListItem key={stock.symbol} width="100%" height={7}>
+										<Link to={`/stocks/${stock.symbol}`}>
 											<HStack>
-												<Text fontWeight="bold">{stock.ticker}</Text>
+												<Text fontWeight="bold">{stock.symbol}</Text>
 												<Text>{stock.name}</Text>
 											</HStack>
 										</Link>

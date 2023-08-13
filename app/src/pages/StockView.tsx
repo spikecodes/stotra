@@ -35,7 +35,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 function StockView() {
-	const { ticker } = useParams();
+	const { symbol } = useParams();
 	const location = useLocation();
 
 	const [shares, setShares] = useState(1);
@@ -46,7 +46,7 @@ function StockView() {
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
-		{ longName: "", ticker, price: 0, changePercent: 0 },
+		{ longName: "", symbol, price: 0, changePercent: 0 },
 	);
 
 	useEffect(() => {
@@ -54,12 +54,12 @@ function StockView() {
 			setBuyingPower(value);
 		});
 
-		accounts.getAvailableShares(ticker!).then((value) => {
+		accounts.getAvailableShares(symbol!).then((value) => {
 			setAvailableShares(value);
 		});
 
 		axios
-			.get(`http://localhost:3010/api/stocks/${ticker}/info`)
+			.get(`http://localhost:3010/api/stocks/${symbol}/info`)
 			.then((res) => {
 				setStock({ ...res.data });
 				console.log(stock);
@@ -89,13 +89,13 @@ function StockView() {
 
 						<Spacer height={5} />
 
-						<StockChart ticker={ticker as string} />
+						<StockChart symbol={symbol as string} />
 					</Box>
 					<Box flex="0.25" borderWidth="1px" borderRadius="md" p={5}>
 						<Tabs>
 							<TabList>
-								<Tab>Buy {ticker}</Tab>
-								<Tab>Sell {ticker}</Tab>
+								<Tab>Buy {symbol}</Tab>
+								<Tab>Sell {symbol}</Tab>
 							</TabList>
 
 							<Stack p="5">
@@ -138,24 +138,24 @@ function StockView() {
 										width="100%"
 										onClick={() =>
 											accounts
-												.makeTransaction(ticker!, shares, "buy")
+												.makeTransaction(symbol!, shares, "buy")
 												.then(() => {
 													toast({
 														title: "Transaction submitted",
 														description:
-															"Bought " + shares + " shares of " + ticker,
+															"Bought " + shares + " shares of " + symbol,
 														status: "success",
 													});
 													accounts.getBuyingPower().then((value) => {
 														setBuyingPower(value);
 													});
-													accounts.getAvailableShares(ticker!).then((value) => {
+													accounts.getAvailableShares(symbol!).then((value) => {
 														setAvailableShares(value);
 													});
 												})
 												.catch((err) => {
 													toast({
-														title: "Error buying " + ticker,
+														title: "Error buying " + symbol,
 														description: err.message,
 														status: "error",
 													});
@@ -177,24 +177,24 @@ function StockView() {
 										width="100%"
 										onClick={() =>
 											accounts
-												.makeTransaction(ticker!, shares, "sell")
+												.makeTransaction(symbol!, shares, "sell")
 												.then(() => {
 													toast({
 														title: "Transaction submitted",
 														description:
-															"Sold " + shares + " shares of " + ticker,
+															"Sold " + shares + " shares of " + symbol,
 														status: "success",
 													});
 													accounts.getBuyingPower().then((value) => {
 														setBuyingPower(value);
 													});
-													accounts.getAvailableShares(ticker!).then((value) => {
+													accounts.getAvailableShares(symbol!).then((value) => {
 														setAvailableShares(value);
 													});
 												})
 												.catch((err) => {
 													toast({
-														title: "Error selling " + ticker,
+														title: "Error selling " + symbol,
 														description: err.message,
 														status: "error",
 													});

@@ -7,7 +7,7 @@ export default function StockCard(props: any) {
 		<Card className="StockCard">
 			<CardBody>
 				<Stat>
-					<StatLabel>{props.ticker}</StatLabel>
+					<StatLabel>{props.symbol}</StatLabel>
 					<StatNumber>${props.price}</StatNumber>
 					{props.count > 0 && (
 						<StatHelpText>

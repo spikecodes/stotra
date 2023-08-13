@@ -1,36 +1,28 @@
-const yahooFinance = require("yahoo-finance2").default;
 const User = require("../models/user.model");
 
-exports.getInfo = async (req, res) => {
-	const ticker = req.params.ticker;
-	const quote = await yahooFinance.quote(ticker);
-	const { regularMarketPrice, regularMarketChangePercent, longName } = quote;
+const {
+	fetchStockData,
+	fetchHistoricalStockData,
+} = require("../utils/requests");
 
-	res.send({
-		longName,
-		price: regularMarketPrice,
-		changePercent: regularMarketChangePercent,
-	});
+exports.getInfo = async (req, res) => {
+	const symbol = req.params.symbol;
+	const quote = await fetchStockData(symbol);
+	res.send(quote);
 };
 
-// exports.getMultipleHistorical = async (req, res) => {
-//   const tickers = req.query.tickers;
-//   const period1 = req.query.period1;
-//   const interval = req.query.interval;
-
-//   try {
-
 exports.getHistorical = async (req, res) => {
-	const ticker = req.params.ticker;
+	const symbol = req.params.symbol;
 	const period1 = req.query.period1;
 	// const period2 = req.query.period2;
 	const interval = req.query.interval;
 
 	try {
-		const historicalData = await yahooFinance.historical(ticker, {
-			period1: period1 || "2020-01-01",
-			interval: interval || "1d", // Fetch data every day. 'd' for daily. You can use 'w' for weekly, 'm' for monthly, etc.
-		});
+		const historicalData = await fetchHistoricalStockData(
+			symbol,
+			period1,
+			interval,
+		);
 
 		const jsonData = historicalData.map((data) => {
 			return [data.date.getTime(), data.close];
@@ -38,35 +30,34 @@ exports.getHistorical = async (req, res) => {
 
 		res.send(jsonData);
 	} catch (error) {
-		console.error("Error fetching " + ticker + " stock data:", error);
-		res.status(500).send("Error fetching " + ticker + " stock data:" + error);
+		console.error("Error fetching " + symbol + " stock data:", error);
+		res.status(500).send("Error fetching " + symbol + " stock data:" + error);
 	}
 };
 
 exports.buyStock = async (req, res) => {
-	const ticker = req.params.ticker;
+	const symbol = req.params.symbol;
 	const quantity = req.body.quantity;
 
 	try {
-		const quote = await yahooFinance.quote(ticker);
-		const { regularMarketPrice } = quote;
+		const { price } = await fetchStockData(symbol);
 
 		const user = await User.findById(req.userId);
 
-		if (user.cash < regularMarketPrice * quantity) {
+		if (user.cash < price * quantity) {
 			res.status(400).send({ message: "Not enough cash" });
 		} else {
-			user.cash -= regularMarketPrice * quantity;
+			user.cash -= price * quantity;
 			user.ledger.push({
-				ticker: ticker,
-				price: regularMarketPrice,
+				symbol: symbol,
+				price,
 				quantity: quantity,
 				type: "buy",
 			});
 			user.positions.push({
-				ticker: ticker,
+				symbol: symbol,
 				quantity: quantity,
-				purchasePrice: regularMarketPrice,
+				purchasePrice: price,
 				purchaseDate: Date.now(),
 			});
 
@@ -84,25 +75,24 @@ exports.buyStock = async (req, res) => {
 				});
 		}
 	} catch (error) {
-		console.error("Error fetching " + ticker + " stock data:", error);
-		res.status(500).send("Error fetching " + ticker + " stock data:" + error);
+		console.error("Error fetching " + symbol + " stock data:", error);
+		res.status(500).send("Error fetching " + symbol + " stock data:" + error);
 	}
 };
 
 exports.sellStock = async (req, res) => {
-	const ticker = req.params.ticker;
+	const symbol = req.params.symbol;
 	var quantity = req.body.quantity;
 
 	try {
-		const quote = await yahooFinance.quote(ticker);
-		const { regularMarketPrice } = quote;
+		const { price } = await fetchStockData(symbol);
 
 		const user = await User.findById(req.userId);
 
 		// Check if user has enough shares to sell across all positions
 		let quantityOwned = 0;
 		user.positions.forEach((position) => {
-			if (position.ticker === ticker) {
+			if (position.symbol === symbol) {
 				quantityOwned += position.quantity;
 			}
 		});
@@ -112,17 +102,17 @@ exports.sellStock = async (req, res) => {
 			return;
 		}
 
-		user.cash += regularMarketPrice * quantity;
+		user.cash += price * quantity;
 		user.ledger.push({
-			ticker: ticker,
-			price: regularMarketPrice,
+			symbol: symbol,
+			price: price,
 			quantity: quantity,
 			type: "sell",
 		});
 
-		// Sell quantity of shares (decrement for each iteration of the loop) split between all positions of the same ticker
+		// Sell quantity of shares (decrement for each iteration of the loop) split between all positions of the same symbol
 		for (let i = 0; i < user.positions.length; i++) {
-			if (user.positions[i].ticker === ticker) {
+			if (user.positions[i].symbol === symbol) {
 				if (user.positions[i].quantity > quantity) {
 					user.positions[i].quantity -= quantity;
 					break;
@@ -147,7 +137,7 @@ exports.sellStock = async (req, res) => {
 				}
 			});
 	} catch (error) {
-		console.error("Error fetching " + ticker + " stock data:", error);
-		res.status(500).send("Error fetching " + ticker + " stock data:" + error);
+		console.error("Error fetching " + symbol + " stock data:", error);
+		res.status(500).send("Error fetching " + symbol + " stock data:" + error);
 	}
 };

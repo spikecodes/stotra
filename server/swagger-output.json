@@ -152,12 +152,12 @@
         ]
       }
     },
-    "/api/stocks/{ticker}/info": {
+    "/api/stocks/{symbol}/info": {
       "get": {
         "description": "",
         "parameters": [
           {
-            "name": "ticker",
+            "name": "symbol",
             "in": "path",
             "required": true,
             "schema": {
@@ -172,12 +172,12 @@
         }
       }
     },
-    "/api/stocks/{ticker}/historical": {
+    "/api/stocks/{symbol}/historical": {
       "get": {
         "description": "",
         "parameters": [
           {
-            "name": "ticker",
+            "name": "symbol",
             "in": "path",
             "required": true,
             "schema": {
@@ -209,12 +209,12 @@
         }
       }
     },
-    "/api/stocks/{ticker}/buy": {
+    "/api/stocks/{symbol}/buy": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "ticker",
+            "name": "symbol",
             "in": "path",
             "required": true,
             "schema": {
@@ -260,12 +260,12 @@
         }
       }
     },
-    "/api/stocks/{ticker}/sell": {
+    "/api/stocks/{symbol}/sell": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "ticker",
+            "name": "symbol",
             "in": "path",
             "required": true,
             "schema": {

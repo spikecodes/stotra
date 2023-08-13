@@ -36,7 +36,7 @@ export default function Ledger() {
 									</TagLabel>
 								</Tag>
 								<StockCard
-									ticker={transaction.ticker}
+									symbol={transaction.symbol}
 									price={transaction.price}
 									count={count_abs}
 								/>

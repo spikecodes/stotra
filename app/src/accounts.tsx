@@ -1,4 +1,4 @@
-import { Transaction } from "./App";
+import { Position } from "./App";
 import axios from "axios";
 
 class Accounts {
@@ -14,14 +14,14 @@ class Accounts {
 	}
 
 	makeTransaction(
-		ticker: string,
+		symbol: string,
 		quantity: number,
 		type: "buy" | "sell",
 	): Promise<string> {
 		console.log("Making transaction");
 		return axios
 			.post(
-				"http://localhost:3010/api/stocks/" + ticker + "/" + type,
+				"http://localhost:3010/api/stocks/" + symbol + "/" + type,
 				{
 					quantity,
 				},
@@ -44,6 +44,24 @@ class Accounts {
 
 	getToken(): string | null {
 		return localStorage.getItem("jwt");
+	}
+
+	getPositions(): Promise<Position[]> {
+		return axios
+			.get("http://localhost:3010/api/user/holdings", {
+				headers: { Authorization: `Bearer ${this.getToken()}` },
+			})
+			.then((res) => {
+				return res.data.positions;
+			})
+			.catch((err) => {
+				console.log(err);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
+			});
 	}
 
 	getPortfolioValue(): Promise<{
@@ -88,16 +106,16 @@ class Accounts {
 			});
 	}
 
-	getAvailableShares(ticker: string): Promise<number> {
+	getAvailableShares(symbol: string): Promise<number> {
 		return axios
 			.get("http://localhost:3010/api/user/holdings", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
 				let positions = res.data.positions;
-				// Sum up all the shares of the given ticker
-				return positions.reduce((sum: number, stock: Transaction) => {
-					if (stock.ticker === ticker) {
+				// Sum up all the shares of the given symbol
+				return positions.reduce((sum: number, stock: Position) => {
+					if (stock.symbol === symbol) {
 						return sum + stock.quantity;
 					}
 					return sum;
@@ -135,7 +153,6 @@ class Accounts {
 		return axios
 			.post("http://localhost:3010/api/auth/login", { username, password })
 			.then((res) => {
-				console.log(res);
 				if (res.data.accessToken !== undefined) {
 					// Store jwt and username in localStorage
 					localStorage.setItem("jwt", res.data.accessToken);
