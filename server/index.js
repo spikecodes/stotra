@@ -43,7 +43,7 @@ const createAccountLimiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-app.use("/api/", apiLimiter);
+// app.use("/api/", apiLimiter);
 // app.use("/api/auth/login", loginLimiter);
 app.use("/api/auth/signup", createAccountLimiter);
 

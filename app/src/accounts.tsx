@@ -13,6 +13,31 @@ class Accounts {
 		return this;
 	}
 
+	makeTransaction(
+		ticker: string,
+		quantity: number,
+		type: "buy" | "sell",
+	): Promise<string> {
+		console.log("Making transaction");
+		return axios
+			.post(
+				"http://localhost:3010/api/stocks/" + ticker + "/" + type,
+				{
+					quantity,
+				},
+				{
+					headers: { Authorization: `Bearer ${this.getToken()}` },
+				},
+			)
+			.then((res) => {
+				return res.data.message;
+			})
+			.catch((err) => {
+				console.log(err.response.data.message);
+				throw new Error(err.response.data.message);
+			});
+	}
+
 	getUsername(): string | null {
 		return localStorage.getItem("username");
 	}
@@ -21,7 +46,7 @@ class Accounts {
 		return localStorage.getItem("jwt");
 	}
 
-	calculatePortfolioValue(): Promise<number> {
+	getPortfolioValue(): Promise<number> {
 		return axios
 			.get("http://localhost:3010/api/user/ledger", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
@@ -33,12 +58,11 @@ class Accounts {
 				}, 0);
 			})
 			.catch((err) => {
-				console.log(err);
-				return 0;
+				throw new Error(err.response.data.message);
 			});
 	}
 
-	getCashBalance(): Promise<number> {
+	getBuyingPower(): Promise<number> {
 		return axios
 			.get("http://localhost:3010/api/user/holdings", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
@@ -48,7 +72,28 @@ class Accounts {
 			})
 			.catch((err) => {
 				console.log(err);
-				return 0;
+				throw new Error(err.response.data.message);
+			});
+	}
+
+	getAvailableShares(ticker: string): Promise<number> {
+		return axios
+			.get("http://localhost:3010/api/user/holdings", {
+				headers: { Authorization: `Bearer ${this.getToken()}` },
+			})
+			.then((res) => {
+				let positions = res.data.positions;
+				// Sum up all the shares of the given ticker
+				return positions.reduce((sum: number, stock: Transaction) => {
+					if (stock.ticker === ticker) {
+						return sum + stock.quantity;
+					}
+					return sum;
+				}, 0);
+			})
+			.catch((err) => {
+				console.log(err);
+				throw new Error(err.response.data.message);
 			});
 	}
 
@@ -60,16 +105,18 @@ class Accounts {
 		);
 	}
 
-	async signup(username: string, password: string): Promise<string> {
-		try {
-			await axios.post("http://localhost:3010/api/auth/signup", {
+	signup(username: string, password: string): Promise<string> {
+		return axios
+			.post("http://localhost:3010/api/auth/signup", {
 				username,
 				password,
+			})
+			.then((_) => {
+				return "success";
+			})
+			.catch((err) => {
+				throw new Error(err.response.data.message);
 			});
-			return "success";
-		} catch (err: any) {
-			return err.response.data.message;
-		}
 	}
 
 	login(username: string, password: any): Promise<string> {
@@ -88,9 +135,7 @@ class Accounts {
 			})
 			.catch((err) => {
 				console.log(err);
-				return err.response
-					? err.response.data.message
-					: "Could not connect to server.";
+				throw new Error(err.response.data.message);
 			});
 	}
 

@@ -17,7 +17,7 @@ exports.getLedger = (req, res) => {
 exports.getHoldings = (req, res) => {
 	User.findById(req.userId)
 		.then((user) => {
-			res.status(200).send({ cash: user.cash });
+			res.status(200).send({ positions: user.positions, cash: user.cash });
 		})
 		.catch((err) => {
 			res.status(500).send({ message: err.message });

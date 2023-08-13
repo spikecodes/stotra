@@ -1,4 +1,3 @@
-import { LedgerContext } from "../App";
 import {
 	Box,
 	Input,
@@ -13,10 +12,10 @@ import {
 	AlertTitle,
 	AlertDescription,
 } from "@chakra-ui/react";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Transaction(props: any) {
-	const { ledger, setLedger } = useContext(LedgerContext);
+	const ledger = {};
 
 	const [action, setAction] = useState(props.action || "buy");
 	const [stock, setStock] = useState(
@@ -98,40 +97,7 @@ export default function Transaction(props: any) {
 				Total: {count * stock.price}
 			</FormControl>
 			<FormControl className="Transaction__submit">
-				<Button
-					onClick={() => {
-						// How many stocks do we own of this ticker?
-						var currentlyOwn = ledger
-							.filter((transaction) => {
-								return transaction.ticker === stock.ticker;
-							})
-							.reduce((total, transaction) => {
-								return total + transaction.count;
-							}, 0);
-
-						// If we are selling, make sure we have enough stocks to sell
-						if (action === "sell" && currentlyOwn < count) {
-							setStatus("insufficient stocks");
-							return;
-						} else {
-							setStatus("success");
-						}
-
-						if (setLedger !== undefined) {
-							setLedger([
-								...ledger,
-								{
-									id: (ledger[ledger.length - 1] || { id: 0 }).id + 1,
-									ticker: stock.ticker,
-									count: action === "buy" ? count : -count,
-									price: stock.price,
-								},
-							]);
-						}
-					}}
-				>
-					Submit
-				</Button>
+				<Button>Submit</Button>
 			</FormControl>
 
 			{status == "insufficient stocks" ? (

@@ -1,4 +1,5 @@
 const yahooFinance = require("yahoo-finance2").default;
+const User = require("../models/user.model");
 
 exports.getInfo = async (req, res) => {
 	const ticker = req.params.ticker;
@@ -36,6 +37,115 @@ exports.getHistorical = async (req, res) => {
 		});
 
 		res.send(jsonData);
+	} catch (error) {
+		console.error("Error fetching " + ticker + " stock data:", error);
+		res.status(500).send("Error fetching " + ticker + " stock data:" + error);
+	}
+};
+
+exports.buyStock = async (req, res) => {
+	const ticker = req.params.ticker;
+	const quantity = req.body.quantity;
+
+	try {
+		const quote = await yahooFinance.quote(ticker);
+		const { regularMarketPrice } = quote;
+
+		const user = await User.findById(req.userId);
+
+		if (user.cash < regularMarketPrice * quantity) {
+			res.status(400).send({ message: "Not enough cash" });
+		} else {
+			user.cash -= regularMarketPrice * quantity;
+			user.ledger.push({
+				ticker: ticker,
+				price: regularMarketPrice,
+				quantity: quantity,
+				type: "buy",
+			});
+			user.positions.push({
+				ticker: ticker,
+				quantity: quantity,
+				purchasePrice: regularMarketPrice,
+				purchaseDate: Date.now(),
+			});
+
+			user
+				.save()
+				.then((user) => {
+					if (user) {
+						res.send({ message: "Stock was bought successfully!" });
+					}
+				})
+				.catch((err) => {
+					if (err) {
+						res.status(500).send({ message: err });
+					}
+				});
+		}
+	} catch (error) {
+		console.error("Error fetching " + ticker + " stock data:", error);
+		res.status(500).send("Error fetching " + ticker + " stock data:" + error);
+	}
+};
+
+exports.sellStock = async (req, res) => {
+	const ticker = req.params.ticker;
+	var quantity = req.body.quantity;
+
+	try {
+		const quote = await yahooFinance.quote(ticker);
+		const { regularMarketPrice } = quote;
+
+		const user = await User.findById(req.userId);
+
+		// Check if user has enough shares to sell across all positions
+		let quantityOwned = 0;
+		user.positions.forEach((position) => {
+			if (position.ticker === ticker) {
+				quantityOwned += position.quantity;
+			}
+		});
+
+		if (quantityOwned < quantity) {
+			res.status(400).send({ message: "Not enough shares" });
+			return;
+		}
+
+		// Sell quantity of shares (decrement for each iteration of the loop) split between all positions of the same ticker
+		for (let i = 0; i < user.positions.length; i++) {
+			if (user.positions[i].ticker === ticker) {
+				if (user.positions[i].quantity > quantity) {
+					user.positions[i].quantity -= quantity;
+					break;
+				} else {
+					quantity -= user.positions[i].quantity;
+					user.positions.splice(i, 1);
+					i--;
+				}
+			}
+		}
+
+		user.cash += regularMarketPrice * quantity;
+		user.ledger.push({
+			ticker: ticker,
+			price: regularMarketPrice,
+			quantity: quantity,
+			type: "sell",
+		});
+
+		user
+			.save()
+			.then((user) => {
+				if (user) {
+					res.send({ message: "Stock was sold successfully!" });
+				}
+			})
+			.catch((err) => {
+				if (err) {
+					res.status(500).send({ message: err });
+				}
+			});
 	} catch (error) {
 		console.error("Error fetching " + ticker + " stock data:", error);
 		res.status(500).send("Error fetching " + ticker + " stock data:" + error);

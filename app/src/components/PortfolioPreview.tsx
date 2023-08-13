@@ -1,12 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-	LedgerContext,
-	currentPortfolioValue,
-	portfolioValueAtDate,
-} from "../App";
 import { Box, Heading } from "@chakra-ui/react";
 import { Transaction } from "../App";
-import calculatePortfolioValue from "../accounts";
+import accounts from "../accounts";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -14,21 +9,14 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 function PortfolioPreview() {
-	const { ledger } = useContext(LedgerContext);
-
-	const [portfolioValue, setPortfolioValue] = useState(
-		currentPortfolioValue(ledger),
-	);
-
-	// Get yesterday's date
-	const yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
-
-	const [oldValue] = useState(portfolioValueAtDate(ledger, yesterday)); //setOldValue
+	const [portfolioValue, setPortfolioValue] = useState(-1);
+	const [todaysChange, setTodaysChange] = useState(0.0);
 
 	useEffect(() => {
-		setPortfolioValue(currentPortfolioValue(ledger));
-	}, [ledger]);
+		accounts.getPortfolioValue().then((value) => {
+			setPortfolioValue(value);
+		});
+	}, []);
 
 	return (
 		<Box className="PortfolioPreview">
@@ -38,11 +26,11 @@ function PortfolioPreview() {
 			<Heading
 				as="h2"
 				size="md"
-				color={portfolioValue > oldValue ? "green.500" : "red.500"}
+				color={portfolioValue > todaysChange ? "green.500" : "red.500"}
 			>
-				{portfolioValue > oldValue ? "▲" : "▼"}{" "}
-				{formatter.format(portfolioValue - oldValue)} (
-				{100 * ((portfolioValue - oldValue) / oldValue)}%){" "}
+				{portfolioValue > todaysChange ? "▲" : "▼"}{" "}
+				{formatter.format(portfolioValue - todaysChange)} (
+				{100 * ((portfolioValue - todaysChange) / todaysChange)}%){" "}
 			</Heading>
 		</Box>
 	);

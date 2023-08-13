@@ -18,7 +18,6 @@
 		"mercedlogger": "^1.0.1",
 		"mongoose": "^7.4.2",
 		"morgan": "^1.10.0",
-		"node-iex-cloud": "^2.1.1",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.0",
 		"yahoo-finance2": "^2.4.3"

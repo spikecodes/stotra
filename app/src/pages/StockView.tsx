@@ -23,9 +23,11 @@ import {
 	NumberDecrementStepper,
 	Divider,
 	Center,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import StockChart from "../components/StockChart";
+import accounts from "../accounts";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -36,24 +38,25 @@ function StockView() {
 	const { ticker } = useParams();
 
 	const [shares, setShares] = useState(1);
+	const [buyingPower, setBuyingPower] = useState(0);
+	const [availableShares, setAvailableShares] = useState(0);
+
+	const toast = useToast();
+
+	useEffect(() => {
+		accounts.getBuyingPower().then((value) => {
+			setBuyingPower(value);
+		});
+
+		accounts.getAvailableShares(ticker!).then((value) => {
+			setAvailableShares(value);
+		});
+	}, []);
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
 		{ longName: "", ticker, price: 0, changePercent: 0 },
 	);
-
-	const buyStock = () => {
-		axios
-			.post(`http://localhost:3010/api/stocks/${ticker}/buy`, {
-				shares,
-			})
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
 
 	useEffect(() => {
 		axios
@@ -122,7 +125,7 @@ function StockView() {
 								<Divider />
 								<Spacer />
 								<HStack fontWeight="bold">
-									<Text>Total</Text>
+									<Text>Estimated Total</Text>
 									<Spacer />
 									<Text>{formatter.format(stock.price * shares)}</Text>
 								</HStack>
@@ -130,22 +133,80 @@ function StockView() {
 
 							<TabPanels>
 								<TabPanel>
-									<Button colorScheme="teal" size="lg" width="100%">
+									<Button
+										colorScheme="teal"
+										size="lg"
+										width="100%"
+										onClick={() =>
+											accounts
+												.makeTransaction(ticker!, shares, "buy")
+												.then(() => {
+													toast({
+														title: "Transaction submitted",
+														description:
+															"Bought " + shares + " shares of " + ticker,
+														status: "success",
+													});
+													accounts.getBuyingPower().then((value) => {
+														setBuyingPower(value);
+													});
+													accounts.getAvailableShares(ticker!).then((value) => {
+														setAvailableShares(value);
+													});
+												})
+												.catch((err) => {
+													toast({
+														title: "Error buying " + ticker,
+														description: err.message,
+														status: "error",
+													});
+												})
+										}
+									>
 										Buy
 									</Button>
 									<Center mt={3}>
 										<Text fontWeight="bold" fontSize="sm">
-											$6,000.00 Buying Power Available
+											{formatter.format(buyingPower)} Buying Power Available
 										</Text>
 									</Center>
 								</TabPanel>
 								<TabPanel>
-									<Button colorScheme="teal" size="lg" width="100%">
+									<Button
+										colorScheme="teal"
+										size="lg"
+										width="100%"
+										onClick={() =>
+											accounts
+												.makeTransaction(ticker!, shares, "sell")
+												.then(() => {
+													toast({
+														title: "Transaction submitted",
+														description:
+															"Sold " + shares + " shares of " + ticker,
+														status: "success",
+													});
+													accounts.getBuyingPower().then((value) => {
+														setBuyingPower(value);
+													});
+													accounts.getAvailableShares(ticker!).then((value) => {
+														setAvailableShares(value);
+													});
+												})
+												.catch((err) => {
+													toast({
+														title: "Error selling " + ticker,
+														description: err.message,
+														status: "error",
+													});
+												})
+										}
+									>
 										Sell
 									</Button>
 									<Center mt={3}>
 										<Text fontWeight="bold" fontSize="sm">
-											14 Shares Available
+											{availableShares} Shares Available
 										</Text>
 									</Center>
 								</TabPanel>
