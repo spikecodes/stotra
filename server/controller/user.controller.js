@@ -1,3 +1,5 @@
+const yahooFinance = require("yahoo-finance2").default;
+const Position = require("../models/position.model");
 const User = require("../models/user.model");
 
 exports.allAccess = (req, res) => {
@@ -24,48 +26,46 @@ exports.getHoldings = (req, res) => {
 		});
 };
 
-exports.buyStock = (req, res) => {
-	User.findById(req.userId)
-		.then((user) => {
-			if (user.cash < req.body.price * req.body.quantity) {
-				res.status(500).send({ message: "Not enough cash" });
-			} else {
-				user.cash -= req.body.price * req.body.quantity;
-				user.ledger.push({
-					ticker: req.body.ticker,
-					price: req.body.price,
-					quantity: req.body.quantity,
-					type: "buy",
-				});
+exports.getPortfolioValue = async (req, res) => {
+	let user = await User.findById(req.userId);
+	if (!user) {
+		res.status(500).send({ message: "User not found" });
+	}
 
-				user
-					.save()
-					.then((user) => {
-						if (user) {
-							res.send({ message: "Stock was bought successfully!" });
-						}
-					})
-					.catch((err) => {
-						if (err) {
-							res.status(500).send({ message: err });
-						}
-					});
+	let portfolioValue = 0; //user.cash
+	let portfolioPrevCloseValue = 0;
+
+	// Create array of how many of each ticker (no duplicates)
+	let positionsNoDupes = user.positions.reduce((acc, position) => {
+		if (!acc[position.ticker]) {
+			acc[position.ticker] = position.quantity;
+		} else {
+			acc[position.ticker] += position.quantity;
+		}
+		return acc;
+	}, {});
+
+	let promises = [];
+
+	// Loop through each ticker and fetch current price
+	for (let ticker in positionsNoDupes) {
+		promises.push(yahooFinance.quote(ticker));
+	}
+
+	Promise.all(promises)
+		.then((values) => {
+			// Sum up the value of all positions
+			for (let i = 0; i < values.length; i++) {
+				portfolioValue +=
+					values[i].regularMarketPrice * Object.values(positionsNoDupes)[i];
+				portfolioPrevCloseValue +=
+					values[i].regularMarketPreviousClose *
+					Object.values(positionsNoDupes)[i];
 			}
+
+			res.status(200).send({ portfolioValue, portfolioPrevCloseValue });
 		})
 		.catch((err) => {
 			res.status(500).send({ message: err.message });
 		});
-};
-
-exports.userBoard = (req, res) => {
-	console.log(req.userId);
-	res.status(200).send("User Content.");
-};
-
-exports.adminBoard = (req, res) => {
-	res.status(200).send("Admin Content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-	res.status(200).send("Moderator Content.");
 };

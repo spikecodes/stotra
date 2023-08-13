@@ -20,6 +20,11 @@ router.get(
 	[authJwt.verifyToken],
 	userController.getHoldings,
 );
+router.get(
+	"/api/user/portfolioValue",
+	[authJwt.verifyToken],
+	userController.getPortfolioValue,
+);
 
 // Stocks routes
 router.get("/api/stocks/:ticker/info", stocksController.getInfo);

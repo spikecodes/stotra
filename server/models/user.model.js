@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Position = require("./position.model");
+const Transaction = require("./transaction.model");
 
 const User = mongoose.model(
 	"User",
@@ -16,7 +17,7 @@ const User = mongoose.model(
 			unique: true,
 			trim: true,
 		},
-		ledger: Array,
+		ledger: [Transaction],
 		positions: [Position],
 		cash: Number,
 	}),

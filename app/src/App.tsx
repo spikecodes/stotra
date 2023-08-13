@@ -1,7 +1,7 @@
-import React, { useState, createContext } from "react";
+import React from "react";
 import Navbar from "./components/Navbar";
 import Transaction from "./components/Transaction";
-import { Container, Box, Spacer, Heading } from "@chakra-ui/react";
+import { Container, Box, Spacer } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -10,7 +10,7 @@ import StockView from "./pages/StockView";
 
 export type Transaction = {
 	ticker: string;
-	price: number;
+	purchasePrice: number;
 	quantity: number;
 	date: Date;
 	type: "buy" | "sell";

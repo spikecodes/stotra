@@ -15,8 +15,6 @@ import {
 import React, { useEffect, useState } from "react";
 
 export default function Transaction(props: any) {
-	const ledger = {};
-
 	const [action, setAction] = useState(props.action || "buy");
 	const [stock, setStock] = useState(
 		props.stock || {

@@ -46,19 +46,27 @@ class Accounts {
 		return localStorage.getItem("jwt");
 	}
 
-	getPortfolioValue(): Promise<number> {
+	getPortfolioValue(): Promise<{
+		portfolioValue: number;
+		portfolioPrevCloseValue: number;
+	}> {
 		return axios
-			.get("http://localhost:3010/api/user/ledger", {
+			.get("http://localhost:3010/api/user/portfolioValue", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
-				let ledger = res.data.ledger;
-				return ledger.reduce((sum: number, stock: Transaction) => {
-					return sum + stock.price * stock.quantity;
-				}, 0);
+				return {
+					portfolioValue: res.data.portfolioValue,
+					portfolioPrevCloseValue: res.data.portfolioPrevCloseValue,
+				};
 			})
 			.catch((err) => {
-				throw new Error(err.response.data.message);
+				console.log(err);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
 			});
 	}
 
@@ -72,7 +80,11 @@ class Accounts {
 			})
 			.catch((err) => {
 				console.log(err);
-				throw new Error(err.response.data.message);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
 			});
 	}
 

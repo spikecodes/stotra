@@ -112,6 +112,14 @@ exports.sellStock = async (req, res) => {
 			return;
 		}
 
+		user.cash += regularMarketPrice * quantity;
+		user.ledger.push({
+			ticker: ticker,
+			price: regularMarketPrice,
+			quantity: quantity,
+			type: "sell",
+		});
+
 		// Sell quantity of shares (decrement for each iteration of the loop) split between all positions of the same ticker
 		for (let i = 0; i < user.positions.length; i++) {
 			if (user.positions[i].ticker === ticker) {
@@ -125,14 +133,6 @@ exports.sellStock = async (req, res) => {
 				}
 			}
 		}
-
-		user.cash += regularMarketPrice * quantity;
-		user.ledger.push({
-			ticker: ticker,
-			price: regularMarketPrice,
-			quantity: quantity,
-			type: "sell",
-		});
 
 		user
 			.save()

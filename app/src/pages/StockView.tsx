@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
 	Text,
 	Tabs,
@@ -36,12 +36,18 @@ const formatter = new Intl.NumberFormat("en-US", {
 
 function StockView() {
 	const { ticker } = useParams();
+	const location = useLocation();
 
 	const [shares, setShares] = useState(1);
 	const [buyingPower, setBuyingPower] = useState(0);
 	const [availableShares, setAvailableShares] = useState(0);
 
 	const toast = useToast();
+
+	const [stock, setStock] = useReducer(
+		(state: any, newState: any) => ({ ...state, ...newState }),
+		{ longName: "", ticker, price: 0, changePercent: 0 },
+	);
 
 	useEffect(() => {
 		accounts.getBuyingPower().then((value) => {
@@ -51,14 +57,7 @@ function StockView() {
 		accounts.getAvailableShares(ticker!).then((value) => {
 			setAvailableShares(value);
 		});
-	}, []);
 
-	const [stock, setStock] = useReducer(
-		(state: any, newState: any) => ({ ...state, ...newState }),
-		{ longName: "", ticker, price: 0, changePercent: 0 },
-	);
-
-	useEffect(() => {
 		axios
 			.get(`http://localhost:3010/api/stocks/${ticker}/info`)
 			.then((res) => {
@@ -68,7 +67,7 @@ function StockView() {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [location]);
 
 	return (
 		<>
