@@ -1,5 +1,7 @@
+require("dotenv").config();
+const jwtSecret = process.env.STOTA_JWT_SECRET;
+
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
 
 verifyToken = (req, res, next) => {
 	/* #swagger.security = [{
@@ -15,7 +17,7 @@ verifyToken = (req, res, next) => {
 
 	token = token.split(" ")[1];
 
-	jwt.verify(token, config.secret, (err, decoded) => {
+	jwt.verify(token, jwtSecret, (err, decoded) => {
 		if (err) {
 			return res.status(401).send({
 				message: "Unauthorized",

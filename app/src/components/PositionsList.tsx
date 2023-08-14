@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import accounts from "../accounts";
 import { Position } from "src/App";
 import {
-	Box,
+	Tag,
 	Text,
 	Card,
 	CardHeader,
 	CardBody,
-	CardFooter,
 	Heading,
 	Stack,
 	StackDivider,
@@ -30,7 +29,7 @@ function PositionsList() {
 				<Heading size="md">My Portfolio</Heading>
 			</CardHeader>
 
-			<CardBody>
+			<CardBody pt="0">
 				<Stack divider={<StackDivider />} spacing="4">
 					{positions.map((position) => (
 						<Flex
@@ -50,9 +49,21 @@ function PositionsList() {
 							<Text fontSize="sm" color="gray.500">
 								{position.purchaseDate.toString().split("T")[0]!.trim()}
 							</Text>
-							<Text fontSize="sm">${position.purchasePrice}</Text>
+							<Stack>
+								<Heading size="xs" textTransform="uppercase">
+									<Text fontSize="sm">${position.purchasePrice}</Text>
+								</Heading>
+								<Tag size="sm" colorScheme="teal">
+									+$12.44
+								</Tag>
+							</Stack>
 						</Flex>
 					))}
+					{positions.length === 0 && (
+						<Text fontSize="sm">
+							You don't have any positions. Go make some trades!
+						</Text>
+					)}
 				</Stack>
 			</CardBody>
 		</Card>

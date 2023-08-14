@@ -1,8 +1,9 @@
-const config = require("../config/auth.config");
-const User = require("../models/user.model");
-
+require("dotenv").config();
+const jwtSecret = process.env.STOTA_JWT_SECRET;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+
+const User = require("../models/user.model");
 
 exports.signup = (req, res) => {
 	if (!req.body.username || !req.body.password) {
@@ -63,7 +64,7 @@ exports.login = (req, res) => {
 				});
 			}
 
-			const token = jwt.sign({ id: user.id }, config.secret, {
+			const token = jwt.sign({ id: user.id }, jwtSecret, {
 				algorithm: "HS256",
 				allowInsecureKeySizes: true,
 				expiresIn: 86400, // 24 hours

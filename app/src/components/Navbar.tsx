@@ -68,6 +68,7 @@ export default function Navbar() {
 								<Button
 									variant="ghost"
 									onClick={() => {
+										window.location.reload();
 										auth.logout();
 										setUsername("");
 									}}

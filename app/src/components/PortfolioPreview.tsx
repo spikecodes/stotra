@@ -23,21 +23,35 @@ function PortfolioPreview() {
 
 	return (
 		<Box className="PortfolioPreview">
-			<Heading as="h2" size="xl">
-				{formatter.format(portfolioValue)}
-			</Heading>
-			<Heading
-				as="h2"
-				size="md"
-				color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
-			>
-				{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
-				{formatter.format(portfolioValue - prevCloseValue)} (
-				{(100 * ((portfolioValue - prevCloseValue) / prevCloseValue)).toFixed(
-					5,
-				)}
-				%){" "}
-			</Heading>
+			{accounts.isAuthenticated() ? (
+				<>
+					<Heading as="h2" size="xl">
+						{formatter.format(portfolioValue)}
+					</Heading>
+					<Heading
+						as="h2"
+						size="md"
+						color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
+					>
+						{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
+						{formatter.format(portfolioValue - prevCloseValue)} (
+						{(
+							100 *
+							((portfolioValue - prevCloseValue) / prevCloseValue)
+						).toFixed(5)}
+						%){" "}
+					</Heading>
+				</>
+			) : (
+				<>
+					<Heading as="h1" size="xl">
+						Stotra
+					</Heading>
+					<Heading as="h2" size="md">
+						Create an account or login to get started!
+					</Heading>
+				</>
+			)}
 		</Box>
 	);
 }
