@@ -1,7 +1,14 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import { Schema, Document, model } from "mongoose";
 
-const Transaction = new Schema({
+export interface ITransaction extends Document {
+	symbol: string;
+	price: number;
+	quantity: number;
+	type: string;
+	date: number;
+}
+
+export const TransactionSchema = new Schema<ITransaction>({
 	symbol: {
 		type: String,
 		required: true,
@@ -24,9 +31,11 @@ const Transaction = new Schema({
 		enum: ["buy", "sell"],
 	},
 	date: {
-		type: Date,
+		type: Number,
 		default: Date.now, // Default to current date/time
 	},
 });
+
+const Transaction = model<ITransaction>("Transaction", TransactionSchema);
 
 export default Transaction;

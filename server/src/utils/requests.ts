@@ -1,6 +1,6 @@
 import yahooFinance from "yahoo-finance2";
 import Cache from "node-cache";
-const stockCache = new Cache({ stdTTL: 30 }); // 30 seconds
+const stockCache = new Cache({ stdTTL: 5 }); // 5 seconds
 
 export const fetchStockData = async (symbol: string): Promise<any> => {
 	const cacheKey = symbol + "-quote";
@@ -32,8 +32,6 @@ export const fetchStockData = async (symbol: string): Promise<any> => {
 				regularMarketPreviousClose,
 				regularMarketChangePercent,
 			};
-
-			console.log("stockData", stockData);
 
 			stockCache.set(cacheKey, stockData);
 			return stockData;

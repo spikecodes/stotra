@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Spinner } from "@chakra-ui/react";
 import accounts from "../accounts";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -10,6 +10,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 function PortfolioPreview() {
 	const [portfolioValue, setPortfolioValue] = useState(-1);
 	const [prevCloseValue, setPrevCloseValue] = useState(0.0);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		accounts
@@ -17,6 +18,7 @@ function PortfolioPreview() {
 			.then(({ portfolioValue, portfolioPrevCloseValue }) => {
 				setPortfolioValue(portfolioValue);
 				setPrevCloseValue(portfolioPrevCloseValue);
+				setIsLoading(false);
 			});
 	}, []);
 
@@ -24,9 +26,13 @@ function PortfolioPreview() {
 		<Box className="PortfolioPreview">
 			{accounts.isAuthenticated() ? (
 				<>
-					<Heading as="h2" size="xl">
-						{formatter.format(portfolioValue)}
-					</Heading>
+					{isLoading ? (
+						<Spinner size={"lg"} />
+					) : (
+						<Heading as="h2" size="xl">
+							{formatter.format(portfolioValue)}
+						</Heading>
+					)}
 					{portfolioValue > 0 && (
 						<Heading
 							as="h2"

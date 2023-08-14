@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 
 import { fetchStockData, fetchHistoricalStockData } from "../utils/requests";
+import { ITransaction } from "../models/transaction.model";
+import { IPosition } from "../models/position.model";
 
 const getInfo = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
@@ -55,18 +57,27 @@ const buyStock = async (req: Request, res: Response) => {
 			res.status(400).send({ message: "Not enough cash" });
 		} else {
 			user.cash! -= price * quantity;
-			user.ledger.push({
-				symbol: symbol,
+
+			// Add sebuyll transaction to ledger
+			const transaction: ITransaction = {
+				symbol,
 				price,
-				quantity: quantity,
+				quantity,
 				type: "buy",
-			});
-			user.positions.push({
-				symbol: symbol,
-				quantity: quantity,
+				date: Date.now(),
+			} as ITransaction;
+
+			user.ledger.push(transaction);
+
+			// Add position to user
+			const position = {
+				symbol,
+				quantity,
 				purchasePrice: price,
 				purchaseDate: Date.now(),
-			});
+			} as IPosition;
+
+			user.positions.push(position);
 
 			user
 				.save()
@@ -112,12 +123,17 @@ const sellStock = async (req: Request, res: Response) => {
 		}
 
 		user.cash! += price * quantity;
-		user.ledger.push({
-			symbol: symbol,
-			price: price,
-			quantity: quantity,
+
+		// Add sell transaction to ledger
+		const transaction: ITransaction = {
+			symbol,
+			price,
+			quantity,
 			type: "sell",
-		});
+			date: Date.now(),
+		} as ITransaction;
+
+		user.ledger.push(transaction);
 
 		// Sell quantity of shares (decrement for each iteration of the loop) split between all positions of the same symbol
 		for (let i = 0; i < user.positions.length; i++) {

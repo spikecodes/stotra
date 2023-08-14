@@ -1,5 +1,5 @@
 import Position from "../models/position.model";
-import User from "../models/user.model";
+import User, { IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import { fetchStockData } from "../utils/requests";
 
@@ -28,58 +28,56 @@ const getHoldings = (req: Request, res: Response) => {
 };
 
 const getPortfolio = async (req: Request, res: Response) => {
-	let user = await User.findById(req.body.userId);
-	user = user!;
+	let user: IUser | null = await User.findById(req.body.userId).lean();
 	if (!user) {
 		res.status(500).send({ message: "User not found" });
 	}
+	user = user!;
 
 	let portfolioValue = 0; //user.cash
 	let portfolioPrevCloseValue = 0;
 
 	// Create array of how many of each symbol (no duplicates)
-	let positionsNoDupes = user.positions.reduce(
-		(
-			acc: { [x: string]: any },
-			position: { symbol: string | number; quantity: any },
-		) => {
-			if (!acc[position.symbol]) {
-				acc[position.symbol] = position.quantity;
-			} else {
-				acc[position.symbol] += position.quantity;
-			}
-			return acc;
-		},
-		{},
-	);
+	let positionsNoDupes: { [key: string]: number } = {};
+	user!.positions.forEach((position) => {
+		if (positionsNoDupes[position.symbol]) {
+			positionsNoDupes[position.symbol] += position.quantity;
+		} else {
+			positionsNoDupes[position.symbol] = position.quantity;
+		}
+	});
+
+	const symbols = Object.keys(positionsNoDupes);
+	const quantities = Object.values(positionsNoDupes);
 
 	// Loop through each symbol and fetch current price
-	Promise.all(
-		Object.keys(positionsNoDupes).map((symbol) => fetchStockData(symbol)),
-	)
+	Promise.all(symbols.map((symbol) => fetchStockData(symbol)))
 		.then((values) => {
 			var listOfPositions: any[] = [];
 
 			// Sum up the value of all positions
 			values.map((value, i) => {
 				// Sum up the value of all positions
-				portfolioValue +=
-					value.regularMarketPrice * Object.values(positionsNoDupes)[i];
+				portfolioValue += value.regularMarketPrice * quantities[i];
 				portfolioPrevCloseValue +=
-					value.regularMarketPreviousClose * Object.values(positionsNoDupes)[i];
-
-				// Add each user.positions to listOfPositions
-				user!.positions.forEach((position) => {
-					listOfPositions.push({
-						...position,
-						regularMarketPrice: value.regularMarketPrice,
-						regularMarketChangePercent: value.regularMarketChangePercent,
-						regularMarketPreviousClose: value.regularMarketPreviousClose,
-					});
-				});
+					value.regularMarketPreviousClose * quantities[i];
 			});
 
-			console.log("listOfPositions", listOfPositions);
+			// Create list of positions to send to frontend with data from user.positions plus the properties from the fetchStockData response
+			user!.positions.forEach((position) => {
+				const positionLiveData = values.find(
+					(value) => value.symbol === position.symbol,
+				);
+				if (positionLiveData) {
+					listOfPositions.push({
+						...position,
+						...positionLiveData,
+					});
+				}
+			});
+
+			console.log(user?.positions.length);
+
 			res.status(200).send({
 				portfolioValue,
 				portfolioPrevCloseValue,
