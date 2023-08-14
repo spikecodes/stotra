@@ -4,8 +4,12 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit").rateLimit;
 const { createHandler } = require("graphql-http/lib/use/express");
 import express, { Express, Request, Response } from "express";
-const app = express();
 import dotenv from "dotenv";
+import yahooFinance from "yahoo-finance2";
+
+// Config/initialization
+const app = express();
+// yahooFinance.setGlobalConfig({ validation: { logErrors: false } });
 dotenv.config();
 
 const PORT = process.env.PORT || 3010;

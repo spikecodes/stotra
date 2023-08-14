@@ -13,6 +13,10 @@ export default function StockChart(props: { symbol: string }) {
 	const [options, setOptions] = useState<Highcharts.Options>({
 		rangeSelector: {
 			selected: 1,
+			inputStyle: {
+				color: "teal",
+				fontWeight: "bold",
+			},
 		},
 		colors: ["teal"],
 		title: {
@@ -47,6 +51,7 @@ export default function StockChart(props: { symbol: string }) {
 		},
 		chart: {
 			height: 600,
+			// styledMode: true,
 		},
 		credits: {
 			enabled: false,
@@ -67,14 +72,14 @@ export default function StockChart(props: { symbol: string }) {
 	const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
 	useEffect(() => {
-		const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
-			function () {
-				return (
-					formatter.format(this.y as number) +
-					"</b><br/>" +
-					moment(this.x).format("MMMM Do YYYY, h:mm")
-				);
-			};
+		// const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
+		// 	function () {
+		// 		return (
+		// 			formatter.format(this.y as number) +
+		// 			"</b><br/>" +
+		// 			moment(this.x).format("MMMM Do YYYY, h:mm")
+		// 		);
+		// 	};
 
 		axios
 			.get(`http://localhost:3010/api/stocks/${props.symbol}/historical`)

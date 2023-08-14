@@ -49,6 +49,7 @@ router.get(
 );
 
 // Stocks routes
+router.get("/api/stocks/search/:query", stocksController.search);
 router.get("/api/stocks/:symbol/info", stocksController.getInfo);
 router.get("/api/stocks/:symbol/historical", stocksController.getHistorical);
 

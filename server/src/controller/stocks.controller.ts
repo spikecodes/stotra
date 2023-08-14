@@ -4,6 +4,7 @@ import User from "../models/user.model";
 import { fetchStockData, fetchHistoricalStockData } from "../utils/requests";
 import { ITransaction } from "../models/transaction.model";
 import { IPosition } from "../models/position.model";
+import yahooFinance from "yahoo-finance2";
 
 const getInfo = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
@@ -167,4 +168,38 @@ const sellStock = async (req: Request, res: Response) => {
 	}
 };
 
-export default { getInfo, getHistorical, buyStock, sellStock };
+const search = async (req: Request, res: Response) => {
+	const query = req.params.query;
+
+	if (!query) res.status(400).send({ message: "No query provided" });
+
+	const queryOptions = {
+		newsCount: 0,
+		enableFuzzyQuery: true,
+		enableNavLinks: false,
+		enableCb: false,
+		enableEnhancedTrivialQuery: false,
+	};
+
+	yahooFinance
+		.search(query, queryOptions)
+		.then((results) => {
+			let quotes = results.quotes.filter((quote) => {
+				return quote.quoteType && quote.quoteType === "EQUITY";
+			});
+			res.status(200).send(quotes);
+		})
+		.catch((err) => {
+			if (err.result && Array.isArray(err.result.quotes)) {
+				let quotes = err.result.quotes.filter((quote: any) => {
+					return quote.quoteType && quote.quoteType === "EQUITY";
+				});
+				res.status(200).send(quotes);
+			} else {
+				console.error(err);
+				res.status(500).send({ message: err });
+			}
+		});
+};
+
+export default { getInfo, getHistorical, buyStock, sellStock, search };
