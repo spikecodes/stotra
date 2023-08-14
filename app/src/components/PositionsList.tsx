@@ -11,17 +11,23 @@ import {
 	Stack,
 	StackDivider,
 	Flex,
+	Spinner,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
+const format = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+}).format;
+
 function PositionsList() {
+	const [isLoading, setIsLoading] = useState(true);
 	const [positions, setPositions] = useState<Position[]>([]);
 
 	useEffect(() => {
 		accounts.getPortfolio().then(({ positions }) => {
 			setPositions(positions);
-			console.clear();
-			console.log(positions);
+			setIsLoading(false);
 		});
 	}, []);
 
@@ -32,47 +38,65 @@ function PositionsList() {
 			</CardHeader>
 
 			<CardBody pt="0">
-				<Stack divider={<StackDivider />} spacing="4">
-					{positions.map((position) => (
-						<Flex
-							justifyItems="space-between"
-							direction={{ base: "column-reverse", md: "row" }}
-							gap={5}
-							key={position.purchaseDate.toString()}
-							as={Link}
-							to={"/stocks/" + position.symbol}
-						>
-							<Stack>
-								<Heading size="xs" textTransform="uppercase">
-									{position.symbol}
-								</Heading>
-								<Text fontSize="sm">{position.quantity} shares</Text>
-							</Stack>
-							<Text fontSize="sm" color="gray.500">
-								{position.purchaseDate.toString().split("T")[0]!.trim()}
+				{isLoading ? (
+					<Spinner size={"lg"} />
+				) : (
+					<Stack divider={<StackDivider />} spacing="4">
+						{positions.map((position) => (
+							<Flex
+								justifyItems="space-between"
+								direction={{ base: "column-reverse", md: "row" }}
+								gap={4}
+								key={position.purchaseDate.toString()}
+								as={Link}
+								to={"/stocks/" + position.symbol}
+							>
+								<Stack flex="0.33">
+									<Heading size="xs" textTransform="uppercase">
+										{position.symbol}
+									</Heading>
+									<Text fontSize="sm">{position.quantity} shares</Text>
+								</Stack>
+								<Stack flex="0.33">
+									<Heading
+										fontSize="sm"
+										color="gray.500"
+										textTransform="uppercase"
+									>
+										Gain/Loss
+									</Heading>
+									<Text fontSize="sm">
+										{format(
+											(position.regularMarketPrice - position.purchasePrice) *
+												position.quantity,
+										)}
+									</Text>
+								</Stack>
+								<Stack flex="0.33">
+									<Heading size="xs" textTransform="uppercase">
+										<Text fontSize="sm">
+											{format(position.regularMarketPrice)}
+										</Text>
+									</Heading>
+									<Tag
+										size="sm"
+										colorScheme={
+											position.regularMarketChangePercent > 0 ? "green" : "red"
+										}
+									>
+										{position.regularMarketChangePercent > 0 ? "+" : ""}
+										{position.regularMarketChangePercent.toFixed(2)}%
+									</Tag>
+								</Stack>
+							</Flex>
+						))}
+						{positions.length === 0 && (
+							<Text fontSize="sm">
+								You don't have any positions. Go make some trades!
 							</Text>
-							<Stack>
-								<Heading size="xs" textTransform="uppercase">
-									<Text fontSize="sm">${position.purchasePrice}</Text>
-								</Heading>
-								<Tag
-									size="sm"
-									colorScheme={
-										position.regularMarketChangePercent > 0 ? "green" : "red"
-									}
-								>
-									{position.regularMarketChangePercent > 0 ? "+" : ""}
-									{position.regularMarketChangePercent.toFixed(2)}%
-								</Tag>
-							</Stack>
-						</Flex>
-					))}
-					{positions.length === 0 && (
-						<Text fontSize="sm">
-							You don't have any positions. Go make some trades!
-						</Text>
-					)}
-				</Stack>
+						)}
+					</Stack>
+				)}
 			</CardBody>
 		</Card>
 	);

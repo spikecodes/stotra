@@ -76,8 +76,6 @@ const getPortfolio = async (req: Request, res: Response) => {
 				}
 			});
 
-			console.log(user?.positions.length);
-
 			res.status(200).send({
 				portfolioValue,
 				portfolioPrevCloseValue,
