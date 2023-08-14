@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const jwtSecret = process.env.STOTA_JWT_SECRET;
 
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export function verifyToken(
 	req: Request,
@@ -31,7 +31,7 @@ export function verifyToken(
 			});
 		}
 		// Set request user id to decoded id in typescript
-		req.body.userId = decoded!;
+		req.body.userId = (decoded! as JwtPayload).id;
 		next();
 	});
 }
