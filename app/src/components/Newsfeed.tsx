@@ -21,33 +21,7 @@ function Newsfeed() {
 					<CardHeader>
 						<Heading size="md"> Customer dashboard</Heading>
 					</CardHeader>
-					<CardBody>
-						<Text>
-							View a summary of all your customers over the last month.
-						</Text>
-					</CardBody>
-					<CardFooter>
-						<Button>View here</Button>
-					</CardFooter>
-				</Card>
-				<Card>
-					<CardHeader>
-						<Heading size="md"> Customer dashboard</Heading>
-					</CardHeader>
-					<CardBody>
-						<Text>
-							View a summary of all your customers over the last month.
-						</Text>
-					</CardBody>
-					<CardFooter>
-						<Button>View here</Button>
-					</CardFooter>
-				</Card>
-				<Card>
-					<CardHeader>
-						<Heading size="md"> Customer dashboard</Heading>
-					</CardHeader>
-					<CardBody>
+					<CardBody py="0">
 						<Text>
 							View a summary of all your customers over the last month.
 						</Text>

@@ -18,7 +18,6 @@ class Accounts {
 		quantity: number,
 		type: "buy" | "sell",
 	): Promise<string> {
-		console.log("Making transaction");
 		return axios
 			.post(
 				"http://localhost:3010/api/stocks/" + symbol + "/" + type,
@@ -64,18 +63,20 @@ class Accounts {
 			});
 	}
 
-	getPortfolioValue(): Promise<{
+	getPortfolio(): Promise<{
 		portfolioValue: number;
 		portfolioPrevCloseValue: number;
+		positions: Position[];
 	}> {
 		return axios
-			.get("http://localhost:3010/api/user/portfolioValue", {
+			.get("http://localhost:3010/api/user/portfolio", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
 				return {
 					portfolioValue: res.data.portfolioValue,
 					portfolioPrevCloseValue: res.data.portfolioPrevCloseValue,
+					positions: res.data.positions,
 				};
 			})
 			.catch((err) => {

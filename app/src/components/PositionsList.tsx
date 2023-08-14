@@ -18,8 +18,10 @@ function PositionsList() {
 	const [positions, setPositions] = useState<Position[]>([]);
 
 	useEffect(() => {
-		accounts.getPositions().then((values) => {
-			setPositions(values);
+		accounts.getPortfolio().then(({ positions }) => {
+			setPositions(positions);
+			console.clear();
+			console.log(positions);
 		});
 	}, []);
 
@@ -53,8 +55,14 @@ function PositionsList() {
 								<Heading size="xs" textTransform="uppercase">
 									<Text fontSize="sm">${position.purchasePrice}</Text>
 								</Heading>
-								<Tag size="sm" colorScheme="teal">
-									+$12.44
+								<Tag
+									size="sm"
+									colorScheme={
+										position.regularMarketChangePercent > 0 ? "green" : "red"
+									}
+								>
+									{position.regularMarketChangePercent > 0 ? "+" : ""}
+									{position.regularMarketChangePercent.toFixed(2)}%
 								</Tag>
 							</Stack>
 						</Flex>

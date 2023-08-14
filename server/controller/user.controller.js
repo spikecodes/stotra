@@ -30,7 +30,7 @@ exports.getHoldings = (req, res) => {
 		});
 };
 
-exports.getPortfolioValue = async (req, res) => {
+exports.getPortfolio = async (req, res) => {
 	let user = await User.findById(req.userId);
 	if (!user) {
 		res.status(500).send({ message: "User not found" });
@@ -49,23 +49,38 @@ exports.getPortfolioValue = async (req, res) => {
 		return acc;
 	}, {});
 
-	let promises = [];
-
 	// Loop through each symbol and fetch current price
-	for (let symbol in positionsNoDupes) {
-		promises.push(fetchStockData(symbol));
-	}
-
-	Promise.all(promises)
+	Promise.all(
+		Object.keys(positionsNoDupes).map((symbol) => fetchStockData(symbol)),
+	)
 		.then((values) => {
-			// Sum up the value of all positions
-			for (let i = 0; i < values.length; i++) {
-				portfolioValue += values[i].price * Object.values(positionsNoDupes)[i];
-				portfolioPrevCloseValue +=
-					values[i].prevClose * Object.values(positionsNoDupes)[i];
-			}
+			var listOfPositions = [];
 
-			res.status(200).send({ portfolioValue, portfolioPrevCloseValue });
+			// Sum up the value of all positions
+			values.map((value, i) => {
+				// Sum up the value of all positions
+				portfolioValue +=
+					value.regularMarketPrice * Object.values(positionsNoDupes)[i];
+				portfolioPrevCloseValue +=
+					value.regularMarketPreviousClose * Object.values(positionsNoDupes)[i];
+
+				// Add each user.positions to listOfPositions
+				user.positions.forEach((position) => {
+					listOfPositions.push({
+						...position._doc,
+						regularMarketPrice: value.regularMarketPrice,
+						regularMarketChangePercent: value.regularMarketChangePercent,
+						regularMarketPreviousClose: value.regularMarketPreviousClose,
+					});
+				});
+			});
+
+			console.log("listOfPositions", listOfPositions);
+			res.status(200).send({
+				portfolioValue,
+				portfolioPrevCloseValue,
+				positions: listOfPositions,
+			});
 		})
 		.catch((err) => {
 			res.status(500).send({ message: err.message });

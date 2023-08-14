@@ -38,7 +38,6 @@ exports.signup = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			console.log("bagg" + err);
 			res.status(500).send({ message: err });
 		});
 };

@@ -18,9 +18,13 @@ export type Transaction = {
 
 export type Position = {
 	symbol: string;
+	longName: string;
 	purchasePrice: number;
 	purchaseDate: Date;
 	quantity: number;
+	regularMarketPrice: number;
+	regularMarketPreviousClose: number;
+	regularMarketChangePercent: number;
 };
 
 function App() {

@@ -43,9 +43,9 @@ router.get(
 	userController.getHoldings,
 );
 router.get(
-	"/api/user/portfolioValue",
+	"/api/user/portfolio",
 	[authJwt.verifyToken],
-	userController.getPortfolioValue,
+	userController.getPortfolio,
 );
 
 // Stocks routes

@@ -128,7 +128,7 @@
         ]
       }
     },
-    "/api/user/portfolioValue": {
+    "/api/user/portfolio": {
       "get": {
         "description": "",
         "responses": {

@@ -8,7 +8,7 @@ const {
 exports.getInfo = async (req, res) => {
 	const symbol = req.params.symbol;
 	const quote = await fetchStockData(symbol);
-	res.send(quote);
+	res.status(200).send(quote);
 };
 
 exports.getHistorical = async (req, res) => {
@@ -40,7 +40,8 @@ exports.buyStock = async (req, res) => {
 	const quantity = req.body.quantity;
 
 	try {
-		const { price } = await fetchStockData(symbol);
+		const data = await fetchStockData(symbol);
+		const price = data.regularMarketPrice;
 
 		const user = await User.findById(req.userId);
 

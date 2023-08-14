@@ -17,7 +17,12 @@ function StockView() {
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
-		{ longName: "", symbol, price: 0, changePercent: 0 },
+		{
+			symbol,
+			longName: "",
+			regularMarketPrice: 0,
+			regularMarketChangePercent: 0,
+		},
 	);
 
 	useEffect(() => {
@@ -25,7 +30,6 @@ function StockView() {
 			.get(`http://localhost:3010/api/stocks/${symbol}/info`)
 			.then((res) => {
 				setStock({ ...res.data });
-				console.log(stock);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -34,19 +38,25 @@ function StockView() {
 
 	return (
 		<>
-			{stock.price > 0 && (
+			{stock.regularMarketPrice > 0 && (
 				<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
 					<Box flex={accounts.isAuthenticated() ? "0.75" : "1"}>
 						<Stat>
 							<Heading size="md" fontWeight="md">
 								{stock.longName}
 							</Heading>
-							<Heading size="xl">{formatter.format(stock.price)}</Heading>
+							<Heading size="xl">
+								{formatter.format(stock.regularMarketPrice)}
+							</Heading>
 							<Heading size="md">
 								<StatArrow
-									type={stock.changePercent > 0 ? "increase" : "decrease"}
+									type={
+										stock.regularMarketChangePercent > 0
+											? "increase"
+											: "decrease"
+									}
 								/>
-								{stock.changePercent.toFixed(2)}%
+								{stock.regularMarketChangePercent.toFixed(2)}%
 							</Heading>
 						</Stat>
 
@@ -56,7 +66,10 @@ function StockView() {
 					</Box>
 					{accounts.isAuthenticated() && (
 						<Box flex="0.25" borderWidth="1px" borderRadius="md" p={5}>
-							<TransactionPane symbol={symbol as string} price={stock.price} />
+							<TransactionPane
+								symbol={symbol as string}
+								price={stock.regularMarketPrice}
+							/>
 						</Box>
 					)}
 				</Flex>

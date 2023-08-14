@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import PortfolioPreview from "../components/PortfolioPreview";
 import React from "react";
 import PositionsList from "../components/PositionsList";
@@ -10,6 +10,7 @@ export default function Dashboard() {
 			<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
 				<Box flex="0.75">
 					<PortfolioPreview />
+					<Spacer height={5} />
 					<Newsfeed />
 				</Box>
 				<Box flex="0.25" borderWidth="1px" borderRadius="md" p={5}>

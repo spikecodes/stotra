@@ -13,9 +13,8 @@ function PortfolioPreview() {
 
 	useEffect(() => {
 		accounts
-			.getPortfolioValue()
+			.getPortfolio()
 			.then(({ portfolioValue, portfolioPrevCloseValue }) => {
-				console.log(portfolioValue + " | " + portfolioPrevCloseValue);
 				setPortfolioValue(portfolioValue);
 				setPrevCloseValue(portfolioPrevCloseValue);
 			});
@@ -28,19 +27,21 @@ function PortfolioPreview() {
 					<Heading as="h2" size="xl">
 						{formatter.format(portfolioValue)}
 					</Heading>
-					<Heading
-						as="h2"
-						size="md"
-						color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
-					>
-						{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
-						{formatter.format(portfolioValue - prevCloseValue)} (
-						{(
-							100 *
-							((portfolioValue - prevCloseValue) / prevCloseValue)
-						).toFixed(5)}
-						%){" "}
-					</Heading>
+					{portfolioValue > 0 && (
+						<Heading
+							as="h2"
+							size="md"
+							color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
+						>
+							{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
+							{formatter.format(portfolioValue - prevCloseValue)} (
+							{(
+								100 *
+								((portfolioValue - prevCloseValue) / prevCloseValue)
+							).toFixed(5)}
+							%){" "}
+						</Heading>
+					)}
 				</>
 			) : (
 				<>
