@@ -1,21 +1,24 @@
-const User = require("../models/user.model");
+import { Request, Response } from "express";
+import User from "../models/user.model";
 
-const {
-	fetchStockData,
-	fetchHistoricalStockData,
-} = require("../utils/requests");
+import { fetchStockData, fetchHistoricalStockData } from "../utils/requests";
 
-exports.getInfo = async (req, res) => {
+const getInfo = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
 	const quote = await fetchStockData(symbol);
 	res.status(200).send(quote);
 };
 
-exports.getHistorical = async (req, res) => {
+const getHistorical = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
-	const period1 = req.query.period1;
+	const period1 = req.query.period1?.toString();
 	// const period2 = req.query.period2;
-	const interval = req.query.interval;
+	// Store interval as "1d" | "1wk" | "1mo"
+	const interval = req.query.interval?.toString() as
+		| "1d"
+		| "1wk"
+		| "1mo"
+		| undefined;
 
 	try {
 		const historicalData = await fetchHistoricalStockData(
@@ -24,9 +27,11 @@ exports.getHistorical = async (req, res) => {
 			interval,
 		);
 
-		const jsonData = historicalData.map((data) => {
-			return [data.date.getTime(), data.close];
-		});
+		const jsonData = historicalData.map(
+			(data: { date: { getTime: () => any }; close: any }) => {
+				return [data.date.getTime(), data.close];
+			},
+		);
 
 		res.send(jsonData);
 	} catch (error) {
@@ -35,7 +40,7 @@ exports.getHistorical = async (req, res) => {
 	}
 };
 
-exports.buyStock = async (req, res) => {
+const buyStock = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
 	const quantity = req.body.quantity;
 
@@ -43,12 +48,13 @@ exports.buyStock = async (req, res) => {
 		const data = await fetchStockData(symbol);
 		const price = data.regularMarketPrice;
 
-		const user = await User.findById(req.userId);
+		let user = await User.findById(req.body.userId);
+		user = user!;
 
-		if (user.cash < price * quantity) {
+		if (user.cash! < price * quantity) {
 			res.status(400).send({ message: "Not enough cash" });
 		} else {
-			user.cash -= price * quantity;
+			user.cash! -= price * quantity;
 			user.ledger.push({
 				symbol: symbol,
 				price,
@@ -81,14 +87,16 @@ exports.buyStock = async (req, res) => {
 	}
 };
 
-exports.sellStock = async (req, res) => {
+const sellStock = async (req: Request, res: Response) => {
 	const symbol = req.params.symbol;
 	var quantity = req.body.quantity;
 
 	try {
-		const { price } = await fetchStockData(symbol);
+		const data = await fetchStockData(symbol);
+		const price = data.regularMarketPrice;
 
-		const user = await User.findById(req.userId);
+		let user = await User.findById(req.body.userId);
+		user = user!;
 
 		// Check if user has enough shares to sell across all positions
 		let quantityOwned = 0;
@@ -103,7 +111,7 @@ exports.sellStock = async (req, res) => {
 			return;
 		}
 
-		user.cash += price * quantity;
+		user.cash! += price * quantity;
 		user.ledger.push({
 			symbol: symbol,
 			price: price,
@@ -142,3 +150,5 @@ exports.sellStock = async (req, res) => {
 		res.status(500).send("Error fetching " + symbol + " stock data:" + error);
 	}
 };
+
+export default { getInfo, getHistorical, buyStock, sellStock };

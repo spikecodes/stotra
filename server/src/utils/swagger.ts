@@ -1,8 +1,8 @@
-const { Express, Request, Response } = require("express");
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
-const swaggerAutogen = require("swagger-autogen")({ openapi: "3.0.0" });
-const { version } = require("../../package.json");
+import { Express, Request, Response } from "express";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import swaggerAutogen from "swagger-autogen";
+import { version } from "../../package.json";
 
 // const options = {
 // 	definition: {
@@ -30,9 +30,9 @@ const { version } = require("../../package.json");
 // };
 
 const outputFile = "./swagger-output.json";
-const endpointsFiles = ["./routes.js"];
+const endpointsFiles = ["./routes"];
 
-function swaggerDocs(app, port) {
+function swaggerDocs(app: Express, port: number) {
 	const doc = {
 		info: {
 			title: "Stock Trading Simulator API",
@@ -49,7 +49,11 @@ function swaggerDocs(app, port) {
 		},
 	};
 
-	swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+	const autogen = swaggerAutogen({ openapi: "3.0.0" })(
+		outputFile,
+		endpointsFiles,
+		doc,
+	).then(() => {
 		const swaggerDocument = require("." + outputFile);
 		app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 		console.log(`Swagger docs available at http://localhost:${port}/docs`);

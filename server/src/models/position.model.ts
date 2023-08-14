@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const Position = new Schema({
@@ -24,4 +24,4 @@ const Position = new Schema({
 	},
 });
 
-module.exports = Position;
+export default Position;

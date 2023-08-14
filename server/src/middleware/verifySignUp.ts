@@ -1,6 +1,11 @@
-const User = require("../models/user.model");
+import { NextFunction, Request, Response } from "express";
+import User from "../models/user.model";
 
-checkDuplicateUsername = (req, res, next) => {
+const checkDuplicateUsername = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	// Username
 	User.findOne({
 		username: req.body.username,
@@ -22,4 +27,4 @@ const verifySignUp = {
 	checkDuplicateUsername,
 };
 
-module.exports = verifySignUp;
+export default verifySignUp;

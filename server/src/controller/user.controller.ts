@@ -1,37 +1,35 @@
-const yahooFinance = require("yahoo-finance2").default;
-const Position = require("../models/position.model");
-const User = require("../models/user.model");
-const {
-	fetchStockData,
-	fetchHistoricalStockData,
-} = require("../utils/requests");
+import Position from "../models/position.model";
+import User from "../models/user.model";
+import { Request, Response } from "express";
+import { fetchStockData } from "../utils/requests";
 
-exports.allAccess = (req, res) => {
+const allAccess = (req: Request, res: Response) => {
 	res.status(200).send("Public Content.");
 };
 
-exports.getLedger = (req, res) => {
-	User.findById(req.userId)
+const getLedger = (req: Request, res: Response) => {
+	User.findById(req.body.userId)
 		.then((user) => {
-			res.status(200).send({ ledger: user.ledger });
+			res.status(200).send({ ledger: user!.ledger });
 		})
-		.catch((err) => {
+		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
 		});
 };
 
-exports.getHoldings = (req, res) => {
-	User.findById(req.userId)
+const getHoldings = (req: Request, res: Response) => {
+	User.findById(req.body.userId)
 		.then((user) => {
-			res.status(200).send({ positions: user.positions, cash: user.cash });
+			res.status(200).send({ positions: user!.positions, cash: user!.cash });
 		})
-		.catch((err) => {
+		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
 		});
 };
 
-exports.getPortfolio = async (req, res) => {
-	let user = await User.findById(req.userId);
+const getPortfolio = async (req: Request, res: Response) => {
+	let user = await User.findById(req.body.userId);
+	user = user!;
 	if (!user) {
 		res.status(500).send({ message: "User not found" });
 	}
@@ -40,21 +38,27 @@ exports.getPortfolio = async (req, res) => {
 	let portfolioPrevCloseValue = 0;
 
 	// Create array of how many of each symbol (no duplicates)
-	let positionsNoDupes = user.positions.reduce((acc, position) => {
-		if (!acc[position.symbol]) {
-			acc[position.symbol] = position.quantity;
-		} else {
-			acc[position.symbol] += position.quantity;
-		}
-		return acc;
-	}, {});
+	let positionsNoDupes = user.positions.reduce(
+		(
+			acc: { [x: string]: any },
+			position: { symbol: string | number; quantity: any },
+		) => {
+			if (!acc[position.symbol]) {
+				acc[position.symbol] = position.quantity;
+			} else {
+				acc[position.symbol] += position.quantity;
+			}
+			return acc;
+		},
+		{},
+	);
 
 	// Loop through each symbol and fetch current price
 	Promise.all(
 		Object.keys(positionsNoDupes).map((symbol) => fetchStockData(symbol)),
 	)
 		.then((values) => {
-			var listOfPositions = [];
+			var listOfPositions: any[] = [];
 
 			// Sum up the value of all positions
 			values.map((value, i) => {
@@ -65,9 +69,9 @@ exports.getPortfolio = async (req, res) => {
 					value.regularMarketPreviousClose * Object.values(positionsNoDupes)[i];
 
 				// Add each user.positions to listOfPositions
-				user.positions.forEach((position) => {
+				user!.positions.forEach((position) => {
 					listOfPositions.push({
-						...position._doc,
+						...position,
 						regularMarketPrice: value.regularMarketPrice,
 						regularMarketChangePercent: value.regularMarketChangePercent,
 						regularMarketPreviousClose: value.regularMarketPreviousClose,
@@ -86,3 +90,5 @@ exports.getPortfolio = async (req, res) => {
 			res.status(500).send({ message: err.message });
 		});
 };
+
+export default { allAccess, getLedger, getHoldings, getPortfolio };

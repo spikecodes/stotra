@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
 
 require("dotenv").config();
@@ -15,7 +15,7 @@ const uri =
 	process.env.STOTA_MONGODB_CLUSTER +
 	"/?authMechanism=DEFAULT&retryWrites=true&w=majority";
 
-mongoose.connect(uri, { useNewUrlParser: true });
+mongoose.connect(uri);
 
 const db = mongoose.connection;
 

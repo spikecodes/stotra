@@ -1,11 +1,13 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const jwtSecret = process.env.STOTA_JWT_SECRET;
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 
-const User = require("../models/user.model");
+import User from "../models/user.model";
 
-exports.signup = (req, res) => {
+const signup = (req: Request, res: Response) => {
 	if (!req.body.username || !req.body.password) {
 		res.status(400).send({ message: "Content can not be empty!" });
 		return;
@@ -21,28 +23,28 @@ exports.signup = (req, res) => {
 
 	user
 		.save()
-		.then((user) => {
+		.then((user: { save: () => Promise<any> }) => {
 			if (user) {
 				user
 					.save()
-					.then((user) => {
+					.then((user: any) => {
 						if (user) {
 							res.send({ message: "User was registered successfully!" });
 						}
 					})
-					.catch((err) => {
+					.catch((err: any) => {
 						if (err) {
 							res.status(500).send({ message: err });
 						}
 					});
 			}
 		})
-		.catch((err) => {
+		.catch((err: any) => {
 			res.status(500).send({ message: err });
 		});
 };
 
-exports.login = (req, res) => {
+const login = (req: Request, res: Response) => {
 	User.findOne({
 		username: req.body.username,
 	})
@@ -63,7 +65,7 @@ exports.login = (req, res) => {
 				});
 			}
 
-			const token = jwt.sign({ id: user.id }, jwtSecret, {
+			const token = jwt.sign({ id: user.id }, jwtSecret!, {
 				algorithm: "HS256",
 				allowInsecureKeySizes: true,
 				expiresIn: 86400, // 24 hours
@@ -74,7 +76,9 @@ exports.login = (req, res) => {
 				accessToken: token,
 			});
 		})
-		.catch((err) => {
+		.catch((err: any) => {
 			res.status(500).send({ message: err });
 		});
 };
+
+export default { signup, login };

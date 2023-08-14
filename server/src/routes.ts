@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { verifySignUp, authJwt } = require("./middleware");
-const authController = require("./controller/auth.controller");
-const userController = require("./controller/user.controller");
-const stocksController = require("./controller/stocks.controller");
+import { verifySignUp, authJwt } from "./middleware";
+import authController from "./controller/auth.controller";
+import userController from "./controller/user.controller";
+import stocksController from "./controller/stocks.controller";
 
 // Auth routes
 /**

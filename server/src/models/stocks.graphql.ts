@@ -1,9 +1,9 @@
-const {
+import {
 	GraphQLSchema,
 	GraphQLObjectType,
 	GraphQLString,
 	GraphQLFloat,
-} = require("graphql");
+} from "graphql";
 
 /**
  * Construct a GraphQL schema and define the necessary resolvers.
@@ -34,4 +34,4 @@ const schema = new GraphQLSchema({
 	}),
 });
 
-module.exports = schema;
+export default schema;

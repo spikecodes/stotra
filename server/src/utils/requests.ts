@@ -1,8 +1,8 @@
-const yahooFinance = require("yahoo-finance2").default;
-const Cache = require("node-cache");
+import yahooFinance from "yahoo-finance2";
+import Cache from "node-cache";
 const stockCache = new Cache({ stdTTL: 30 }); // 30 seconds
 
-exports.fetchStockData = async (symbol) => {
+export const fetchStockData = async (symbol: string): Promise<any> => {
 	const cacheKey = symbol + "-quote";
 
 	try {
@@ -17,6 +17,7 @@ exports.fetchStockData = async (symbol) => {
 					"regularMarketPreviousClose",
 				],
 			});
+
 			const {
 				regularMarketPrice,
 				regularMarketChangePercent,
@@ -32,6 +33,8 @@ exports.fetchStockData = async (symbol) => {
 				regularMarketChangePercent,
 			};
 
+			console.log("stockData", stockData);
+
 			stockCache.set(cacheKey, stockData);
 			return stockData;
 		}
@@ -41,11 +44,11 @@ exports.fetchStockData = async (symbol) => {
 	}
 };
 
-exports.fetchHistoricalStockData = async (
-	symbol,
-	period1 = "2015-01-01",
-	interval = "1d",
-) => {
+export const fetchHistoricalStockData = async (
+	symbol: string,
+	period1: string = "2015-01-01",
+	interval: "1d" | "1wk" | "1mo" = "1d",
+): Promise<any> => {
 	const cacheKey = symbol + "-historical-" + period1 + "-" + interval;
 
 	try {

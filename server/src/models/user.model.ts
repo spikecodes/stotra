@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const Position = require("./position.model");
-const Transaction = require("./transaction.model");
+import mongoose from "mongoose";
+import Transaction from "./transaction.model";
+import Position from "./position.model";
 
 const User = mongoose.model(
 	"User",
@@ -23,4 +23,4 @@ const User = mongoose.model(
 	}),
 );
 
-module.exports = User;
+export default User;

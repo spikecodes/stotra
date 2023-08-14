@@ -1,11 +1,12 @@
-const path = require("path");
 const morgan = require("morgan"); //import morgan
 const { log } = require("mercedlogger"); // import mercedlogger's log function
 const cors = require("cors");
 const rateLimit = require("express-rate-limit").rateLimit;
 const { createHandler } = require("graphql-http/lib/use/express");
-const express = require("express");
+import express, { Express, Request, Response } from "express";
 const app = express();
+import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = process.env.PORT || 3010;
 
