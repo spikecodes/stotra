@@ -33,7 +33,7 @@ function PortfolioPreview() {
 							{formatter.format(portfolioValue)}
 						</Heading>
 					)}
-					{portfolioValue > 0 && (
+					{portfolioValue > 0 ? (
 						<Heading
 							as="h2"
 							size="md"
@@ -46,6 +46,10 @@ function PortfolioPreview() {
 								((portfolioValue - prevCloseValue) / prevCloseValue)
 							).toFixed(3)}
 							%){" "}
+						</Heading>
+					) : (
+						<Heading as="h2" size="md" fontWeight="normal">
+							Make some trades to get started!
 						</Heading>
 					)}
 				</>
