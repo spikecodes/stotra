@@ -50,6 +50,7 @@ export default function StockChart(props: { symbol: string }) {
 		},
 		chart: {
 			height: 600,
+			borderRadius: 10,
 			// styledMode: true,
 		},
 		credits: {

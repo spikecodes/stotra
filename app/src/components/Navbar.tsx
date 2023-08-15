@@ -16,7 +16,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import auth from "../accounts";
 import { ChevronDownIcon, SunIcon } from "@chakra-ui/icons";
-import SearchBar from "./SearchBar";
+import SearchBox from "./SearchBox";
 
 export default function Navbar() {
 	const location = useLocation();
@@ -53,7 +53,7 @@ export default function Navbar() {
 			</Flex>
 
 			{/* Search */}
-			<SearchBar />
+			<SearchBox />
 
 			{/* Account */}
 			<HStack spacing="2">

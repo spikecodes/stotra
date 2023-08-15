@@ -12,17 +12,24 @@ import {
 	Text,
 	Flex,
 	useColorModeValue,
+	InputLeftElement,
+	InputGroup,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { SearchIcon } from "@chakra-ui/icons";
 
 interface SearchResult {
 	symbol: string;
 	longname: string;
 }
 
-function SearchBar() {
+function SearchBox() {
+	const initialFocusRef =
+		useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
 	const navigate = useNavigate();
+
+	const selectedBgColor = useColorModeValue("gray.100", "gray.800");
 
 	const { isOpen, onToggle } = useDisclosure();
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -67,9 +74,6 @@ function SearchBar() {
 		return () => clearTimeout(searchForStock);
 	}, [query]);
 
-	const initialFocusRef =
-		useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
-
 	return (
 		<Popover
 			initialFocusRef={initialFocusRef}
@@ -78,15 +82,19 @@ function SearchBar() {
 			returnFocusOnClose={false}
 		>
 			<PopoverTrigger>
-				<Input
-					placeholder="Search"
-					w="auto"
-					ref={initialFocusRef}
-					onBlur={onToggle}
-					onFocus={onToggle}
-					onKeyDown={onKeyDown}
-					onChange={(e) => setQuery(e.target.value)}
-				/>
+				<InputGroup w="auto">
+					<InputLeftElement>
+						<SearchIcon />
+					</InputLeftElement>
+					<Input
+						placeholder="Search (ex. AAPL)"
+						ref={initialFocusRef}
+						onBlur={onToggle}
+						onFocus={onToggle}
+						onKeyDown={onKeyDown}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
+				</InputGroup>
 			</PopoverTrigger>
 			{results != null && (
 				<PopoverContent>
@@ -102,11 +110,7 @@ function SearchBar() {
 											key={stock.symbol}
 											width="100%"
 											height={7}
-											bg={
-												selectedIndex === i
-													? useColorModeValue("gray.100", "gray.800")
-													: ""
-											}
+											bg={selectedIndex === i ? selectedBgColor : ""}
 										>
 											<Link to={`/stocks/${stock.symbol}`}>
 												<Flex gap={1}>
@@ -143,4 +147,4 @@ function SearchBar() {
 	);
 }
 
-export default SearchBar;
+export default SearchBox;
