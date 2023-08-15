@@ -1,10 +1,20 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Stat, StatArrow, Heading, Spacer, Flex, Box } from "@chakra-ui/react";
+import {
+	Stat,
+	StatArrow,
+	Heading,
+	Spacer,
+	Flex,
+	Box,
+	Button,
+} from "@chakra-ui/react";
 import axios from "axios";
 import StockChart from "../components/StockChart";
 import TransactionPane from "../components/TransactionPane";
 import accounts from "../accounts";
+import Newsfeed from "../components/Newsfeed";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -14,6 +24,8 @@ const formatter = new Intl.NumberFormat("en-US", {
 function StockView() {
 	const { symbol } = useParams();
 	const location = useLocation();
+
+	const [onWatchlist, setOnWatchlist] = useState(false);
 
 	const [stock, setStock] = useReducer(
 		(state: any, newState: any) => ({ ...state, ...newState }),
@@ -26,6 +38,11 @@ function StockView() {
 	);
 
 	useEffect(() => {
+		// Check if stock is on watchlist
+		accounts.getWatchlist(true).then((res: any[]) => {
+			setOnWatchlist(res.some((stock) => stock.symbol === symbol));
+		});
+
 		axios
 			.get(`http://localhost:3010/api/stocks/${symbol}/info`)
 			.then((res) => {
@@ -41,24 +58,52 @@ function StockView() {
 			{stock.regularMarketPrice > 0 && (
 				<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
 					<Box flex={accounts.isAuthenticated() ? "0.75" : "1"}>
-						<Stat>
-							<Heading size="md" fontWeight="md">
-								{stock.longName}
-							</Heading>
-							<Heading size="xl">
-								{formatter.format(stock.regularMarketPrice)}
-							</Heading>
-							<Heading size="md">
-								<StatArrow
-									type={
-										stock.regularMarketChangePercent > 0
-											? "increase"
-											: "decrease"
-									}
-								/>
-								{stock.regularMarketChangePercent.toFixed(2)}%
-							</Heading>
-						</Stat>
+						<Flex justifyContent={"space-between"}>
+							<Stat>
+								<Heading size="md" fontWeight="md">
+									{stock.longName}
+								</Heading>
+								<Heading size="xl">
+									{formatter.format(stock.regularMarketPrice)}
+								</Heading>
+								<Heading size="md">
+									<StatArrow
+										type={
+											stock.regularMarketChangePercent > 0
+												? "increase"
+												: "decrease"
+										}
+									/>
+									{stock.regularMarketChangePercent.toFixed(2)}%
+								</Heading>
+							</Stat>
+							{accounts.isAuthenticated() &&
+								(onWatchlist ? (
+									<Button
+										leftIcon={<MinusIcon />}
+										variant={"outline"}
+										onClick={() =>
+											accounts
+												.editWatchlist(symbol as string, "remove")
+												.then(() => setOnWatchlist(false))
+										}
+									>
+										Remove from Watchlist
+									</Button>
+								) : (
+									<Button
+										leftIcon={<AddIcon />}
+										variant={"outline"}
+										onClick={() =>
+											accounts
+												.editWatchlist(symbol as string, "add")
+												.then(() => setOnWatchlist(true))
+										}
+									>
+										Add to Watchlist
+									</Button>
+								))}
+						</Flex>
 
 						<Spacer height={5} />
 
@@ -74,6 +119,10 @@ function StockView() {
 					)}
 				</Flex>
 			)}
+			<Spacer height={5} />
+			<Heading size="md">{symbol as string} News</Heading>
+			<Spacer height={2} />
+			<Newsfeed symbol={symbol as string} />
 		</>
 	);
 }

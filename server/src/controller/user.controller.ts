@@ -9,7 +9,7 @@ const getLedger = (req: Request, res: Response) => {
 	*/
 	User.findById(req.body.userId)
 		.then((user) => {
-			res.status(200).send({ ledger: user!.ledger });
+			res.status(200).json({ ledger: user!.ledger });
 		})
 		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
@@ -22,7 +22,7 @@ const getHoldings = (req: Request, res: Response) => {
 	*/
 	User.findById(req.body.userId)
 		.then((user) => {
-			res.status(200).send({ positions: user!.positions, cash: user!.cash });
+			res.status(200).json({ positions: user!.positions, cash: user!.cash });
 		})
 		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
@@ -35,7 +35,7 @@ const getPortfolio = async (req: Request, res: Response) => {
 	*/
 	let user: IUser | null = await User.findById(req.body.userId).lean();
 	if (!user) {
-		res.status(500).send({ message: "User not found" });
+		res.status(500).json({ message: "User not found" });
 	}
 	user = user!;
 
@@ -81,7 +81,7 @@ const getPortfolio = async (req: Request, res: Response) => {
 				}
 			});
 
-			res.status(200).send({
+			res.status(200).json({
 				portfolioValue,
 				portfolioPrevCloseValue,
 				positions: listOfPositions,
@@ -98,7 +98,18 @@ const getWatchlist = (req: Request, res: Response) => {
 	*/
 	User.findById(req.body.userId)
 		.then((user) => {
-			res.status(200).send({ watchlist: user!.watchlist });
+			if (req.body.raw === "true") {
+				res.status(200).json({ watchlist: user!.watchlist });
+			} else {
+				// Get the current price of each stock in the watchlist
+				Promise.all(user!.watchlist.map((symbol) => fetchStockData(symbol)))
+					.then((values) => {
+						res.status(200).json({ watchlist: values });
+					})
+					.catch((err) => {
+						res.status(500).send({ message: err.message });
+					});
+			}
 		})
 		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
@@ -112,11 +123,11 @@ const addToWatchlist = (req: Request, res: Response) => {
 	User.findById(req.body.userId)
 		.then((user) => {
 			if (user!.watchlist.includes(req.params.symbol)) {
-				res.status(400).send({ message: "Already in watchlist" });
+				res.status(400).json({ message: "Already in watchlist" });
 			} else {
 				user!.watchlist.push(req.params.symbol);
 				user!.save();
-				res.status(200).send({ message: "Added to watchlist" });
+				res.status(200).json({ message: "Added to watchlist" });
 			}
 		})
 		.catch((err: { message: any }) => {
@@ -135,9 +146,9 @@ const removeFromWatchlist = (req: Request, res: Response) => {
 					(symbol) => symbol !== req.params.symbol,
 				);
 				user!.save();
-				res.status(200).send({ message: "Removed from watchlist" });
+				res.status(200).json({ message: "Removed from watchlist" });
 			} else {
-				res.status(400).send({ message: "Not in watchlist" });
+				res.status(400).json({ message: "Not in watchlist" });
 			}
 		})
 		.catch((err: { message: any }) => {

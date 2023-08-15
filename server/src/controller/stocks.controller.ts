@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
 
-import { fetchStockData, fetchHistoricalStockData } from "../utils/requests";
+import {
+	fetchStockData,
+	fetchHistoricalStockData,
+	searchStocks,
+} from "../utils/requests";
 import { ITransaction } from "../models/transaction.model";
 import { IPosition } from "../models/position.model";
 import yahooFinance from "yahoo-finance2";
@@ -188,32 +192,22 @@ const search = async (req: Request, res: Response) => {
 
 	if (!query) res.status(400).send({ message: "No query provided" });
 
-	const queryOptions = {
-		newsCount: 0,
-		enableFuzzyQuery: true,
-		enableNavLinks: false,
-		enableCb: false,
-		enableEnhancedTrivialQuery: false,
-	};
-
-	yahooFinance
-		.search(query, queryOptions)
-		.then((results) => {
-			let quotes = results.quotes.filter((quote) => {
-				return quote.quoteType && quote.quoteType === "EQUITY";
-			});
-			res.status(200).send(quotes);
+	searchStocks(query)
+		.then((quotes) => {
+			let stocksAndCurrencies = quotes.filter(
+				(quote: { quoteType: string }) => {
+					return (
+						quote.quoteType &&
+						quote.quoteType !== "FUTURE" &&
+						quote.quoteType !== "Option"
+					);
+				},
+			);
+			res.status(200).send(stocksAndCurrencies);
 		})
 		.catch((err) => {
-			if (err.result && Array.isArray(err.result.quotes)) {
-				let quotes = err.result.quotes.filter((quote: any) => {
-					return quote.quoteType && quote.quoteType === "EQUITY";
-				});
-				res.status(200).send(quotes);
-			} else {
-				console.error(err);
-				res.status(500).send({ message: err });
-			}
+			console.log(err);
+			res.status(500).send({ message: err });
 		});
 };
 

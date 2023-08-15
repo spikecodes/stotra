@@ -27,6 +27,7 @@ const userSchema = new Schema<IUser>({
 		unique: true,
 		trim: true,
 	},
+	watchlist: [String],
 	ledger: [TransactionSchema],
 	positions: [PositionSchema],
 	cash: Number,

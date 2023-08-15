@@ -55,7 +55,13 @@ function swaggerDocs(app: Express, port: number) {
 		doc,
 	).then(() => {
 		const swaggerDocument = require("." + outputFile);
-		app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+		app.use(
+			"/docs",
+			swaggerUi.serve,
+			swaggerUi.setup(swaggerDocument, {
+				swaggerOptions: { persistAuthorization: true },
+			}),
+		);
 		console.log(`Swagger docs available at http://localhost:${port}/docs`);
 	});
 }

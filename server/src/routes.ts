@@ -31,7 +31,7 @@ router.get("/api/user/leaderboard", leaderboardController.getLeaderboard);
 
 // User watchlist routes
 router.get(
-	"/api/user/watchlist/get",
+	"/api/user/watchlist",
 	[authJwt.verifyToken],
 	userController.getWatchlist,
 );

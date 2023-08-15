@@ -19,6 +19,7 @@ const signup = (req: Request, res: Response) => {
 	const user = new User({
 		username: req.body.username,
 		password: bcrypt.hashSync(req.body.password, 8),
+		watchlist: [],
 		ledger: [],
 		positions: [],
 		cash: 100_000,

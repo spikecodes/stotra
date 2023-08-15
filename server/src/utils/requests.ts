@@ -66,3 +66,27 @@ export const fetchHistoricalStockData = async (
 		return null;
 	}
 };
+
+export const searchStocks = async (query: string): Promise<any> => {
+	const queryOptions = {
+		newsCount: 0,
+		enableFuzzyQuery: true,
+		enableNavLinks: false,
+		enableCb: false,
+		enableEnhancedTrivialQuery: false,
+	};
+
+	return yahooFinance
+		.search(query, queryOptions)
+		.then((results) => {
+			return results.quotes;
+		})
+		.catch((err) => {
+			if (err.result && Array.isArray(err.result.quotes)) {
+				return err.result.quotes;
+			} else {
+				console.error(err);
+				throw new Error(err);
+			}
+		});
+};

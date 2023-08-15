@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import accounts from "../accounts";
-import { Position } from "../App";
 import {
 	Tag,
 	Text,
@@ -20,13 +19,21 @@ const format = new Intl.NumberFormat("en-US", {
 	currency: "USD",
 }).format;
 
-function PositionsList() {
+interface WatchlistItem {
+	symbol: string;
+	longName: string;
+	regularMarketPrice: number;
+	regularMarketPreviousClose: number;
+	regularMarketChangePercent: number;
+}
+
+function Watchlist() {
 	const [isLoading, setIsLoading] = useState(true);
-	const [positions, setPositions] = useState<Position[]>([]);
+	const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
 	useEffect(() => {
-		accounts.getPortfolio().then(({ positions }) => {
-			setPositions(positions);
+		accounts.getWatchlist(false).then((watchlist) => {
+			setWatchlist(watchlist as WatchlistItem[]);
 			setIsLoading(false);
 		});
 	}, []);
@@ -34,7 +41,7 @@ function PositionsList() {
 	return (
 		<Card>
 			<CardHeader>
-				<Heading size="md">My Portfolio</Heading>
+				<Heading size="md">Watchlist</Heading>
 			</CardHeader>
 
 			<CardBody pt="0">
@@ -42,57 +49,50 @@ function PositionsList() {
 					<Spinner size={"lg"} />
 				) : (
 					<Stack divider={<StackDivider />} spacing="4">
-						{positions.map((position) => (
+						{watchlist.map((stock, i) => (
 							<Flex
-								justifyItems="space-between"
 								direction={{ base: "column-reverse", md: "row" }}
 								gap={4}
-								key={position.purchaseDate.toString()}
+								key={i}
 								as={Link}
-								to={"/stocks/" + position.symbol}
+								to={"/stocks/" + stock.symbol}
 							>
-								<Stack flex="0.33">
+								<Stack flex="0.5">
 									<Heading size="xs" textTransform="uppercase">
-										{position.symbol}
+										{stock.symbol}
 									</Heading>
-									<Text fontSize="sm">{position.quantity} shares</Text>
-								</Stack>
-								<Stack flex="0.33">
-									<Heading
+									<Text
 										fontSize="sm"
-										color="gray.500"
-										textTransform="uppercase"
+										whiteSpace={"nowrap"}
+										overflow={"hidden"}
+										textOverflow={"ellipsis"}
 									>
-										Gain/Loss
-									</Heading>
-									<Text fontSize="sm">
-										{format(
-											(position.regularMarketPrice - position.purchasePrice) *
-												position.quantity,
-										)}
+										{stock.longName}
 									</Text>
 								</Stack>
-								<Stack flex="0.33">
+								<Stack flex="0.5" alignItems={"end"}>
 									<Heading size="xs" textTransform="uppercase">
 										<Text fontSize="sm">
-											{format(position.regularMarketPrice)}
+											{format(stock.regularMarketPrice)}
 										</Text>
 									</Heading>
 									<Tag
 										size="sm"
+										w={"fit-content"}
 										colorScheme={
-											position.regularMarketChangePercent > 0 ? "green" : "red"
+											stock.regularMarketChangePercent > 0 ? "green" : "red"
 										}
 									>
-										{position.regularMarketChangePercent > 0 ? "+" : ""}
-										{position.regularMarketChangePercent.toFixed(2)}%
+										{stock.regularMarketChangePercent > 0 ? "+" : ""}
+										{stock.regularMarketChangePercent.toFixed(2)}%
 									</Tag>
 								</Stack>
 							</Flex>
 						))}
-						{positions.length === 0 && (
+						{watchlist.length === 0 && (
 							<Text fontSize="sm">
-								You don't have any positions. Go make some trades!
+								Nothing on your watchlist. Search stocks and click "Add to
+								Waitlist"!
 							</Text>
 						)}
 					</Stack>
@@ -102,4 +102,4 @@ function PositionsList() {
 	);
 }
 
-export default PositionsList;
+export default Watchlist;

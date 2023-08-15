@@ -63,16 +63,37 @@ class Accounts {
 			});
 	}
 
-	getWatchlist(): Promise<string[]> {
+	getWatchlist(raw: boolean): Promise<any[]> {
 		return axios
 			.get("http://localhost:3010/api/user/watchlist", {
+				data: { raw },
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
-				return res.data;
+				return res.data.watchlist;
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
+			});
+	}
+
+	editWatchlist(symbol: string, operation: "add" | "remove"): Promise<string> {
+		return axios
+			.post(
+				"http://localhost:3010/api/user/watchlist/" + operation + "/" + symbol,
+				{},
+				{
+					headers: { Authorization: `Bearer ${this.getToken()}` },
+				},
+			)
+			.then((res) => {
+				return res.data.message;
+			})
+			.catch((err) => {
 				if (err.response) {
 					throw new Error(err.response.data.message);
 				} else {
@@ -98,7 +119,6 @@ class Accounts {
 				};
 			})
 			.catch((err) => {
-				console.log(err);
 				if (err.response) {
 					throw new Error(err.response.data.message);
 				} else {
@@ -116,7 +136,6 @@ class Accounts {
 				return res.data.cash;
 			})
 			.catch((err) => {
-				console.log(err);
 				if (err.response) {
 					throw new Error(err.response.data.message);
 				} else {
@@ -141,8 +160,11 @@ class Accounts {
 				}, 0);
 			})
 			.catch((err) => {
-				console.log(err);
-				throw new Error(err.response.data.message);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
 			});
 	}
 
@@ -182,8 +204,11 @@ class Accounts {
 				}
 			})
 			.catch((err) => {
-				console.log(err);
-				throw new Error(err.response.data.message);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
 			});
 	}
 

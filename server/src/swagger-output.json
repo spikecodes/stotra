@@ -183,7 +183,7 @@
         }
       }
     },
-    "/api/user/watchlist/get": {
+    "/api/user/watchlist": {
       "get": {
         "tags": [
           "User Watchlist"

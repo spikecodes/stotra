@@ -3,11 +3,9 @@ import {
 	Card,
 	CardHeader,
 	CardBody,
-	CardFooter,
 	Text,
 	SimpleGrid,
 	Heading,
-	Divider,
 	Stack,
 	Link,
 } from "@chakra-ui/react";
@@ -22,38 +20,26 @@ interface NewsItem {
 	sourceUrl: string;
 }
 
-// convert ISO 8601 formatted date to human readable like "1h ago" or "4d ago"
 function timeSince(date: string) {
-	var seconds = Math.floor(
-		(new Date().getTime() - new Date(date).getTime()) / 1000,
-	);
+	const now = Date.now();
+	const seconds = Math.floor((now - new Date(date).getTime()) / 1000);
+	const intervals = [
+		{ name: "years", seconds: 31536000 },
+		{ name: "months", seconds: 2592000 },
+		{ name: "days", seconds: 86400 },
+		{ name: "hours", seconds: 3600 },
+		{ name: "minutes", seconds: 60 },
+		{ name: "seconds", seconds: 1 },
+	];
 
-	var interval = seconds / 31536000;
-	if (interval > 1) {
-		return Math.floor(interval) + " years";
+	for (const interval of intervals) {
+		const value = Math.floor(seconds / interval.seconds);
+		if (value >= 1) {
+			return `${value} ${interval.name} ago`;
+		}
 	}
 
-	interval = seconds / 2592000;
-	if (interval > 1) {
-		return Math.floor(interval) + " months";
-	}
-
-	interval = seconds / 86400;
-	if (interval > 1) {
-		return Math.floor(interval) + " days";
-	}
-
-	interval = seconds / 3600;
-	if (interval > 1) {
-		return Math.floor(interval) + " hours";
-	}
-
-	interval = seconds / 60;
-	if (interval > 1) {
-		return Math.floor(interval) + " minutes";
-	}
-
-	return Math.floor(seconds) + " seconds";
+	return "Just now";
 }
 
 function Newsfeed(props: { symbol: string }) {
@@ -63,7 +49,7 @@ function Newsfeed(props: { symbol: string }) {
 		axios
 			.get("http://localhost:3010/api/news/" + (props.symbol || ""))
 			.then((res) => {
-				setNews(res.data);
+				setNews(res.data.slice(0, 9));
 			});
 	}, []);
 
@@ -71,17 +57,19 @@ function Newsfeed(props: { symbol: string }) {
 		<>
 			<SimpleGrid
 				spacing={1}
-				templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+				templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+				gap={5}
 			>
 				{news.map((item) => (
 					<Link
 						href={item.sourceUrl}
+						key={item.title}
 						isExternal
 						_hover={{ textDecoration: "none" }}
 					>
-						<Card maxW="sm" h="xs">
+						<Card maxW="sm" h={300}>
 							<CardHeader fontSize="sm" pb={2} display="flex" gap="2">
-								<Text>{timeSince(item.publishedAt)} ago </Text>
+								<Text>{timeSince(item.publishedAt)}</Text>
 								<Text color="teal">{item.source}</Text>
 							</CardHeader>
 							<CardBody pt={0}>
