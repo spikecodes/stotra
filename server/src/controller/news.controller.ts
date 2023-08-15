@@ -11,6 +11,9 @@ import NodeCache from "node-cache";
 const cache = new NodeCache({ stdTTL: 5 * 60 });
 
 const getNews = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['News']
+	*/
 	const symbol = req.params.symbol || "";
 	const symbolQuery = symbol !== "" ? "symbols:" + symbol + " AND " : "";
 

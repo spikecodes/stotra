@@ -3,11 +3,10 @@ import User, { IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import { fetchStockData } from "../utils/requests";
 
-const allAccess = (req: Request, res: Response) => {
-	res.status(200).send("Public Content.");
-};
-
 const getLedger = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Data']
+	*/
 	User.findById(req.body.userId)
 		.then((user) => {
 			res.status(200).send({ ledger: user!.ledger });
@@ -18,6 +17,9 @@ const getLedger = (req: Request, res: Response) => {
 };
 
 const getHoldings = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Data']
+	*/
 	User.findById(req.body.userId)
 		.then((user) => {
 			res.status(200).send({ positions: user!.positions, cash: user!.cash });
@@ -28,6 +30,9 @@ const getHoldings = (req: Request, res: Response) => {
 };
 
 const getPortfolio = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Data']
+	*/
 	let user: IUser | null = await User.findById(req.body.userId).lean();
 	if (!user) {
 		res.status(500).send({ message: "User not found" });
@@ -87,62 +92,65 @@ const getPortfolio = async (req: Request, res: Response) => {
 		});
 };
 
-const getLeaderboard = (req: Request, res: Response) => {
-	getLeaderboardTopN(5)
-		.then((users) => {
-			res.status(200).send({ users });
+const getWatchlist = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Watchlist']
+	*/
+	User.findById(req.body.userId)
+		.then((user) => {
+			res.status(200).send({ watchlist: user!.watchlist });
 		})
 		.catch((err: { message: any }) => {
 			res.status(500).send({ message: err.message });
 		});
 };
 
-async function getLeaderboardTopN(
-	n: number,
-): Promise<{ username: string; value: number }[]> {
-	// 1. Collate all unique stock symbols from users' positions using Aggregation
-	const symbolsAggregation = await User.aggregate([
-		{ $unwind: "$positions" },
-		{ $group: { _id: "$positions.symbol" } },
-	]);
-	const uniqueSymbols: string[] = symbolsAggregation.map((entry) => entry._id);
-
-	// 2. Fetch stock prices in a single batch request
-	const stockDataPoints = await Promise.all(
-		Array.from(uniqueSymbols).map((symbol) => fetchStockData(symbol)),
-	);
-
-	const stockPrices: { [key: string]: number } = {};
-	stockDataPoints.forEach((dataPoint) => {
-		stockPrices[dataPoint.symbol] = dataPoint.regularMarketPrice;
-	});
-
-	// 3. Compute portfolio values for each user using projection
-	const usersWithPositions = await User.find(
-		{},
-		{ username: 1, positions: 1, cash: 1 },
-	);
-
-	const userValues: { username: string; value: number }[] = [];
-	usersWithPositions.forEach((user) => {
-		let totalValue = user.cash;
-		user.positions.forEach((position) => {
-			const currentPrice = stockPrices[position.symbol];
-			totalValue += currentPrice * position.quantity;
+const addToWatchlist = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Watchlist']
+	*/
+	User.findById(req.body.userId)
+		.then((user) => {
+			if (user!.watchlist.includes(req.params.symbol)) {
+				res.status(400).send({ message: "Already in watchlist" });
+			} else {
+				user!.watchlist.push(req.params.symbol);
+				user!.save();
+				res.status(200).send({ message: "Added to watchlist" });
+			}
+		})
+		.catch((err: { message: any }) => {
+			res.status(500).send({ message: err.message });
 		});
-		userValues.push({ username: user.username, value: totalValue });
-	});
+};
 
-	// 5. Sort and pick top N users
-	userValues.sort((a, b) => b.value - a.value);
-
-	return userValues;
-}
+const removeFromWatchlist = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['User Watchlist']
+	*/
+	User.findById(req.body.userId)
+		.then((user) => {
+			if (user!.watchlist.includes(req.params.symbol)) {
+				user!.watchlist = user!.watchlist.filter(
+					(symbol) => symbol !== req.params.symbol,
+				);
+				user!.save();
+				res.status(200).send({ message: "Removed from watchlist" });
+			} else {
+				res.status(400).send({ message: "Not in watchlist" });
+			}
+		})
+		.catch((err: { message: any }) => {
+			res.status(500).send({ message: err.message });
+		});
+};
 
 export default {
-	allAccess,
 	getLedger,
 	getHoldings,
 	getPortfolio,
-	getLeaderboard,
+	// Watchlist routes
+	getWatchlist,
+	addToWatchlist,
+	removeFromWatchlist,
 };

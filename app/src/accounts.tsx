@@ -63,6 +63,24 @@ class Accounts {
 			});
 	}
 
+	getWatchlist(): Promise<string[]> {
+		return axios
+			.get("http://localhost:3010/api/user/watchlist", {
+				headers: { Authorization: `Bearer ${this.getToken()}` },
+			})
+			.then((res) => {
+				return res.data;
+			})
+			.catch((err) => {
+				console.log(err);
+				if (err.response) {
+					throw new Error(err.response.data.message);
+				} else {
+					throw new Error(err as string);
+				}
+			});
+	}
+
 	getPortfolio(): Promise<{
 		portfolioValue: number;
 		portfolioPrevCloseValue: number;

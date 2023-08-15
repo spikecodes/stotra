@@ -8,6 +8,9 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 
 const signup = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Authentication']
+	*/
 	if (!req.body.username || !req.body.password) {
 		res.status(400).send({ message: "Content can not be empty!" });
 		return;
@@ -45,6 +48,9 @@ const signup = (req: Request, res: Response) => {
 };
 
 const login = (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Authentication']
+	*/
 	User.findOne({
 		username: req.body.username,
 	})

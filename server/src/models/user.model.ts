@@ -5,6 +5,7 @@ import { IPosition, PositionSchema } from "./position.model";
 export interface IUser extends Document {
 	username: string;
 	password: string;
+	watchlist: string[];
 	ledger: ITransaction[];
 	positions: IPosition[];
 	cash: number;

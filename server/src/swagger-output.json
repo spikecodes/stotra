@@ -13,6 +13,9 @@
   "paths": {
     "/api/auth/signup": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -46,6 +49,9 @@
     },
     "/api/auth/login": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -82,6 +88,9 @@
     },
     "/api/user/ledger": {
       "get": {
+        "tags": [
+          "User Data"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -106,6 +115,9 @@
     },
     "/api/user/holdings": {
       "get": {
+        "tags": [
+          "User Data"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -130,6 +142,9 @@
     },
     "/api/user/portfolio": {
       "get": {
+        "tags": [
+          "User Data"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -154,6 +169,9 @@
     },
     "/api/user/leaderboard": {
       "get": {
+        "tags": [
+          "Leaderboard"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -165,8 +183,146 @@
         }
       }
     },
+    "/api/user/watchlist/get": {
+      "get": {
+        "tags": [
+          "User Watchlist"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/watchlist/add/{symbol}": {
+      "post": {
+        "tags": [
+          "User Watchlist"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/watchlist/remove/{symbol}": {
+      "post": {
+        "tags": [
+          "User Watchlist"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/stocks/search/{query}": {
       "get": {
+        "tags": [
+          "Stock Data"
+        ],
         "description": "",
         "parameters": [
           {
@@ -193,6 +349,9 @@
     },
     "/api/stocks/{symbol}/info": {
       "get": {
+        "tags": [
+          "Stock Data"
+        ],
         "description": "",
         "parameters": [
           {
@@ -213,6 +372,9 @@
     },
     "/api/stocks/{symbol}/historical": {
       "get": {
+        "tags": [
+          "Stock Data"
+        ],
         "description": "",
         "parameters": [
           {
@@ -250,6 +412,9 @@
     },
     "/api/stocks/{symbol}/buy": {
       "post": {
+        "tags": [
+          "Stock Transaction"
+        ],
         "description": "",
         "parameters": [
           {
@@ -304,6 +469,9 @@
     },
     "/api/stocks/{symbol}/sell": {
       "post": {
+        "tags": [
+          "Stock Transaction"
+        ],
         "description": "",
         "parameters": [
           {
@@ -358,6 +526,9 @@
     },
     "/api/news": {
       "get": {
+        "tags": [
+          "News"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -371,6 +542,9 @@
     },
     "/api/news/{symbol}": {
       "get": {
+        "tags": [
+          "News"
+        ],
         "description": "",
         "parameters": [
           {

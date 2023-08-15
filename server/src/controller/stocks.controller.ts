@@ -7,12 +7,18 @@ import { IPosition } from "../models/position.model";
 import yahooFinance from "yahoo-finance2";
 
 const getInfo = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Stock Data']
+	*/
 	const symbol = req.params.symbol;
 	const quote = await fetchStockData(symbol);
 	res.status(200).send(quote);
 };
 
 const getHistorical = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Stock Data']
+	*/
 	const symbol = req.params.symbol;
 	const period1 = req.query.period1?.toString();
 	// const period2 = req.query.period2;
@@ -44,6 +50,9 @@ const getHistorical = async (req: Request, res: Response) => {
 };
 
 const buyStock = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Stock Transaction']
+	*/
 	const symbol = req.params.symbol;
 	const quantity = req.body.quantity;
 
@@ -100,6 +109,9 @@ const buyStock = async (req: Request, res: Response) => {
 };
 
 const sellStock = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Stock Transaction']
+	*/
 	const symbol = req.params.symbol;
 	var quantity = req.body.quantity;
 
@@ -169,6 +181,9 @@ const sellStock = async (req: Request, res: Response) => {
 };
 
 const search = async (req: Request, res: Response) => {
+	/* 
+	#swagger.tags = ['Stock Data']
+	*/
 	const { query } = req.params;
 
 	if (!query) res.status(400).send({ message: "No query provided" });
