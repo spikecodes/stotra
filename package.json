@@ -1,14 +1,17 @@
 {
-  "prettier": {
-    "useTabs": true,
-    "importOrder": [
-      "^components/(.*)$",
-      "^[./]"
-    ],
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true
-  },
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0"
-  }
+	"name": "stotra",
+	"version": "1.0.0",
+	"description": "Multiplayer stock trading simulator allowing real-time virtual trading of stocks, currencies, and cryptocurrencies",
+	"prettier": {
+		"useTabs": true,
+		"importOrder": [
+			"^components/(.*)$",
+			"^[./]"
+		],
+		"importOrderSeparation": true,
+		"importOrderSortSpecifiers": true
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^4.2.0"
+	}
 }

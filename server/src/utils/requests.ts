@@ -36,7 +36,31 @@ export const fetchStockData = async (symbol: string): Promise<any> => {
 			stockCache.set(cacheKey, stockData);
 			return stockData;
 		}
-	} catch (error) {
+	} catch (err: any) {
+		if (err.result && Array.isArray(err.result)) {
+			let quote = err.result[0];
+
+			const {
+				regularMarketPrice,
+				regularMarketChangePercent,
+				longName,
+				regularMarketPreviousClose,
+			} = quote;
+
+			const stockData = {
+				symbol,
+				longName,
+				regularMarketPrice,
+				regularMarketPreviousClose,
+				regularMarketChangePercent,
+			};
+
+			stockCache.set(cacheKey, stockData);
+			return stockData;
+		} else {
+			console.error(err);
+			throw new Error(err);
+		}
 		console.error("Error fetching " + symbol + " stock data:", error);
 		return null;
 	}

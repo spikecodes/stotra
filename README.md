@@ -1,8 +1,21 @@
-# React + Vite
+# Stotra
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Multiplayer stock trading simulator allowing real-time virtual trading of stocks, currencies, and cryptocurrencies
 
-Currently, two official plugins are available:
+## Author
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👤 **Spike**
+
+- Website: https://spike.codes
+- Twitter: [@spikecodes](https://twitter.com/spikecodes)
+- Github: [@spikecodes](https://github.com/spikecodes)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2023 [Spike](https://github.com/spikecodes).
+
+This project is [MIT License](https://github.com/spikecodes/stotra/blob/main/LICENSE) licensed.

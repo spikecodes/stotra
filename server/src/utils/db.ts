@@ -13,7 +13,7 @@ const uri =
 	password +
 	"@" +
 	process.env.STOTA_MONGODB_CLUSTER +
-	"/?authMechanism=DEFAULT&retryWrites=true&w=majority";
+	"/users?authMechanism=DEFAULT&retryWrites=true&w=majority";
 
 mongoose.connect(uri);
 
