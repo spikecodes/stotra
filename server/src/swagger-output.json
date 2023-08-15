@@ -152,6 +152,19 @@
         ]
       }
     },
+    "/api/user/leaderboard": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/stocks/search/{query}": {
       "get": {
         "description": "",

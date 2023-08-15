@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StockView from "./pages/StockView";
+import Leaderboard from "./pages/Leaderboard";
 
 export type Transaction = {
 	symbol: string;
@@ -49,6 +50,8 @@ function App() {
 						<Route path="/login" element={<Login />}></Route>
 
 						<Route path="/signup" element={<Signup />}></Route>
+
+						<Route path="/leaderboard" element={<Leaderboard />}></Route>
 
 						<Route path="/stocks/:symbol" element={<StockView />}></Route>
 

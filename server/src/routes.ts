@@ -47,6 +47,7 @@ router.get(
 	[authJwt.verifyToken],
 	userController.getPortfolio,
 );
+router.get("/api/user/leaderboard", userController.getLeaderboard);
 
 // Stocks routes
 router.get("/api/stocks/search/:query", stocksController.search);

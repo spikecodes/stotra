@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
 	Stat,
 	StatLabel,
@@ -16,7 +16,6 @@ import {
 	Td,
 	TableCaption,
 } from "@chakra-ui/react";
-import { LedgerContext } from "../App";
 
 function getPortfolioValue(ledger: any[]) {
 	return ledger.reduce(
@@ -29,14 +28,12 @@ function getPortfolioValue(ledger: any[]) {
 }
 
 export default function Portfolio() {
-	const { ledger } = useContext(LedgerContext);
-
 	return (
 		<Box className="Portfolio" borderWidth="1px" borderRadius="lg" p="5">
 			<StatGroup>
 				<Stat>
 					<StatLabel>Portfolio</StatLabel>
-					<StatNumber>${getPortfolioValue(ledger)}</StatNumber>
+					<StatNumber>(GET PORTFOLIO VALUE)</StatNumber>
 					<StatHelpText>
 						<StatArrow type="increase" />
 						23.36%

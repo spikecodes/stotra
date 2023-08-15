@@ -49,7 +49,6 @@ function SearchBar() {
 	};
 
 	React.useEffect(() => {
-		console.log(query);
 		if (query === "") {
 			setResults(null);
 			return;
