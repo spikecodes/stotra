@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import moment from "moment";
 import * as Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";

@@ -134,7 +134,7 @@ export default function Login() {
                     Remember me
                   </Checkbox>
                   <Link to="/forgot-password">
-                    <Text color="teal">Forgot password?</Text>
+                    <Text>Forgot password?</Text>
                   </Link>
                 </Stack> */}
 								<Button type="submit" onClick={handleSubmit}>

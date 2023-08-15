@@ -16,16 +16,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const availableStocks = [
-	{ symbol: "AAPL", name: "Apple Inc." },
-	{ symbol: "MSFT", name: "Microsoft Corporation" },
-	{ symbol: "AMZN", name: "Amazon.com, Inc." },
-	{ symbol: "GOOG", name: "Alphabet Inc." },
-	{ symbol: "META", name: "Meta Platforms Inc." },
-	{ symbol: "TSLA", name: "Tesla, Inc." },
-	{ symbol: "NFLX", name: "Netflix, Inc." },
-];
-
 interface SearchResult {
 	symbol: string;
 	longname: string;
@@ -120,8 +110,14 @@ function SearchBar() {
 											}
 										>
 											<Link to={`/stocks/${stock.symbol}`}>
-												<Flex>
-													<Text fontWeight="bold" flex="0.25">
+												<Flex gap={1}>
+													<Text
+														fontWeight="bold"
+														flex="0.25"
+														overflow="hidden"
+														textOverflow="ellipsis"
+														whiteSpace="nowrap"
+													>
 														{stock.symbol}
 													</Text>
 													<Text

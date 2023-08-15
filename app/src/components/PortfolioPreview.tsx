@@ -44,7 +44,7 @@ function PortfolioPreview() {
 							{(
 								100 *
 								((portfolioValue - prevCloseValue) / prevCloseValue)
-							).toFixed(5)}
+							).toFixed(3)}
 							%){" "}
 						</Heading>
 					)}

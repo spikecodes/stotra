@@ -10,6 +10,7 @@ import {
 	PopoverArrow,
 	IconButton,
 	useColorMode,
+	Flex,
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
@@ -38,10 +39,18 @@ export default function Navbar() {
 			justifyContent="space-between"
 			borderBottomRadius="md"
 		>
-			{/* Logo */}
-			<Link to="/">
-				<Text>Stotra</Text>
-			</Link>
+			{/* Logo and Page Libks */}
+			<Flex gap={5}>
+				<Link to="/">
+					<Text fontWeight="bold">Stotra</Text>
+				</Link>
+				<Link to="/">
+					<Text>Dashboard</Text>
+				</Link>
+				<Link to="/leaderboard">
+					<Text>Leaderboard</Text>
+				</Link>
+			</Flex>
 
 			{/* Search */}
 			<SearchBar />

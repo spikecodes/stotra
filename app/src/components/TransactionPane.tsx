@@ -126,7 +126,6 @@ function TransactionPane(props: { symbol: string; price: number }) {
 				<TabPanels>
 					<TabPanel>
 						<Button
-							colorScheme="teal"
 							size="lg"
 							width="100%"
 							onClick={() => submitTransaction(props.symbol!, shares, true)}
@@ -142,7 +141,6 @@ function TransactionPane(props: { symbol: string; price: number }) {
 					</TabPanel>
 					<TabPanel>
 						<Button
-							colorScheme="teal"
 							size="lg"
 							width="100%"
 							onClick={() => submitTransaction(props.symbol!, shares, false)}
