@@ -4,30 +4,9 @@ import { verifySignUp, authJwt } from "./middleware";
 import authController from "./controller/auth.controller";
 import userController from "./controller/user.controller";
 import stocksController from "./controller/stocks.controller";
+import newsController from "./controller/news.controller";
 
 // Auth routes
-/**
- * @openapi
- * /ice-cream:
- *   post:
- *     description: This is where you can give some background as to why this route is being created or perhaps reference a ticket number.
- *     tags:
- *       - Ice Cream
- *     summary: This should create a new ice cream.
- *     consumes:
- *       - application/json
- *     parameters:
- *       - name: body
- *       in: body
- *       schema:
- *         type: object
- *         properties:
- *           flavor:
- *           type: string
- *     responses:
- *       200:
- *         description: Receive back flavor and flavor Id.
- */
 router.post(
 	"/api/auth/signup",
 	[verifySignUp.checkDuplicateUsername],
@@ -65,5 +44,9 @@ router.post(
 	[authJwt.verifyToken],
 	stocksController.sellStock,
 );
+
+// News routes
+router.get("/api/news", newsController.getNews);
+router.get("/api/news/:symbol", newsController.getNews);
 
 module.exports = router;

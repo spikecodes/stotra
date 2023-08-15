@@ -169,7 +169,7 @@ const sellStock = async (req: Request, res: Response) => {
 };
 
 const search = async (req: Request, res: Response) => {
-	const query = req.params.query;
+	const { query } = req.params;
 
 	if (!query) res.status(400).send({ message: "No query provided" });
 
