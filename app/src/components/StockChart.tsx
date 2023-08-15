@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as Highcharts from "highcharts/highstock";
+import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
 
@@ -71,6 +72,7 @@ export default function StockChart(props: { symbol: string }) {
 
 	const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
+	highchartsAccessibility(Highcharts);
 	useEffect(() => {
 		// const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
 		// 	function () {

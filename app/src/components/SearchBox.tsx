@@ -15,7 +15,7 @@ import {
 	InputLeftElement,
 	InputGroup,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SearchIcon } from "@chakra-ui/icons";
 
@@ -43,6 +43,7 @@ function SearchBox() {
 		if (e.key === "Enter") {
 			// User pressed the enter key, redirect to the selected stock
 			navigate(`/stocks/${results![selectedIndex]!.symbol}`);
+			// Remove focus from the input
 			let input: HTMLInputElement = e.target! as HTMLInputElement;
 			input.blur();
 		} else if (e.key === "ArrowUp") {
@@ -73,6 +74,19 @@ function SearchBox() {
 
 		return () => clearTimeout(searchForStock);
 	}, [query]);
+
+	// Set searchbox to the current stock symbol when navigating to a stock page
+	const location = useLocation();
+	React.useEffect(() => {
+		const path = location.pathname;
+		// If current route is a stock page, set the searchbox to the stock symbol
+		if (path.startsWith("/stocks/")) {
+			const stockSymbol = path.split("/")[2];
+			initialFocusRef.current!.value = stockSymbol!;
+		} else {
+			initialFocusRef.current!.value = "";
+		}
+	}, [location]);
 
 	return (
 		<Popover
@@ -109,14 +123,16 @@ function SearchBox() {
 										<ListItem
 											key={stock.symbol}
 											width="100%"
-											height={7}
+											height="auto"
 											bg={selectedIndex === i ? selectedBgColor : ""}
+											borderRadius="md"
+											p={2}
 										>
 											<Link to={`/stocks/${stock.symbol}`}>
 												<Flex gap={1}>
 													<Text
 														fontWeight="bold"
-														flex="0.25"
+														flex="0.3"
 														overflow="hidden"
 														textOverflow="ellipsis"
 														whiteSpace="nowrap"
@@ -127,7 +143,7 @@ function SearchBox() {
 														overflow="hidden"
 														textOverflow="ellipsis"
 														whiteSpace="nowrap"
-														flex="0.75"
+														flex="0.7"
 													>
 														{stock.longname}
 													</Text>
