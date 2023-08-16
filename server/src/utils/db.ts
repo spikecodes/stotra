@@ -4,15 +4,15 @@ mongoose.Promise = global.Promise;
 require("dotenv").config();
 
 // Read password from dotenv file
-const password = process.env.STOTA_MONGODB_PASSWORD;
+const password = process.env.STOTRA_MONGODB_PASSWORD;
 
 const uri =
 	"mongodb+srv://" +
-	process.env.STOTA_MONGODB_USERNAME +
+	process.env.STOTRA_MONGODB_USERNAME +
 	":" +
 	password +
 	"@" +
-	process.env.STOTA_MONGODB_CLUSTER +
+	process.env.STOTRA_MONGODB_CLUSTER +
 	"/users?authMechanism=DEFAULT&retryWrites=true&w=majority";
 
 mongoose.connect(uri);

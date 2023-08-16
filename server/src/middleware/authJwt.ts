@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import dotenv from "dotenv";
 dotenv.config();
-const jwtSecret = process.env.STOTA_JWT_SECRET;
+const jwtSecret = process.env.STOTRA_JWT_SECRET;
 
 import jwt, { JwtPayload } from "jsonwebtoken";
 

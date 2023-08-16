@@ -3,6 +3,8 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import swaggerAutogen from "swagger-autogen";
 import { version } from "../../package.json";
+import dotenv from "dotenv";
+dotenv.config();
 
 // const options = {
 // 	definition: {
@@ -47,13 +49,15 @@ function swaggerDocs(app: Express, port: number) {
 				bearerFormat: "JWT",
 			},
 		},
+		servers: [
+			{ url: process.env.STOTRA_SERVER_URL || `http://localhost:${port}` },
+		],
 	};
 
-	const autogen = swaggerAutogen({ openapi: "3.0.0" })(
-		outputFile,
-		endpointsFiles,
-		doc,
-	).then(() => {
+	const autogen = swaggerAutogen({
+		openapi: "3.0.0",
+		servers: [{ url: "/x" }],
+	})(outputFile, endpointsFiles, doc).then(() => {
 		const swaggerDocument = require("." + outputFile);
 		app.use(
 			"/api/docs",

@@ -2,7 +2,7 @@ import yahooFinance from "yahoo-finance2";
 import { Request, Response } from "express";
 import { SearchOptions } from "yahoo-finance2/dist/esm/src/modules/search";
 const { SearchApi } = require("financial-news-api");
-const searchApi = SearchApi(process.env.STOTA_NEWSFILTER_API);
+const searchApi = SearchApi(process.env.STOTRA_NEWSFILTER_API);
 import dotenv from "dotenv";
 dotenv.config();
 

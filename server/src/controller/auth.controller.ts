@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-const jwtSecret = process.env.STOTA_JWT_SECRET;
+const jwtSecret = process.env.STOTRA_JWT_SECRET;
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
