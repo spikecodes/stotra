@@ -4,6 +4,8 @@
 
 ## Architecture
 
+The project hosting is powered by AWS (Amplify for the React frontend and Elastic Cloud Compute for the Express API)
+
 ![Architecture Diagram](./assets/architecture.png)
 
 ## Author

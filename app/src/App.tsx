@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "./components/Navbar";
-import Transaction from "./components/Transaction";
 import { Container, Box, Spacer } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";

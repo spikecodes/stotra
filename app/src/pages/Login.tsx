@@ -71,9 +71,11 @@ export default function Login() {
 
 	return (
 		<Flex align={"center"} justify={"center"}>
-			<Stack spacing={8} mx={"auto"} maxW={"lg"} px={6}>
+			<Stack spacing={8} mx={"auto"} maxW={"lg"} px={{ base: 0, md: 6 }}>
 				<Stack align={"center"}>
-					<Heading fontSize={"4xl"}>Sign in to your account</Heading>
+					<Heading fontSize={"4xl"} textAlign="center">
+						Sign in to your account
+					</Heading>
 					<HStack spacing="1">
 						<Text>Or</Text>
 						<Link as={RouterLink} to="/signup">
@@ -81,7 +83,7 @@ export default function Login() {
 						</Link>
 					</HStack>
 				</Stack>
-				<Box rounded={"lg"} boxShadow={"lg"} p={8}>
+				<Box rounded={"lg"} boxShadow={"lg"} p={8} pt={{ base: 4, md: 8 }}>
 					<form>
 						<Stack spacing={4}>
 							<FormControl id="username" isRequired>

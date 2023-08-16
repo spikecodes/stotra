@@ -9,7 +9,7 @@ import accounts from "../accounts";
 export default function Dashboard() {
 	return (
 		<Box className="Dashboard">
-			<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
+			<Flex direction={{ base: "column", md: "row" }} gap={5}>
 				<Box flex="0.75">
 					{accounts.isAuthenticated() ? (
 						<PortfolioPreview />
@@ -23,16 +23,12 @@ export default function Dashboard() {
 							</Text>
 						</>
 					)}
-					<Spacer height={10} />
-					<Heading size="md">Stock Market News</Heading>
-					<Spacer height={2} />
-					<Newsfeed symbol={""} />
 				</Box>
 				<Box
 					flex="0.25"
-					borderWidth="1px"
+					borderWidth={{ base: 0, md: 1 }}
 					borderRadius="md"
-					p={5}
+					p={{ base: 0, md: 3 }}
 					height={"fit-content"}
 				>
 					{accounts.isAuthenticated() ? (
@@ -50,6 +46,10 @@ export default function Dashboard() {
 					)}
 				</Box>
 			</Flex>
+			<Spacer height={10} />
+			<Heading size="md">Stock Market News</Heading>
+			<Spacer height={2} />
+			<Newsfeed symbol={""} />
 		</Box>
 	);
 }

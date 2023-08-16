@@ -74,32 +74,13 @@ export default function Signup() {
 
 	return (
 		<Flex align={"center"} justify={"center"}>
-			<Stack spacing={8} mx={"auto"} maxW={"lg"} px={6}>
+			<Stack spacing={8} mx={"auto"} maxW={"lg"} px={{ base: 0, md: 6 }}>
 				<Stack align={"center"}>
-					<Heading fontSize={"4xl"} textAlign={"center"}>
+					<Heading fontSize={"4xl"} textAlign="center">
 						Sign up
 					</Heading>
 				</Stack>
-				{status === "success" && (
-					<Alert status="success" borderRadius="md">
-						<AlertIcon />
-						<AlertTitle>Account created!</AlertTitle>
-						<AlertDescription display="flex">
-							Redirecting to
-							<Link as={RouterLink} to="/login" ml="1">
-								login
-							</Link>
-							...
-						</AlertDescription>
-					</Alert>
-				)}
-				{status !== "" && status !== "success" && (
-					<Alert status="error" borderRadius="md">
-						<AlertIcon />
-						{status}
-					</Alert>
-				)}
-				<Box rounded={"lg"} boxShadow={"lg"} p={8}>
+				<Box rounded={"lg"} boxShadow={"lg"} p={8} pt={{ base: 4, md: 8 }}>
 					<form>
 						<Stack spacing={4}>
 							<FormControl id="username" isRequired>

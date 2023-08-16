@@ -50,13 +50,7 @@ function Watchlist() {
 				) : (
 					<Stack divider={<StackDivider />} spacing="4">
 						{watchlist.map((stock, i) => (
-							<Flex
-								direction={{ base: "column-reverse", md: "row" }}
-								gap={4}
-								key={i}
-								as={Link}
-								to={"/stocks/" + stock.symbol}
-							>
+							<Flex gap={4} key={i} as={Link} to={"/stocks/" + stock.symbol}>
 								<Stack flex="0.5">
 									<Heading size="xs" textTransform="uppercase">
 										{stock.symbol}

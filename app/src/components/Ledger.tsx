@@ -12,7 +12,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import StockCard from "./StockCard";
 
 export default function Ledger() {
-	const [ledger, setLedger] = useState([]);
+	const [ledger] = useState([]);
 
 	return (
 		<Box className="Ledger">

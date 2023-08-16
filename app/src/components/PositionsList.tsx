@@ -45,7 +45,6 @@ function PositionsList() {
 						{positions.map((position) => (
 							<Flex
 								justifyItems="space-between"
-								direction={{ base: "column-reverse", md: "row" }}
 								gap={4}
 								key={position.purchaseDate.toString()}
 								as={Link}
@@ -55,7 +54,10 @@ function PositionsList() {
 									<Heading size="xs" textTransform="uppercase">
 										{position.symbol}
 									</Heading>
-									<Text fontSize="sm">{position.quantity} shares</Text>
+									<Text fontSize="sm">
+										{position.quantity} share
+										{position.quantity === 1 ? "" : "s"}
+									</Text>
 								</Stack>
 								<Stack flex="0.33">
 									<Heading
@@ -72,7 +74,7 @@ function PositionsList() {
 										)}
 									</Text>
 								</Stack>
-								<Stack flex="0.33">
+								<Stack flex="0.33" alignItems={"end"}>
 									<Heading size="xs" textTransform="uppercase">
 										<Text fontSize="sm">
 											{format(position.regularMarketPrice)}

@@ -29,21 +29,29 @@ function Leaderboard() {
 			<Table variant="simple" colorScheme="gray">
 				<Thead>
 					<Tr>
-						<Th>Rank</Th>
-						<Th>Username</Th>
-						<Th>Portfolio Value</Th>
+						<Th p={{ base: 2, md: 4 }}>Rank</Th>
+						<Th p={{ base: 2, md: 4 }}>Username</Th>
+						<Th p={{ base: 2, md: 4 }}>Portfolio Value</Th>
 					</Tr>
 				</Thead>
 				<Tbody>
 					{leaderboard.map((user, index) => (
 						<Tr key={index}>
-							<Td>
+							<Td p={{ base: 2, md: 4 }}>
 								<Tag colorScheme={index === 0 ? "teal" : "white"}>
 									#{index + 1}
 								</Tag>
 							</Td>
-							<Td>{user.username}</Td>
-							<Td>{format(user.value)}</Td>
+							<Td
+								p={{ base: 2, md: 4 }}
+								overflow="hidden"
+								textOverflow="ellipsis"
+								whiteSpace="nowrap"
+								maxW={5}
+							>
+								{user.username}
+							</Td>
+							<Td p={{ base: 2, md: 4 }}>{format(user.value)}</Td>
 						</Tr>
 					))}
 				</Tbody>

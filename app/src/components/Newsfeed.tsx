@@ -8,6 +8,7 @@ import {
 	Heading,
 	Stack,
 	Link,
+	Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -43,13 +44,23 @@ function timeSince(date: string) {
 }
 
 function Newsfeed(props: { symbol: string }) {
+	const [isLoading, setIsLoading] = useState(true);
 	const [news, setNews] = useState<NewsItem[]>([]);
 
 	useEffect(() => {
 		axios.get("/api/news/" + (props.symbol || "")).then((res) => {
 			setNews(res.data.slice(0, 9));
+			setIsLoading(false);
 		});
 	}, []);
+
+	if (isLoading) {
+		return (
+			<Stack align="center" justify="center" h="100%">
+				<Spinner size="xl" />
+			</Stack>
+		);
+	}
 
 	return (
 		<>

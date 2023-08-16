@@ -1,33 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 import {
 	HStack,
 	Text,
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	PopoverBody,
-	Button,
-	PopoverArrow,
 	IconButton,
 	useColorMode,
 	Flex,
+	Box,
+	Drawer,
+	DrawerBody,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerOverlay,
+	DrawerContent,
+	DrawerCloseButton,
+	useDisclosure,
+	Stack,
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
-import auth from "../accounts";
-import { ChevronDownIcon, SunIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, SunIcon } from "@chakra-ui/icons";
 import SearchBox from "./SearchBox";
+import AccountMenu from "./AccountMenu";
 
 export default function Navbar() {
+	const { toggleColorMode } = useColorMode();
 	const location = useLocation();
 
-	const [username, setUsername] = useState(auth.getUsername());
-	const { toggleColorMode } = useColorMode();
+	// Mobile nav menu
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const mobileMenuBtn =
+		useRef<HTMLButtonElement>() as RefObject<HTMLButtonElement>;
 
 	useEffect(() => {
-		// Update username when auth.username changes
-		setUsername(auth.getUsername());
-	}, [location.pathname]);
+		if (isOpen) {
+			onClose();
+		}
+	}, [location]);
 
 	return (
 		<HStack
@@ -39,58 +47,79 @@ export default function Navbar() {
 			justifyContent="space-between"
 			borderBottomRadius="md"
 		>
-			{/* Logo and Page Libks */}
+			{/* Left Side */}
 			<Flex gap={5}>
-				<Link to="/">
+				<Text as={Link} to="/">
 					<Text fontWeight="bold">Stotra</Text>
-				</Link>
-				<Link to="/">
+				</Text>
+				<Text as={Link} to="/" display={{ base: "none", md: "block" }}>
 					<Text>Dashboard</Text>
-				</Link>
-				<Link to="/leaderboard">
+				</Text>
+				<Text
+					as={Link}
+					to="/leaderboard"
+					display={{ base: "none", md: "block" }}
+				>
 					<Text>Leaderboard</Text>
-				</Link>
+				</Text>
 			</Flex>
 
-			{/* Search */}
+			{/* Center */}
 			<SearchBox />
 
-			{/* Account */}
-			<HStack spacing="2">
-				<IconButton
-					variant="outline"
-					aria-label="Toggle dark mode"
-					icon={<SunIcon />}
-					onClick={() => toggleColorMode()}
-				/>
-				{username ? (
-					<Popover>
-						<PopoverTrigger>
-							<Button>
-								<ChevronDownIcon />
-								<Text>{username}</Text>
-							</Button>
-						</PopoverTrigger>
-						<PopoverContent width="auto">
-							<PopoverArrow />
-							<PopoverBody>
-								<Button
-									variant="ghost"
-									onClick={() => {
-										window.location.reload();
-										auth.logout();
-										setUsername("");
-									}}
-								>
-									Logout
-								</Button>
-							</PopoverBody>
-						</PopoverContent>
-					</Popover>
-				) : (
-					<Link to="/login">Login</Link>
-				)}
-			</HStack>
+			{/* Right Side */}
+			<Box>
+				<HStack spacing="2" display={{ base: "none", md: "flex" }}>
+					<IconButton
+						variant="outline"
+						aria-label="Toggle dark mode"
+						icon={<SunIcon />}
+						onClick={() => toggleColorMode()}
+					/>
+					<AccountMenu />
+				</HStack>
+
+				<Box display={{ base: "block", md: "none" }}>
+					<IconButton
+						aria-label="Hamburger menu"
+						icon={<HamburgerIcon />}
+						ref={mobileMenuBtn}
+						colorScheme="teal"
+						onClick={onOpen}
+					/>
+					<Drawer
+						isOpen={isOpen}
+						placement="top"
+						onClose={onClose}
+						finalFocusRef={mobileMenuBtn}
+					>
+						<DrawerOverlay />
+						<DrawerContent>
+							<DrawerCloseButton />
+							<DrawerHeader>
+								<Text as={Link} to="/">
+									<Text fontWeight="bold">Stotra</Text>
+								</Text>
+							</DrawerHeader>
+
+							<DrawerBody>
+								<Stack spacing="2.5">
+									<Text as={Link} to="/">
+										<Text>Dashboard</Text>
+									</Text>
+									<Text as={Link} to="/leaderboard">
+										<Text>Leaderboard</Text>
+									</Text>
+								</Stack>
+							</DrawerBody>
+
+							<DrawerFooter>
+								<AccountMenu />
+							</DrawerFooter>
+						</DrawerContent>
+					</Drawer>
+				</Box>
+			</Box>
 		</HStack>
 	);
 }
