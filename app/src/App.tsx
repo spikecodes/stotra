@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StockView from "./pages/StockView";
 import Leaderboard from "./pages/Leaderboard";
+import NotFound from "./pages/NotFound";
 
 export type Transaction = {
 	symbol: string;
@@ -54,6 +55,9 @@ function App() {
 						<Route path="/leaderboard" element={<Leaderboard />}></Route>
 
 						<Route path="/stocks/:symbol" element={<StockView />}></Route>
+
+						{/* Add 404*/}
+						<Route path="*" element={<NotFound />}></Route>
 
 						{/* <Route path="/find-stocks">
               <Box borderWidth="1px" borderRadius="lg" p="5">
