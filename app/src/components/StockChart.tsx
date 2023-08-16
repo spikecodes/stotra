@@ -83,26 +83,24 @@ export default function StockChart(props: { symbol: string }) {
 		// 		);
 		// 	};
 
-		axios
-			.get(`http://localhost:3010/api/stocks/${props.symbol}/historical`)
-			.then((res) => {
-				setOptions({
-					...options,
-					series: [
-						{
-							name: "Price",
-							type: "spline",
-							id: "stock_chart",
+		axios.get(`/api/stocks/${props.symbol}/historical`).then((res) => {
+			setOptions({
+				...options,
+				series: [
+					{
+						name: "Price",
+						type: "spline",
+						id: "stock_chart",
 
-							data: res.data,
-							lineWidth: 2,
-							tooltip: {
-								valueDecimals: 2,
-							},
+						data: res.data,
+						lineWidth: 2,
+						tooltip: {
+							valueDecimals: 2,
 						},
-					],
-				});
+					},
+				],
 			});
+		});
 	}, []);
 
 	return (

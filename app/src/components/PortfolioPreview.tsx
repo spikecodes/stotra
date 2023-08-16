@@ -24,44 +24,40 @@ function PortfolioPreview() {
 
 	return (
 		<Box className="PortfolioPreview">
-			{accounts.isAuthenticated() ? (
-				<>
-					{isLoading ? (
-						<Spinner size={"lg"} />
-					) : (
-						<Heading as="h2" size="xl">
-							{formatter.format(portfolioValue)}
-						</Heading>
-					)}
-					{portfolioValue > 0 ? (
-						<Heading
-							as="h2"
-							size="md"
-							color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
-						>
-							{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
-							{formatter.format(portfolioValue - prevCloseValue)} (
-							{(
-								100 *
-								((portfolioValue - prevCloseValue) / prevCloseValue)
-							).toFixed(3)}
-							%){" "}
-						</Heading>
-					) : (
-						<Heading as="h2" size="md" fontWeight="normal">
-							Make some trades to get started!
-						</Heading>
-					)}
-				</>
+			{isLoading ? (
+				<Spinner size={"lg"} />
 			) : (
-				<>
-					<Heading as="h1" size="xl">
-						Stotra
-					</Heading>
-					<Heading as="h2" size="md">
-						Create an account or login to get started!
-					</Heading>
-				</>
+				<Heading as="h2" size="xl">
+					{formatter.format(portfolioValue)}
+				</Heading>
+			)}
+			{portfolioValue > 0 ? (
+				<Heading
+					as="h2"
+					size="md"
+					color={portfolioValue > prevCloseValue ? "green.500" : "red.500"}
+				>
+					{portfolioValue > prevCloseValue ? "▲" : "▼"}{" "}
+					{formatter.format(portfolioValue - prevCloseValue)} (
+					{
+						// Show 4 decimal places if the change is less than 0.01%
+						(
+							100 *
+							((portfolioValue - prevCloseValue) / prevCloseValue)
+						).toFixed(
+							Math.abs(
+								100 * ((portfolioValue - prevCloseValue) / prevCloseValue),
+							) < 0.01
+								? 4
+								: 2,
+						)
+					}
+					%){" "}
+				</Heading>
+			) : (
+				<Heading as="h2" size="md" fontWeight="normal">
+					Make some trades to get started!
+				</Heading>
 			)}
 		</Box>
 	);

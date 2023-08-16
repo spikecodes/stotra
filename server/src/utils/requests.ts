@@ -59,10 +59,9 @@ export const fetchStockData = async (symbol: string): Promise<any> => {
 			return stockData;
 		} else {
 			console.error(err);
+			console.error("Error fetching " + symbol + " stock data:", err);
 			throw new Error(err);
 		}
-		console.error("Error fetching " + symbol + " stock data:", error);
-		return null;
 	}
 };
 

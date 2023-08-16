@@ -20,7 +20,7 @@ class Accounts {
 	): Promise<string> {
 		return axios
 			.post(
-				"http://localhost:3010/api/stocks/" + symbol + "/" + type,
+				"/api/stocks/" + symbol + "/" + type,
 				{
 					quantity,
 				},
@@ -47,7 +47,7 @@ class Accounts {
 
 	getPositions(): Promise<Position[]> {
 		return axios
-			.get("http://localhost:3010/api/user/holdings", {
+			.get("/api/user/holdings", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
@@ -65,7 +65,7 @@ class Accounts {
 
 	getWatchlist(raw: boolean): Promise<any[]> {
 		return axios
-			.get("http://localhost:3010/api/user/watchlist", {
+			.get("/api/user/watchlist", {
 				data: { raw },
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
@@ -84,7 +84,7 @@ class Accounts {
 	editWatchlist(symbol: string, operation: "add" | "remove"): Promise<string> {
 		return axios
 			.post(
-				"http://localhost:3010/api/user/watchlist/" + operation + "/" + symbol,
+				"/api/user/watchlist/" + operation + "/" + symbol,
 				{},
 				{
 					headers: { Authorization: `Bearer ${this.getToken()}` },
@@ -108,7 +108,7 @@ class Accounts {
 		positions: Position[];
 	}> {
 		return axios
-			.get("http://localhost:3010/api/user/portfolio", {
+			.get("/api/user/portfolio", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
@@ -129,7 +129,7 @@ class Accounts {
 
 	getBuyingPower(): Promise<number> {
 		return axios
-			.get("http://localhost:3010/api/user/holdings", {
+			.get("/api/user/holdings", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
@@ -146,7 +146,7 @@ class Accounts {
 
 	getAvailableShares(symbol: string): Promise<number> {
 		return axios
-			.get("http://localhost:3010/api/user/holdings", {
+			.get("/api/user/holdings", {
 				headers: { Authorization: `Bearer ${this.getToken()}` },
 			})
 			.then((res) => {
@@ -178,7 +178,7 @@ class Accounts {
 
 	signup(username: string, password: string): Promise<string> {
 		return axios
-			.post("http://localhost:3010/api/auth/signup", {
+			.post("/api/auth/signup", {
 				username,
 				password,
 			})
@@ -192,7 +192,7 @@ class Accounts {
 
 	login(username: string, password: any): Promise<string> {
 		return axios
-			.post("http://localhost:3010/api/auth/login", { username, password })
+			.post("/api/auth/login", { username, password })
 			.then((res) => {
 				if (res.data.accessToken !== undefined) {
 					// Store jwt and username in localStorage

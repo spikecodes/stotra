@@ -56,13 +56,13 @@ function swaggerDocs(app: Express, port: number) {
 	).then(() => {
 		const swaggerDocument = require("." + outputFile);
 		app.use(
-			"/docs",
+			"/api/docs",
 			swaggerUi.serve,
 			swaggerUi.setup(swaggerDocument, {
 				swaggerOptions: { persistAuthorization: true },
 			}),
 		);
-		console.log(`Swagger docs available at http://localhost:${port}/docs`);
+		console.log(`Swagger docs available at http://localhost:${port}/api/docs`);
 	});
 }
 

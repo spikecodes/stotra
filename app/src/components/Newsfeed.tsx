@@ -46,11 +46,9 @@ function Newsfeed(props: { symbol: string }) {
 	const [news, setNews] = useState<NewsItem[]>([]);
 
 	useEffect(() => {
-		axios
-			.get("http://localhost:3010/api/news/" + (props.symbol || ""))
-			.then((res) => {
-				setNews(res.data.slice(0, 9));
-			});
+		axios.get("/api/news/" + (props.symbol || "")).then((res) => {
+			setNews(res.data.slice(0, 9));
+		});
 	}, []);
 
 	return (

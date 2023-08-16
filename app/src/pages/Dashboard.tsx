@@ -11,7 +11,18 @@ export default function Dashboard() {
 		<Box className="Dashboard">
 			<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
 				<Box flex="0.75">
-					<PortfolioPreview />
+					{accounts.isAuthenticated() ? (
+						<PortfolioPreview />
+					) : (
+						<>
+							<Heading as="h1" size="xl">
+								Stotra
+							</Heading>
+							<Heading as="h2" size="md">
+								Create an account or login to get started!
+							</Heading>
+						</>
+					)}
 					<Spacer height={10} />
 					<Heading size="md">Stock Market News</Heading>
 					<Spacer height={2} />

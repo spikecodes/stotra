@@ -2,6 +2,10 @@
 
 > Multiplayer stock trading simulator allowing real-time virtual trading of stocks, currencies, and cryptocurrencies
 
+## Architecture
+
+![Architecture Diagram](./assets/architecture.png)
+
 ## Author
 
 👤 **Spike**

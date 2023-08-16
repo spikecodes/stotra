@@ -44,7 +44,7 @@ function StockView() {
 		});
 
 		axios
-			.get(`http://localhost:3010/api/stocks/${symbol}/info`)
+			.get(`/api/stocks/${symbol}/info`)
 			.then((res) => {
 				setStock({ ...res.data });
 			})

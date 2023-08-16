@@ -66,7 +66,7 @@ function SearchBox() {
 
 		const searchForStock = setTimeout(() => {
 			axios
-				.get(`http://localhost:3010/api/stocks/search/${query!}`)
+				.get(`/api/stocks/search/${query!}`)
 				.then((res: { data: [SearchResult] }) => {
 					setResults(res.data);
 				});
