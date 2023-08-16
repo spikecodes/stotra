@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Heading } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Heading, Text } from "@chakra-ui/react";
 import PortfolioPreview from "../components/PortfolioPreview";
 import React from "react";
 import PositionsList from "../components/PositionsList";
@@ -18,9 +18,9 @@ export default function Dashboard() {
 							<Heading as="h1" size="xl">
 								Stotra
 							</Heading>
-							<Heading as="h2" size="md">
+							<Text fontSize="lg">
 								Create an account or login to get started!
-							</Heading>
+							</Text>
 						</>
 					)}
 					<Spacer height={10} />

@@ -3,6 +3,8 @@ import * as Highcharts from "highcharts/highstock";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+// import { useColorMode } from "@chakra-ui/react";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -10,6 +12,9 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 export default function StockChart(props: { symbol: string }) {
+	const location = useLocation();
+	// const { colorMode } = useColorMode();
+
 	const [options, setOptions] = useState<Highcharts.Options>({
 		rangeSelector: {
 			selected: 1,
@@ -28,10 +33,6 @@ export default function StockChart(props: { symbol: string }) {
 				labels: {
 					formatter: (point: any) => formatter.format(point.value as number),
 					x: -5,
-					style: {
-						color: "#000",
-						position: "absolute",
-					},
 					align: "left",
 				},
 				title: {
@@ -39,10 +40,6 @@ export default function StockChart(props: { symbol: string }) {
 				},
 			},
 		],
-		// tooltip: {
-		// 	shared: true,
-		// 	formatter: tooltipFormatter,
-		// },
 		plotOptions: {
 			series: {
 				showInNavigator: true,
@@ -52,7 +49,13 @@ export default function StockChart(props: { symbol: string }) {
 		chart: {
 			height: 600,
 			borderRadius: 10,
-			// styledMode: true,
+			// backgroundColor: "transparent",
+
+			style: {
+				fontFamily: "'Manrope Variable', sans-serif",
+				fontWeight: "600",
+				color: "red",
+			},
 		},
 		credits: {
 			enabled: false,
@@ -73,16 +76,14 @@ export default function StockChart(props: { symbol: string }) {
 	const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
 	highchartsAccessibility(Highcharts);
-	useEffect(() => {
-		// const tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
-		// 	function () {
-		// 		return (
-		// 			formatter.format(this.y as number) +
-		// 			"</b><br/>" +
-		// 			moment(this.x).format("MMMM Do YYYY, h:mm")
-		// 		);
-		// 	};
 
+	// useEffect(() => {
+	// 	options.chart!.style!.color = colorMode === "light" ? "black" : "white";
+	// 	chartComponentRef.current?.chart?.update(options);
+	// 	console.log("updates");
+	// }, [colorMode]);
+
+	useEffect(() => {
 		axios.get(`/api/stocks/${props.symbol}/historical`).then((res) => {
 			setOptions({
 				...options,
@@ -101,7 +102,7 @@ export default function StockChart(props: { symbol: string }) {
 				],
 			});
 		});
-	}, []);
+	}, [location]);
 
 	return (
 		<HighchartsReact

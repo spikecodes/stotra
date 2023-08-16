@@ -8,6 +8,7 @@ import {
 	Flex,
 	Box,
 	Button,
+	Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 import StockChart from "../components/StockChart";
@@ -32,7 +33,7 @@ function StockView() {
 		{
 			symbol,
 			longName: "",
-			regularMarketPrice: 0,
+			regularMarketPrice: -1,
 			regularMarketChangePercent: 0,
 		},
 	);
@@ -52,6 +53,14 @@ function StockView() {
 				console.log(err);
 			});
 	}, [location]);
+
+	if (stock.regularMarketPrice < 0) {
+		return (
+			<Flex justifyContent="center">
+				<Spinner size="xl" />
+			</Flex>
+		);
+	}
 
 	return (
 		<>

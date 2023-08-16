@@ -8,9 +8,16 @@ import {
 } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/inter";
+
 const customTheme = extendTheme(
 	withDefaultColorScheme({ colorScheme: "teal" }),
 	{
+		fonts: {
+			heading: `'Manrope Variable', sans-serif`,
+			body: `'Inter Variable', sans-serif`,
+		},
 		components: {
 			Link: {
 				baseStyle: {

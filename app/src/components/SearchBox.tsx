@@ -29,7 +29,7 @@ function SearchBox() {
 		useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
 	const navigate = useNavigate();
 
-	const selectedBgColor = useColorModeValue("gray.100", "gray.800");
+	const selectedBgColor = useColorModeValue("teal", "teal.800");
 
 	const { isOpen, onToggle } = useDisclosure();
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -111,7 +111,7 @@ function SearchBox() {
 				</InputGroup>
 			</PopoverTrigger>
 			{results != null && (
-				<PopoverContent>
+				<PopoverContent w="sm">
 					<PopoverArrow />
 					{/* <PopoverHeader>Header</PopoverHeader> */}
 					<PopoverBody>
@@ -124,7 +124,9 @@ function SearchBox() {
 											key={stock.symbol}
 											width="100%"
 											height="auto"
+											color={selectedIndex === i ? "white" : ""}
 											bg={selectedIndex === i ? selectedBgColor : ""}
+											onMouseOver={() => setSelectedIndex(i)}
 											borderRadius="md"
 											p={2}
 										>
@@ -132,7 +134,7 @@ function SearchBox() {
 												<Flex gap={1}>
 													<Text
 														fontWeight="bold"
-														flex="0.3"
+														flex="0.2"
 														overflow="hidden"
 														textOverflow="ellipsis"
 														whiteSpace="nowrap"
@@ -143,7 +145,7 @@ function SearchBox() {
 														overflow="hidden"
 														textOverflow="ellipsis"
 														whiteSpace="nowrap"
-														flex="0.7"
+														flex="0.8"
 													>
 														{stock.longname}
 													</Text>
