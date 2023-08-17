@@ -1,10 +1,27 @@
-# Stotra - Stock Trading Simulator 📈
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="./assets/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-[![VIEW DEMO](https://img.shields.io/badge/VIEW_DEMO-00B5D8?style=for-the-badge)](https://stotra.spike.codes)
+<h1 align="center">Stotra</h3>
+
+  <p align="center">
+    Multiplayer stock trading simulator built with React + MERN 📈
+    <br />
+    <a href="https://stotra.spike.codes"><strong>View the demo »</strong></a>
+    <br />
+    <br />
+    <a href="https://stotra.spike.codes/api/docs/">Read API Docs</a>
+    ·
+    <a href="https://github.com/spikecodes/stotra/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/spikecodes/stotra/issues">Request Feature</a>
+  </p>
+</div>
 
 Stotra is a multiplayer **STO**ck **TRA**ading simulator that allows users to engage in real-time virtual trading of stocks, currencies, and cryptocurrencies. With Stotra, users can practice trading without risking real money, making it an ideal platform for beginners to learn the ropes of trading. The project is powered by AWS, utilizing Amplify for the React frontend and Elastic Cloud Compute for the Express API.
 
-I built Stotra in ~60 hours split across 3 weeks of design, development, and deployment. The code is permissively licensed under the MIT License for anyone to use in their pojects and was built with readability and full-stack "best practices" in mind.
+I built Stotra in 60 hours split across 3 weeks of design, development, and deployment. The code is permissively licensed under the MIT License for anyone to use in their pojects and was built with readability and full-stack "best practices" in mind.
 
 ## Design 🖌️
 
@@ -12,13 +29,16 @@ The design was inspired by [Robinhood](https://robinhood.com/) and [this Dribbbl
 
 The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra's sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors).
 
-### Screenshots
-
 ## Architecture 🏗️
 
 Stotra uses a microservices architecture, with separate services for the frontend and backend. The two services are stored in separate directories within this monorepo and are meant to be run simultaneously on different ports of the host. The frontend is built with React which interfaces with the Node.js/Express backend over a Restful API. The backend sends to and reads from the MongoDB database (run on MongoDB Atlas for the demo version). The project is hosted on AWS, with Amplify for the frontend and Elastic Cloud Compute for the backend.
 
 ![Architecture Diagram](./assets/architecture.png)
+
+## Technologies Used 💻
+
+- **Frontend:** React, Chakra UI, Axios, Highcharts
+- **Backend:** Express, GraphQL, MongoDB, Mongoose, JWT
 
 ## Author
 
