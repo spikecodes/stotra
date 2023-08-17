@@ -88,7 +88,7 @@ export default function Navbar() {
 							icon={<StarIcon />}
 							variant="outline"
 						/>
-						<MenuList as={Stack} minW="auto" px="2" gap="1">
+						<MenuList minW="auto" px="2" pt="1">
 							{[
 								"red",
 								"orange",
@@ -101,14 +101,15 @@ export default function Navbar() {
 								"pink",
 							].map((color) => (
 								<MenuItem
+									mt="1"
 									as={IconButton}
 									aria-label={color}
 									variant="ghost"
-									bg={"var(--chakra-colors-" + color + "-500)"}
+									bg={color + ".500"}
 									_hover={{
 										border: "3px solid",
-										borderColor: "var(--chakra-colors-" + color + "-300)",
-										bg: "var(--chakra-colors-" + color + "-400)",
+										borderColor: color + ".300",
+										bg: color + ".400",
 									}}
 									key={color}
 									onClick={() => {
