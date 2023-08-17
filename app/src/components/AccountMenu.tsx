@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import accounts from "../accounts";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import {
-	Popover,
-	PopoverTrigger,
-	Text,
-	Button,
-	PopoverContent,
-	PopoverArrow,
-	PopoverBody,
-} from "@chakra-ui/react";
+import { ChevronDownIcon, UnlockIcon } from "@chakra-ui/icons";
+import { Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 
 function AccountMenu() {
@@ -25,29 +17,31 @@ function AccountMenu() {
 	return (
 		<>
 			{username ? (
-				<Popover>
-					<PopoverTrigger>
-						<Button width={{ base: "100%", md: "auto" }}>
-							<ChevronDownIcon />
-							<Text>{username}</Text>
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent width="auto">
-						<PopoverArrow />
-						<PopoverBody>
-							<Button
-								variant="ghost"
-								onClick={() => {
-									window.location.reload();
-									accounts.logout();
-									setUsername("");
-								}}
-							>
-								Logout
-							</Button>
-						</PopoverBody>
-					</PopoverContent>
-				</Popover>
+				<Menu>
+					<MenuButton
+						as={Button}
+						width={{ base: "100%", md: "auto" }}
+						rightIcon={<ChevronDownIcon />}
+					>
+						{username}
+					</MenuButton>
+					<MenuList minWidth="fit-content">
+						<MenuItem
+							as={Button}
+							leftIcon={<UnlockIcon />}
+							variant="ghost"
+							mx="2"
+							width="auto"
+							onClick={() => {
+								window.location.reload();
+								accounts.logout();
+								setUsername("");
+							}}
+						>
+							Logout
+						</MenuItem>
+					</MenuList>
+				</Menu>
 			) : (
 				<Button
 					as={Link}

@@ -16,15 +16,19 @@ import {
 	useDisclosure,
 	Stack,
 	useTheme,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
-import { HamburgerIcon, SunIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
 import SearchBox from "./SearchBox";
 import AccountMenu from "./AccountMenu";
 
 export default function Navbar() {
-	const { toggleColorMode } = useColorMode();
+	const { toggleColorMode, colorMode } = useColorMode();
 	const location = useLocation();
 
 	// Mobile nav menu
@@ -74,9 +78,47 @@ export default function Navbar() {
 					<IconButton
 						variant="outline"
 						aria-label="Toggle dark mode"
-						icon={<SunIcon />}
+						icon={colorMode == "light" ? <SunIcon /> : <MoonIcon />}
 						onClick={() => toggleColorMode()}
 					/>
+					<Menu>
+						<MenuButton
+							as={IconButton}
+							aria-label="Options"
+							icon={<StarIcon />}
+							variant="outline"
+						/>
+						<MenuList as={Stack} minW="auto" px="2" gap="1">
+							{[
+								"red",
+								"orange",
+								"yellow",
+								"green",
+								"blue",
+								"teal",
+								"cyan",
+								"purple",
+								"pink",
+							].map((color) => (
+								<MenuItem
+									as={IconButton}
+									aria-label={color}
+									variant="ghost"
+									bg={"var(--chakra-colors-" + color + "-500)"}
+									_hover={{
+										border: "3px solid",
+										borderColor: "var(--chakra-colors-" + color + "-300)",
+										bg: "var(--chakra-colors-" + color + "-400)",
+									}}
+									key={color}
+									onClick={() => {
+										localStorage.setItem("accentColor", color);
+										window.location.reload();
+									}}
+								></MenuItem>
+							))}
+						</MenuList>
+					</Menu>
 					<AccountMenu />
 				</HStack>
 
@@ -119,7 +161,54 @@ export default function Navbar() {
 							</DrawerBody>
 
 							<DrawerFooter>
-								<AccountMenu />
+								<HStack spacing="2" width="100%">
+									<IconButton
+										variant="outline"
+										aria-label="Toggle dark mode"
+										icon={colorMode == "light" ? <SunIcon /> : <MoonIcon />}
+										onClick={() => toggleColorMode()}
+									/>
+									<Menu>
+										<MenuButton
+											as={IconButton}
+											aria-label="Options"
+											icon={<StarIcon />}
+											variant="outline"
+										/>
+										<MenuList as={Stack} minW="auto" px="2" gap="1">
+											{[
+												"red",
+												"orange",
+												"yellow",
+												"green",
+												"blue",
+												"teal",
+												"cyan",
+												"purple",
+												"pink",
+											].map((color) => (
+												<MenuItem
+													as={IconButton}
+													aria-label={color}
+													variant="ghost"
+													bg={"var(--chakra-colors-" + color + "-500)"}
+													_hover={{
+														border: "3px solid",
+														borderColor:
+															"var(--chakra-colors-" + color + "-300)",
+														bg: "var(--chakra-colors-" + color + "-400)",
+													}}
+													key={color}
+													onClick={() => {
+														localStorage.setItem("accentColor", color);
+														window.location.reload();
+													}}
+												></MenuItem>
+											))}
+										</MenuList>
+									</Menu>
+									<AccountMenu />
+								</HStack>
 							</DrawerFooter>
 						</DrawerContent>
 					</Drawer>
