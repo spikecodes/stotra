@@ -24,29 +24,20 @@ const getHistorical = async (req: Request, res: Response) => {
 	#swagger.tags = ['Stock Data']
 	*/
 	const symbol = req.params.symbol;
-	const period1 = req.query.period1?.toString();
-	// const period2 = req.query.period2;
-	// Store interval as "1d" | "1wk" | "1mo"
-	const interval = req.query.interval?.toString() as
+	const period = req.query.period?.toString() as
 		| "1d"
-		| "1wk"
-		| "1mo"
+		| "5d"
+		| "1m"
+		| "6m"
+		| "YTD"
+		| "1y"
+		| "all"
 		| undefined;
 
 	try {
-		const historicalData = await fetchHistoricalStockData(
-			symbol,
-			period1,
-			interval,
-		);
+		const historicalData = await fetchHistoricalStockData(symbol, period);
 
-		const jsonData = historicalData.map(
-			(data: { date: { getTime: () => any }; close: any }) => {
-				return [data.date.getTime(), data.close];
-			},
-		);
-
-		res.send(jsonData);
+		res.status(200).send(historicalData);
 	} catch (error) {
 		console.error("Error fetching " + symbol + " stock data:", error);
 		res.status(500).send("Error fetching " + symbol + " stock data:" + error);
@@ -97,7 +88,7 @@ const buyStock = async (req: Request, res: Response) => {
 				.save()
 				.then((user) => {
 					if (user) {
-						res.send({ message: "Stock was bought successfully!" });
+						res.status(200).send({ message: "Stock was bought successfully!" });
 					}
 				})
 				.catch((err) => {

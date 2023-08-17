@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, Spinner } from "@chakra-ui/react";
+import {
+	Box,
+	Heading, Spacer,
+	Spinner
+} from "@chakra-ui/react";
 import accounts from "../accounts";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -27,9 +31,15 @@ function PortfolioPreview() {
 			{isLoading ? (
 				<Spinner size={"lg"} />
 			) : (
-				<Heading as="h2" size="xl">
-					{formatter.format(portfolioValue)}
-				</Heading>
+				<>
+					<Heading as="h4" size="sm" color="gray.500" fontWeight="600">
+						Total Investment
+					</Heading>
+					<Spacer h="1" />
+					<Heading as="h2" size="xl">
+						{formatter.format(portfolioValue)}
+					</Heading>
+				</>
 			)}
 			{portfolioValue > 0 ? (
 				<Heading

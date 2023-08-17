@@ -1,6 +1,10 @@
 import yahooFinance from "yahoo-finance2";
 import Cache from "node-cache";
+import axios from "axios";
 const stockCache = new Cache({ stdTTL: 5 }); // 5 seconds
+
+import dotenv from "dotenv";
+dotenv.config();
 
 export const fetchStockData = async (symbol: string): Promise<any> => {
 	const cacheKey = symbol + "-quote";
@@ -67,22 +71,57 @@ export const fetchStockData = async (symbol: string): Promise<any> => {
 
 export const fetchHistoricalStockData = async (
 	symbol: string,
-	period1: string = "2015-01-01",
-	interval: "1d" | "1wk" | "1mo" = "1d",
+	period: "1d" | "5d" | "1m" | "6m" | "YTD" | "1y" | "all" = "1d",
 ): Promise<any> => {
-	const cacheKey = symbol + "-historical-" + period1 + "-" + interval;
+	const cacheKey = symbol + "-historical-" + period;
 
 	try {
 		if (stockCache.has(cacheKey)) {
 			return stockCache.get(cacheKey);
 		} else {
-			const historicalData = await yahooFinance.historical(symbol, {
-				period1,
-				interval,
-			});
+			let formattedData: number[][] = [];
 
-			stockCache.set(cacheKey, historicalData);
-			return historicalData;
+			if (period === "1d" || period === "5d" || period === "1m") {
+				// If the period is less than 1 month, use intraday data from Alpha Vantage
+				let res = await axios.get(
+					"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" +
+						symbol +
+						"&interval=15min&extended_hours=true&outputsize=full&apikey=" +
+						process.env.STOTRA_ALPHAVANTAGE_API,
+				);
+				const alphaData = res.data["Time Series (15min)"];
+
+				console.log(res.data);
+
+				if (!alphaData) {
+					return fetchHistoricalStockData(symbol, "6m");
+				}
+
+				console.log("return alpha");
+
+				formattedData = Object.keys(alphaData)
+					.map((key) => {
+						return [
+							new Date(key).getTime(),
+							parseFloat(alphaData[key]["4. close"]),
+						];
+					})
+					.sort((a, b) => a[0] - b[0]);
+			} else {
+				const yahooData = await yahooFinance.historical(symbol, {
+					period1: "2000-01-01",
+					interval: "1d",
+				});
+
+				formattedData = yahooData.map(
+					(data: { date: { getTime: () => any }; close: any }) => {
+						return [data.date.getTime(), data.close];
+					},
+				);
+				console.log("return yahoo");
+			}
+			stockCache.set(cacheKey, formattedData);
+			return formattedData;
 		}
 	} catch (error) {
 		console.error("Error fetching " + symbol + " historical data:", error);

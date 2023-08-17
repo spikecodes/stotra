@@ -386,14 +386,7 @@
             }
           },
           {
-            "name": "period1",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "interval",
+            "name": "period",
             "in": "query",
             "schema": {
               "type": "string"

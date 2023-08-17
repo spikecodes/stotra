@@ -23,6 +23,15 @@ Stotra is a multiplayer **STO**ck **TRA**ading simulator that allows users to en
 
 I built Stotra in 60 hours split across 3 weeks of design, development, and deployment. The code is permissively licensed under the MIT License for anyone to use in their pojects and was built with readability and full-stack "best practices" in mind.
 
+## Features ✨
+
+- 🪙 Real-time virtual trading of stocks, currencies, and cryptocurrencies
+- 🌐 Multiplayer support for competitive trading with friends
+- 📊 Interactive charts and visualizations for better decision-making
+- 🗞️ Access to financial news for informed trading
+- 🛠️ Customizable trading strategies and simulations
+- 📱 Responsive design for trading on-the-go
+
 ## Design 🖌️
 
 The design was inspired by [Robinhood](https://robinhood.com/) and [this Dribbble shot](https://dribbble.com/shots/19488130-GoStock-Stock-Market-Dashboard). The frontend uses Chakra UI for a consistent and minimal design, with [Manrope](https://fonts.google.com/specimen/Manrope) for the headings and [Inter](https://rsms.me/inter/) for the body text.
