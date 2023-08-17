@@ -115,7 +115,7 @@ export default function Signup() {
 									Sign up
 								</Button>
 							</Stack>
-							<HStack pt={2}>
+							<HStack pt={2} fontWeight="500">
 								<Text>Already a user?</Text>
 								<Link as={RouterLink} to="/login">
 									Login

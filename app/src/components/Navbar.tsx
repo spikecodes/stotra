@@ -15,6 +15,7 @@ import {
 	DrawerCloseButton,
 	useDisclosure,
 	Stack,
+	useTheme,
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
@@ -84,7 +85,11 @@ export default function Navbar() {
 						aria-label="Hamburger menu"
 						icon={<HamburgerIcon />}
 						ref={mobileMenuBtn}
-						colorScheme="teal"
+						colorScheme={
+							useTheme()["components"]["Link"]["baseStyle"]["color"].split(
+								".",
+							)[0]
+						}
 						onClick={onOpen}
 					/>
 					<Drawer

@@ -67,7 +67,7 @@ function PositionsList() {
 									>
 										Gain/Loss
 									</Heading>
-									<Text fontSize="sm">
+									<Text fontSize="sm" fontWeight="500">
 										{format(
 											(position.regularMarketPrice - position.purchasePrice) *
 												position.quantity,

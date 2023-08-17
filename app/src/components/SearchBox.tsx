@@ -11,9 +11,9 @@ import {
 	ListItem,
 	Text,
 	Flex,
-	useColorModeValue,
 	InputLeftElement,
 	InputGroup,
+	useTheme,
 } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -29,7 +29,8 @@ function SearchBox() {
 		useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
 	const navigate = useNavigate();
 
-	const selectedBgColor = useColorModeValue("teal", "teal.800");
+	let accentColor =
+		useTheme()["components"]["Link"]["baseStyle"]["color"].split(".")[0];
 
 	const { isOpen, onToggle } = useDisclosure();
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -125,7 +126,7 @@ function SearchBox() {
 											width="100%"
 											height="auto"
 											color={selectedIndex === i ? "white" : ""}
-											bg={selectedIndex === i ? selectedBgColor : ""}
+											bg={selectedIndex === i ? accentColor + ".500" : ""}
 											onMouseOver={() => setSelectedIndex(i)}
 											borderRadius="md"
 											p={2}

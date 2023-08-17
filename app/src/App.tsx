@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./components/Navbar";
-import { Container, Box, Spacer } from "@chakra-ui/react";
+import { Container, Box, Spacer, Text, Link } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -57,40 +57,21 @@ function App() {
 
 						{/* Add 404*/}
 						<Route path="*" element={<NotFound />}></Route>
-
-						{/* <Route path="/find-stocks">
-              <Box borderWidth="1px" borderRadius="lg" p="5">
-                <Heading as="h2" size="md">
-                  Find stocks
-                </Heading>
-                <StockFinder
-                  onSelectAction={setSelectedAction}
-                  onSelectStock={setSelectedStock}
-                />
-              </Box>
-            </Route>
-
-            <Route path="/make-transaction">
-              <Box borderWidth="1px" borderRadius="lg" p="5">
-                <Heading as="h2" size="md">
-                  Make a transaction
-                </Heading>
-                <LedgerContext.Provider value={{ ledger, setLedger }}>
-                  <Transaction
-                    action={selectedAction}
-                    stock={selelectedStock}
-                    count={1}
-                  />
-                </LedgerContext.Provider>
-              </Box>
-            </Route>
-
-            <LedgerContext.Provider value={{ ledger, setLedger }}>
-              <Portfolio />
-            </LedgerContext.Provider>*/}
 					</Routes>
 				</Box>
 			</Container>
+			<Box textAlign="center" py="10">
+				<Text fontSize="sm" color="gray.500">
+					Built by{" "}
+					<Link href="https://spike.codes" fontWeight="bold">
+						Spike
+					</Link>{" "}
+					on{" "}
+					<Link href="https://github.com/spikecodes/stotra" fontWeight="bold">
+						GitHub
+					</Link>
+				</Text>
+			</Box>
 		</>
 	);
 }

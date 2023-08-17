@@ -4,6 +4,7 @@ import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useTheme } from "@chakra-ui/react";
 // import { useColorMode } from "@chakra-ui/react";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -15,15 +16,19 @@ export default function StockChart(props: { symbol: string }) {
 	const location = useLocation();
 	// const { colorMode } = useColorMode();
 
+	const accentColor =
+		useTheme()["components"]["Link"]["baseStyle"]["color"].split(".")[0];
+	const chartAccentColor = "var(--chakra-colors-" + accentColor + "-500)";
+
 	const [options, setOptions] = useState<Highcharts.Options>({
 		rangeSelector: {
 			selected: 1,
 			inputStyle: {
-				color: "teal",
+				color: chartAccentColor,
 				fontWeight: "bold",
 			},
 		},
-		colors: ["teal"],
+		colors: [chartAccentColor],
 		title: {
 			text: "",
 		},
@@ -64,9 +69,9 @@ export default function StockChart(props: { symbol: string }) {
 			type: "datetime",
 		},
 		navigator: {
-			maskFill: "rgb(0, 128, 128, 0.25)",
+			maskFill: "rgb(49, 130, 206, 0.25)",
 			series: {
-				color: "teal",
+				color: chartAccentColor,
 				fillOpacity: 0.1,
 				lineWidth: 2,
 			},

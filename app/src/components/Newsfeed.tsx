@@ -9,6 +9,7 @@ import {
 	Stack,
 	Link,
 	Spinner,
+	useTheme,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -47,6 +48,9 @@ function Newsfeed(props: { symbol: string }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [news, setNews] = useState<NewsItem[]>([]);
 
+	let accentColor =
+		useTheme()["components"]["Link"]["baseStyle"]["color"].split(".")[0];
+
 	useEffect(() => {
 		axios.get("/api/news/" + (props.symbol || "")).then((res) => {
 			setNews(res.data.slice(0, 9));
@@ -79,7 +83,9 @@ function Newsfeed(props: { symbol: string }) {
 						<Card maxW="sm" h={300}>
 							<CardHeader fontSize="sm" pb={2} display="flex" gap="2">
 								<Text>{timeSince(item.publishedAt)}</Text>
-								<Text color="teal">{item.source}</Text>
+								<Text color={accentColor + ".500"} fontWeight="500">
+									{item.source}
+								</Text>
 							</CardHeader>
 							<CardBody pt={0}>
 								<Stack>

@@ -78,7 +78,7 @@ export default function Login() {
 					</Heading>
 					<HStack spacing="1">
 						<Text>Or</Text>
-						<Link as={RouterLink} to="/signup">
+						<Link as={RouterLink} to="/signup" fontWeight="500">
 							create an account
 						</Link>
 					</HStack>

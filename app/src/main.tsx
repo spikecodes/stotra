@@ -11,8 +11,10 @@ import { BrowserRouter } from "react-router-dom";
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/inter";
 
+const accentColor = "blue";
+
 const customTheme = extendTheme(
-	withDefaultColorScheme({ colorScheme: "teal" }),
+	withDefaultColorScheme({ colorScheme: accentColor }),
 	{
 		fonts: {
 			heading: `'Manrope Variable', sans-serif`,
@@ -21,7 +23,7 @@ const customTheme = extendTheme(
 		components: {
 			Link: {
 				baseStyle: {
-					color: "teal.500",
+					color: accentColor + ".500",
 				},
 			},
 		},

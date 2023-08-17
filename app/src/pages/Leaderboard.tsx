@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Table, Tag, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+	Box,
+	Table,
+	Tag,
+	Tbody,
+	Td,
+	Th,
+	Thead,
+	Tr,
+	useTheme,
+} from "@chakra-ui/react";
 
 interface LeaderboardUser {
 	username: string;
@@ -14,6 +24,9 @@ const format = new Intl.NumberFormat("en-US", {
 
 function Leaderboard() {
 	const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+
+	let accentColor =
+		useTheme()["components"]["Link"]["baseStyle"]["color"].split(".")[0];
 
 	useEffect(() => {
 		axios
@@ -38,7 +51,7 @@ function Leaderboard() {
 					{leaderboard.map((user, index) => (
 						<Tr key={index}>
 							<Td p={{ base: 2, md: 4 }}>
-								<Tag colorScheme={index === 0 ? "teal" : "white"}>
+								<Tag colorScheme={index === 0 ? accentColor : "white"}>
 									#{index + 1}
 								</Tag>
 							</Td>
