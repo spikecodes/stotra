@@ -21,6 +21,15 @@ const customTheme = extendTheme(
 			body: `'Inter Variable', sans-serif`,
 		},
 		components: {
+			Spinner: {
+				baseStyle: {
+					color: accentColor + ".500",
+					borderWidth: "3px",
+				},
+				defaultProps: {
+					size: "xl",
+				},
+			},
 			Link: {
 				baseStyle: {
 					color: accentColor + ".500",

@@ -176,7 +176,7 @@ export default function Navbar() {
 											icon={<StarIcon />}
 											variant="outline"
 										/>
-										<MenuList as={Stack} minW="auto" px="2" gap="1">
+										<MenuList minW="auto" px="2" pt="1">
 											{[
 												"red",
 												"orange",
@@ -189,6 +189,7 @@ export default function Navbar() {
 												"pink",
 											].map((color) => (
 												<MenuItem
+													mt="1"
 													as={IconButton}
 													aria-label={color}
 													variant="ghost"

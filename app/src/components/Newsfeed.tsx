@@ -61,7 +61,7 @@ function Newsfeed(props: { symbol: string }) {
 	if (isLoading) {
 		return (
 			<Stack align="center" justify="center" h="100%">
-				<Spinner size="xl" />
+				<Spinner />
 			</Stack>
 		);
 	}
