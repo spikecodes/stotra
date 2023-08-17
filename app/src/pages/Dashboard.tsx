@@ -1,4 +1,11 @@
-import { Box, Flex, Spacer, Heading, Text } from "@chakra-ui/react";
+import {
+	Box,
+	Flex,
+	Spacer,
+	Heading,
+	Text,
+	useBreakpointValue,
+} from "@chakra-ui/react";
 import PortfolioPreview from "../components/PortfolioPreview";
 import React from "react";
 import PositionsList from "../components/PositionsList";
@@ -7,6 +14,8 @@ import Watchlist from "../components/Watchlist";
 import accounts from "../accounts";
 
 export default function Dashboard() {
+	const isOnMobile = useBreakpointValue({ base: true, md: false });
+
 	return (
 		<Box className="Dashboard">
 			<Flex direction={{ base: "column", md: "row" }} gap={5}>
@@ -21,6 +30,14 @@ export default function Dashboard() {
 							<Text fontSize="lg">
 								Create an account or login to get started!
 							</Text>
+						</>
+					)}
+					{!isOnMobile && (
+						<>
+							<Spacer height={10} />
+							<Heading size="md">Stock Market News</Heading>
+							<Spacer height={2} />
+							<Newsfeed symbol={""} />
 						</>
 					)}
 				</Box>
@@ -46,10 +63,14 @@ export default function Dashboard() {
 					)}
 				</Box>
 			</Flex>
-			<Spacer height={10} />
-			<Heading size="md">Stock Market News</Heading>
-			<Spacer height={2} />
-			<Newsfeed symbol={""} />
+			{isOnMobile && (
+				<>
+					<Spacer height={10} />
+					<Heading size="md">Stock Market News</Heading>
+					<Spacer height={2} />
+					<Newsfeed symbol={""} />
+				</>
+			)}
 		</Box>
 	);
 }

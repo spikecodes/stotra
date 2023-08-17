@@ -13,10 +13,6 @@ import {
 	Button,
 	Heading,
 	Text,
-	Alert,
-	AlertIcon,
-	AlertTitle,
-	AlertDescription,
 	Link,
 	useToast,
 } from "@chakra-ui/react";
