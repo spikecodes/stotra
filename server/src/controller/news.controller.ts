@@ -14,11 +14,11 @@ const getNews = async (req: Request, res: Response) => {
 	/* 
 	#swagger.tags = ['News']
 	*/
-	const symbol = req.params.symbol || "";
+	var symbol = req.params.symbol || "";
 	const symbolQuery = symbol !== "" ? "symbols:" + symbol + " AND " : "";
 
-	if (cache.has(symbol + "news")) {
-		res.status(200).json(cache.get(symbol + "news"));
+	if (cache.has(symbol + "-news")) {
+		res.status(200).json(cache.get(symbol + "-news"));
 		return;
 	}
 
@@ -43,12 +43,46 @@ const getNews = async (req: Request, res: Response) => {
 					description: newsItem.description,
 				};
 			});
-			cache.set(symbol + "news", news);
+			cache.set(symbol + "-news", news);
 			res.status(200).json(news);
 		})
 		.catch((err: any) => {
-			console.log(err);
-			res.status(500).json(err);
+			if (err.response && err.response.data && err.response.data.message) {
+				// Retry with Yahoo Finance API if Newsfilter quota is exceeded
+				const options: SearchOptions = {
+					quotesCount: 0,
+					newsCount: 10,
+				};
+
+				if (symbol === "") {
+					symbol = "stock";
+				}
+
+				yahooFinance
+					.search(symbol || "", options)
+					.then((response: any) => {
+						let news = response.news.map((newsItem: any) => {
+							return {
+								title: newsItem.title,
+								publishedAt: newsItem.providerPublishTime,
+								source: newsItem.publisher,
+								sourceUrl: newsItem.link,
+								symbols: newsItem.relatedTickers || [],
+								description: "",
+							};
+						});
+
+						cache.set(symbol + "-news", news);
+						res.status(200).json(news);
+					})
+					.catch((err: any) => {
+						console.log(err);
+						res.status(500).json(err);
+					});
+			} else {
+				console.log(err);
+				res.status(500).json(err);
+			}
 		});
 };
 

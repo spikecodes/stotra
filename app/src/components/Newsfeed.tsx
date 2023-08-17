@@ -10,6 +10,9 @@ import {
 	Link,
 	Spinner,
 	useTheme,
+	CardFooter,
+	Tag,
+	HStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -74,22 +77,36 @@ function Newsfeed(props: { symbol: string }) {
 				gap={5}
 			>
 				{news.map((item) => (
-					<Link
-						href={item.sourceUrl}
-						key={item.title}
-						isExternal
-						_hover={{ textDecoration: "none" }}
-					>
-						<Card maxW="sm" h={300}>
-							<CardHeader fontSize="sm" pb={2} display="flex" gap="2">
-								<Text>{timeSince(item.publishedAt)}</Text>
-								<Text color={accentColor + ".500"} fontWeight="500">
-									{item.source}
-								</Text>
-							</CardHeader>
-							<CardBody pt={0}>
+					<Card maxW="sm" h="100%" key={item.title}>
+						<CardHeader fontSize="sm" pb={2} display="flex" gap="2">
+							<Text whiteSpace="nowrap">{timeSince(item.publishedAt)}</Text>
+							<Text
+								color={accentColor + ".500"}
+								fontWeight="500"
+								textOverflow="ellipsis"
+								overflow="hidden"
+								whiteSpace="nowrap"
+							>
+								{item.source}
+							</Text>
+						</CardHeader>
+						<Link
+							href={item.sourceUrl}
+							color="inherit"
+							isExternal
+							_hover={{ textDecoration: "none" }}
+						>
+							<CardBody pt={0} h="100%">
 								<Stack>
-									<Heading size="sm">{item.title}</Heading>
+									<Heading
+										size="sm"
+										textOverflow="ellipsis"
+										display="-webkit-box"
+										overflow="hidden"
+										css="-webkit-line-clamp: 3; -webkit-box-orient: vertical;"
+									>
+										{item.title}
+									</Heading>
 									<Text
 										size="sm"
 										textOverflow="ellipsis"
@@ -101,8 +118,32 @@ function Newsfeed(props: { symbol: string }) {
 									</Text>
 								</Stack>
 							</CardBody>
-						</Card>
-					</Link>
+						</Link>
+						{item.symbols.length > 0 && (
+							<>
+								{/* <Divider /> */}
+								<CardFooter as={Stack}>
+									<Text fontSize="sm" fontWeight="500" mr="2">
+										Symbols:
+									</Text>
+									<br />
+									<HStack flexWrap="wrap">
+										{item.symbols.map((symbol) => (
+											<Tag
+												as={Link}
+												href={"/stocks/" + symbol}
+												key={symbol}
+												colorScheme={accentColor}
+												size="sm"
+											>
+												{symbol}
+											</Tag>
+										))}
+									</HStack>
+								</CardFooter>
+							</>
+						)}
+					</Card>
 				))}
 			</SimpleGrid>
 		</>
