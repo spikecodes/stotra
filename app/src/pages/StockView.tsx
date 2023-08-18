@@ -2,20 +2,25 @@ import React, { useEffect, useReducer, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import {
 	Stat,
-	StatArrow,
 	Heading,
 	Spacer,
 	Flex,
 	Box,
 	Button,
 	Spinner,
+	HStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import StockChart from "../components/StockChart";
 import TransactionPane from "../components/TransactionPane";
 import accounts from "../accounts";
 import Newsfeed from "../components/Newsfeed";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import {
+	AddIcon,
+	ArrowDownIcon,
+	ArrowUpIcon,
+	MinusIcon,
+} from "@chakra-ui/icons";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -65,26 +70,37 @@ function StockView() {
 	return (
 		<>
 			{stock.regularMarketPrice > 0 && (
-				<Flex direction={{ base: "column-reverse", md: "row" }} gap={5}>
+				<Flex direction={{ base: "column", md: "row" }} gap={5}>
 					<Box flex={accounts.isAuthenticated() ? "0.75" : "1"}>
 						<Flex justifyContent={"space-between"}>
 							<Stat>
 								<Heading size="md" fontWeight="md">
 									{stock.longName}
 								</Heading>
+								<Spacer h="1" />
 								<Heading size="xl">
 									{formatter.format(stock.regularMarketPrice)}
 								</Heading>
-								<Heading size="md">
-									<StatArrow
-										type={
+								<HStack>
+									<Heading
+										size="md"
+										color={
 											stock.regularMarketChangePercent > 0
-												? "increase"
-												: "decrease"
+												? "green.500"
+												: "red.500"
 										}
-									/>
-									{stock.regularMarketChangePercent.toFixed(2)}%
-								</Heading>
+									>
+										{stock.regularMarketChangePercent > 0 ? (
+											<ArrowUpIcon />
+										) : (
+											<ArrowDownIcon />
+										)}
+										{stock.regularMarketChangePercent.toFixed(2)}%
+									</Heading>
+									<Heading size="sm" color="gray.500">
+										Today
+									</Heading>
+								</HStack>
 							</Stat>
 							{accounts.isAuthenticated() &&
 								(onWatchlist ? (

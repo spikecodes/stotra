@@ -85,6 +85,7 @@ const getPortfolio = async (req: Request, res: Response) => {
 				portfolioValue,
 				portfolioPrevCloseValue,
 				positions: listOfPositions,
+				cash: user!.cash,
 			});
 		})
 		.catch((err) => {

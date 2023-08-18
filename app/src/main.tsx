@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import {
 	ChakraProvider,
 	extendTheme,
+	useColorModeValue,
 	withDefaultColorScheme,
 } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
@@ -16,6 +17,13 @@ const accentColor = localStorage.getItem("accentColor") || "cyan";
 const customTheme = extendTheme(
 	withDefaultColorScheme({ colorScheme: accentColor }),
 	{
+		styles: {
+			global: () => ({
+				body: {
+					bg: useColorModeValue("gray.50", "initial"),
+				},
+			}),
+		},
 		fonts: {
 			heading: `'Manrope Variable', sans-serif`,
 			body: `'Inter Variable', sans-serif`,

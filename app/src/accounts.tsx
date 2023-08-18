@@ -106,6 +106,7 @@ class Accounts {
 		portfolioValue: number;
 		portfolioPrevCloseValue: number;
 		positions: Position[];
+		cash: number;
 	}> {
 		return axios
 			.get("/api/user/portfolio", {
@@ -116,6 +117,7 @@ class Accounts {
 					portfolioValue: res.data.portfolioValue,
 					portfolioPrevCloseValue: res.data.portfolioPrevCloseValue,
 					positions: res.data.positions,
+					cash: res.data.cash,
 				};
 			})
 			.catch((err) => {

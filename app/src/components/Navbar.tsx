@@ -45,12 +45,10 @@ export default function Navbar() {
 	return (
 		<HStack
 			className="Navbar"
-			borderWidth="1px"
-			borderTopWidth="0px"
+			borderBottomWidth="1px"
 			p="5"
 			display="flex"
 			justifyContent="space-between"
-			borderBottomRadius="md"
 		>
 			{/* Left Side */}
 			<Flex gap={5}>
