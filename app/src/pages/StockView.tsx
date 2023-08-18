@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import StockChart from "../components/StockChart";
 import TransactionPane from "../components/TransactionPane";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
 import Newsfeed from "../components/Newsfeed";
 import {
 	AddIcon,

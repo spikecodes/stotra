@@ -11,7 +11,7 @@ import React from "react";
 import PositionsList from "../components/PositionsList";
 import Newsfeed from "../components/Newsfeed";
 import Watchlist from "../components/Watchlist";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
 
 export default function Dashboard() {
 	const isOnMobile = useBreakpointValue({ base: true, md: false });

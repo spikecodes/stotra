@@ -17,7 +17,8 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
+import tokens from "../services/tokens.service";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { useReducer } from "react";
 
@@ -28,7 +29,7 @@ export default function Login() {
 	const turnstileRef = useRef<TurnstileInstance>(null);
 
 	useEffect(() => {
-		if (accounts.isAuthenticated()) {
+		if (tokens.isAuthenticated()) {
 			// Redirect to home if already authenticated
 			navigate("/");
 		}

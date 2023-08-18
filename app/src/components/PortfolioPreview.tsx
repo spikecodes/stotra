@@ -8,7 +8,8 @@ import {
 	Text,
 	useToast,
 } from "@chakra-ui/react";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
+import tokens from "../services/tokens.service";
 import { useNavigate } from "react-router-dom";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -36,7 +37,7 @@ function PortfolioPreview() {
 			})
 			.catch((err) => {
 				if (err.response && err.response.status === 401) {
-					accounts.logout();
+					tokens.clearToken();
 					toast({
 						title: `You are not logged in! Redirecting to login...`,
 						status: "error",

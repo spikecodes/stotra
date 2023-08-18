@@ -34,14 +34,14 @@ const apiLimiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-// const loginLimiter = rateLimit({
-//   windowMs: 30 * 60 * 1000, // Half hour
-//   max: 10, // Limit each IP to 10 login requests per `window` (here, per half hour)
-//   message:
-//     "Too many login attempts from this IP, please try again after an hour",
-//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-// });
+const loginLimiter = rateLimit({
+	windowMs: 30 * 60 * 1000, // Half hour
+	max: 15, // Limit each IP to 15 login requests per `window` (here, per half hour)
+	message:
+		"Too many login attempts from this IP, please try again after an hour",
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
 
 const createAccountLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour
@@ -54,7 +54,7 @@ const createAccountLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 // app.use("/api/auth/login", loginLimiter);
-// app.use("/api/auth/signup", createAccountLimiter);
+app.use("/api/auth/signup", createAccountLimiter);
 
 // GraphQL API
 const schema = require("./models/stocks.graphql");

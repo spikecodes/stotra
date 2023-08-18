@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
 import {
 	Text,
 	useToast,

@@ -19,7 +19,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
 
 export default function Signup() {
 	const toast = useToast();

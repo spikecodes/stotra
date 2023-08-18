@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import accounts from "../accounts";
+import accounts from "../services/accounts.service";
 import { ChevronDownIcon, UnlockIcon } from "@chakra-ui/icons";
 import { Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
