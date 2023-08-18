@@ -41,7 +41,7 @@ function swaggerDocs(app: Express, port: number) {
 			description: "A REST API for the Stock Trading Simulator",
 			version,
 		},
-		host: "localhost:" + port,
+		host: "0.0.0.0:" + port,
 		securityDefinitions: {
 			bearerAuth: {
 				type: "http",
@@ -50,7 +50,7 @@ function swaggerDocs(app: Express, port: number) {
 			},
 		},
 		servers: [
-			{ url: process.env.STOTRA_SERVER_URL || `http://localhost:${port}` },
+			{ url: process.env.STOTRA_SERVER_URL || `http://0.0.0.0:${port}` },
 		],
 	};
 
@@ -66,7 +66,7 @@ function swaggerDocs(app: Express, port: number) {
 				swaggerOptions: { persistAuthorization: true },
 			}),
 		);
-		console.log(`Swagger docs available at http://localhost:${port}/api/docs`);
+		console.log(`Swagger docs available at http://0.0.0.0:${port}/api/docs`);
 	});
 }
 

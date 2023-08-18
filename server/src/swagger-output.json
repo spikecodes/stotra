@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3010"
+      "url": "http://0.0.0.0:3010"
     }
   ],
   "paths": {

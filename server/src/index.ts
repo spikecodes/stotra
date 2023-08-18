@@ -54,7 +54,7 @@ const createAccountLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 // app.use("/api/auth/login", loginLimiter);
-app.use("/api/auth/signup", createAccountLimiter);
+// app.use("/api/auth/signup", createAccountLimiter);
 
 // GraphQL API
 const schema = require("./models/stocks.graphql");
@@ -64,6 +64,6 @@ app.all("/graphql", createHandler({ schema }));
 app.use(require("./routes"));
 
 app.listen(PORT, async () => {
-	console.log(`Example app listening at http://localhost:${PORT}`);
+	console.log(`Example app listening at http://0.0.0.0:${PORT}`);
 	swaggerDocs(app, PORT);
 });
