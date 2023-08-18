@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Flex,
 	Box,
@@ -17,20 +15,29 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import accounts from "../accounts";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { useReducer } from "react";
 
 export default function Login() {
 	const toast = useToast();
 	const navigate = useNavigate();
 
+	const turnstileRef = useRef<TurnstileInstance>(null);
+
 	useEffect(() => {
 		if (accounts.isAuthenticated()) {
 			// Redirect to home if already authenticated
 			navigate("/");
 		}
+	});
+
+	useLayoutEffect(() => {
+		return () => {
+			turnstileRef.current?.remove();
+		};
 	}, []);
 
 	const [loginData, setLoginData] = useReducer(
@@ -42,7 +49,11 @@ export default function Login() {
 		e.preventDefault();
 		// Call login function from auth.js
 		accounts
-			.login(loginData.username, loginData.password)
+			.login(
+				loginData.username,
+				loginData.password,
+				turnstileRef.current?.getResponse()!,
+			)
 			.then((res) => {
 				// Show alert with status of login attempt
 				if (res === "success") {
@@ -122,7 +133,7 @@ export default function Login() {
 									</InputRightElement>
 								</InputGroup>
 							</FormControl>
-							<Stack spacing={10}>
+							<Stack spacing={10} alignItems="center">
 								{/* <Stack
                   direction={{ base: "column", sm: "row" }}
                   align={"start"}
@@ -139,6 +150,11 @@ export default function Login() {
                     <Text>Forgot password?</Text>
                   </Link>
                 </Stack> */}
+								<Turnstile
+									ref={turnstileRef}
+									siteKey="0x4AAAAAAAI6ckchuGZipSqE"
+								/>
+
 								<Button type="submit" onClick={handleSubmit}>
 									Sign in
 								</Button>

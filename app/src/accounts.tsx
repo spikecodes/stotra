@@ -178,11 +178,16 @@ class Accounts {
 		);
 	}
 
-	signup(username: string, password: string): Promise<string> {
+	signup(
+		username: string,
+		password: string,
+		turnstileToken: string,
+	): Promise<string> {
 		return axios
 			.post("/api/auth/signup", {
 				username,
 				password,
+				"cf-turnstile-response": turnstileToken,
 			})
 			.then((_) => {
 				return "success";
@@ -192,9 +197,17 @@ class Accounts {
 			});
 	}
 
-	login(username: string, password: any): Promise<string> {
+	login(
+		username: string,
+		password: string,
+		turnstileToken: string,
+	): Promise<string> {
 		return axios
-			.post("/api/auth/login", { username, password })
+			.post("/api/auth/login", {
+				username,
+				password,
+				"cf-turnstile-response": turnstileToken,
+			})
 			.then((res) => {
 				if (res.data.accessToken !== undefined) {
 					// Store jwt and username in localStorage
