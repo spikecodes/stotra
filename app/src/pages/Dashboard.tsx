@@ -11,7 +11,7 @@ import React from "react";
 import PositionsList from "../components/PositionsList";
 import Newsfeed from "../components/Newsfeed";
 import Watchlist from "../components/Watchlist";
-import accounts from "../services/accounts.service";
+import tokens from "../services/tokens.service";
 
 export default function Dashboard() {
 	const isOnMobile = useBreakpointValue({ base: true, md: false });
@@ -20,7 +20,7 @@ export default function Dashboard() {
 		<Box className="Dashboard">
 			<Flex direction={{ base: "column", md: "row" }} gap={5}>
 				<Box flex="0.75">
-					{accounts.isAuthenticated() ? (
+					{tokens.isAuthenticated() ? (
 						<PortfolioPreview />
 					) : (
 						<>
@@ -48,7 +48,7 @@ export default function Dashboard() {
 					p={{ base: 0, md: 3 }}
 					height={"fit-content"}
 				>
-					{accounts.isAuthenticated() ? (
+					{tokens.isAuthenticated() ? (
 						<>
 							<PositionsList />
 							<Spacer h="3" />

@@ -14,6 +14,7 @@ import axios from "axios";
 import StockChart from "../components/StockChart";
 import TransactionPane from "../components/TransactionPane";
 import accounts from "../services/accounts.service";
+import tokens from "../services/tokens.service";
 import Newsfeed from "../components/Newsfeed";
 import {
 	AddIcon,
@@ -71,7 +72,7 @@ function StockView() {
 		<>
 			{stock.regularMarketPrice > 0 && (
 				<Flex direction={{ base: "column", md: "row" }} gap={5}>
-					<Box flex={accounts.isAuthenticated() ? "0.75" : "1"}>
+					<Box flex={tokens.isAuthenticated() ? "0.75" : "1"}>
 						<Flex justifyContent={"space-between"}>
 							<Stat>
 								<Heading size="md" fontWeight="md">
@@ -102,7 +103,7 @@ function StockView() {
 									</Heading>
 								</HStack>
 							</Stat>
-							{accounts.isAuthenticated() &&
+							{tokens.isAuthenticated() &&
 								(onWatchlist ? (
 									<Button
 										leftIcon={<MinusIcon />}
@@ -134,7 +135,7 @@ function StockView() {
 
 						<StockChart symbol={symbol as string} />
 					</Box>
-					{accounts.isAuthenticated() && (
+					{tokens.isAuthenticated() && (
 						<Box flex="0.25" borderWidth="1px" borderRadius="md" p={5}>
 							<TransactionPane
 								symbol={symbol as string}

@@ -8,7 +8,7 @@ function makeTransaction(
 	type: "buy" | "sell",
 ): Promise<string> {
 	return api
-		.post("/api/stocks/" + symbol + "/" + type, {
+		.post("/stocks/" + symbol + "/" + type, {
 			quantity,
 		})
 		.then((res) => {
@@ -22,7 +22,7 @@ function makeTransaction(
 
 function getPositions(): Promise<Position[]> {
 	return api
-		.get("/api/user/holdings")
+		.get("/user/holdings")
 		.then((res) => {
 			return res.data.positions;
 		})
@@ -38,7 +38,7 @@ function getPositions(): Promise<Position[]> {
 
 function getWatchlist(raw: boolean): Promise<any[]> {
 	return api
-		.get("/api/user/watchlist", {
+		.get("/user/watchlist", {
 			data: { raw },
 		})
 		.then((res) => {
@@ -51,7 +51,7 @@ function editWatchlist(
 	operation: "add" | "remove",
 ): Promise<string> {
 	return api
-		.post("/api/user/watchlist/" + operation + "/" + symbol, {})
+		.post("/user/watchlist/" + operation + "/" + symbol, {})
 		.then((res) => {
 			return res.data.message;
 		})
@@ -70,7 +70,7 @@ function getPortfolio(): Promise<{
 	positions: Position[];
 	cash: number;
 }> {
-	return api.get("/api/user/portfolio").then((res) => {
+	return api.get("/user/portfolio").then((res) => {
 		return {
 			portfolioValue: res.data.portfolioValue,
 			portfolioPrevCloseValue: res.data.portfolioPrevCloseValue,
@@ -82,7 +82,7 @@ function getPortfolio(): Promise<{
 
 function getBuyingPower(): Promise<number> {
 	return api
-		.get("/api/user/holdings")
+		.get("/user/holdings")
 		.then((res) => {
 			return res.data.cash;
 		})
@@ -97,7 +97,7 @@ function getBuyingPower(): Promise<number> {
 
 function getAvailableShares(symbol: string): Promise<number> {
 	return api
-		.get("/api/user/holdings")
+		.get("/user/holdings")
 		.then((res) => {
 			let positions = res.data.positions;
 			// Sum up all the shares of the given symbol
@@ -123,7 +123,7 @@ function signup(
 	turnstileToken: string,
 ): Promise<string> {
 	return api
-		.post("/api/auth/signup", {
+		.post("/auth/signup", {
 			username,
 			password,
 			"cf-turnstile-response": turnstileToken,
@@ -142,7 +142,7 @@ function login(
 	turnstileToken: string,
 ): Promise<string> {
 	return api
-		.post("/api/auth/login", {
+		.post("/auth/login", {
 			username,
 			password,
 			"cf-turnstile-response": turnstileToken,
