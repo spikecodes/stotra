@@ -20,6 +20,7 @@ import {
 	MenuButton,
 	MenuItem,
 	MenuList,
+	Image,
 } from "@chakra-ui/react";
 
 import { Link, useLocation } from "react-router-dom";
@@ -51,8 +52,9 @@ export default function Navbar() {
 			justifyContent="space-between"
 		>
 			{/* Left Side */}
-			<Flex gap={5}>
-				<Text as={Link} to="/">
+			<Flex gap={7}>
+				<Text as={Link} to="/" display="flex" alignItems="center" gap="1">
+					<Image src="/logo.svg" alt="Stotra Logo" boxSize="6" />
 					<Text fontWeight="bold">Stotra</Text>
 				</Text>
 				<Text as={Link} to="/" display={{ base: "none", md: "block" }}>
