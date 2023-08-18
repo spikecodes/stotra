@@ -7,11 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Runtime data
 node_modules
 app/node_modules
+server/node_modules
 dist
 dist-ssr
 *.local
+server/src/swagger-output.json
 
 # Editor directories and files
 .vscode/*

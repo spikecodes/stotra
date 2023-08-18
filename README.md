@@ -19,6 +19,14 @@
   </p>
 </div>
 
+| Home                       | Stock View                        |
+| -------------------------- | --------------------------------- |
+| ![Home](./assets/home.png) | ![Stock View](./assets/stock.png) |
+
+| Login                        | Signup                          | Leaderboard                              |
+| ---------------------------- | ------------------------------- | ---------------------------------------- |
+| ![Login](./assets/login.png) | ![Sign up](./assets/signup.png) | ![Leaderboard](./assets/leaderboard.png) |
+
 Stotra is a multiplayer **STO**ck **TRA**ading simulator that allows users to engage in real-time virtual trading of stocks, currencies, and cryptocurrencies. With Stotra, users can practice trading without risking real money, making it an ideal platform for beginners to learn the ropes of trading. The project is powered by AWS, utilizing Amplify for the React frontend and Elastic Cloud Compute for the Express API.
 
 I built Stotra in 60 hours split across 3 weeks of design, development, and deployment. The code is permissively licensed under the MIT License for anyone to use in their pojects and was built with readability and full-stack "best practices" in mind.
@@ -29,14 +37,14 @@ I built Stotra in 60 hours split across 3 weeks of design, development, and depl
 - 🌐 Multiplayer support for competitive trading with friends
 - 📊 Interactive charts and visualizations for better decision-making
 - 🗞️ Access to financial news for informed trading
-- 🛠️ Customizable trading strategies and simulations
+- 🎨 Beautiful design with dark mode and customizable accent color
 - 📱 Responsive design for trading on-the-go
 
 ## Design 🖌️
 
 The design was inspired by [Robinhood](https://robinhood.com/) and [this Dribbble shot](https://dribbble.com/shots/19488130-GoStock-Stock-Market-Dashboard). The frontend uses Chakra UI for a consistent and minimal design, with [Manrope](https://fonts.google.com/specimen/Manrope) for the headings and [Inter](https://rsms.me/inter/) for the body text.
 
-The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra's sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors).
+The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra's sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors). Using the toggle in the top right, one can switch between light and dark mode, as shown in the "Sign up" screenshot above.
 
 ## Architecture 🏗️
 
