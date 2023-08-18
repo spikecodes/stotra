@@ -71,13 +71,6 @@ class Accounts {
 			})
 			.then((res) => {
 				return res.data.watchlist;
-			})
-			.catch((err) => {
-				if (err.response) {
-					throw new Error(err.response.data.message);
-				} else {
-					throw new Error(err as string);
-				}
 			});
 	}
 
@@ -119,13 +112,6 @@ class Accounts {
 					positions: res.data.positions,
 					cash: res.data.cash,
 				};
-			})
-			.catch((err) => {
-				if (err.response) {
-					throw new Error(err.response.data.message);
-				} else {
-					throw new Error(err as string);
-				}
 			});
 	}
 

@@ -93,13 +93,9 @@ export const fetchHistoricalStockData = async (
 				);
 				const alphaData = res.data["Time Series (15min)"];
 
-				console.log(res.data);
-
 				if (!alphaData) {
 					return fetchHistoricalStockData(symbol, "6m");
 				}
-
-				console.log("return alpha");
 
 				formattedData = Object.keys(alphaData)
 					.map((key) => {
@@ -120,7 +116,6 @@ export const fetchHistoricalStockData = async (
 						return [data.date.getTime(), data.close];
 					},
 				);
-				console.log("return yahoo");
 			}
 			stockCache.set(cacheKey, formattedData);
 			return formattedData;

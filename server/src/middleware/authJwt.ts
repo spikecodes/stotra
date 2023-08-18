@@ -27,7 +27,7 @@ export function verifyToken(
 	jwt.verify(token, jwtSecret!, (err, decoded) => {
 		if (err) {
 			return res.status(401).send({
-				message: "Unauthorized",
+				message: "Unauthorized: " + err.message || "",
 			});
 		}
 		// Set request user id to decoded id in typescript

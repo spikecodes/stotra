@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Heading, Spacer, Spinner, Text } from "@chakra-ui/react";
+import {
+	Box,
+	Flex,
+	Heading,
+	Spacer,
+	Spinner,
+	Text,
+	useToast,
+} from "@chakra-ui/react";
 import accounts from "../accounts";
+import { useNavigate } from "react-router-dom";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -13,6 +22,9 @@ function PortfolioPreview() {
 	const [cash, setCash] = useState(0.0);
 	const [isLoading, setIsLoading] = useState(true);
 
+	const toast = useToast();
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		accounts
 			.getPortfolio()
@@ -21,6 +33,17 @@ function PortfolioPreview() {
 				setPrevCloseValue(portfolioPrevCloseValue);
 				setCash(cash);
 				setIsLoading(false);
+			})
+			.catch((err) => {
+				if (err.response && err.response.status === 401) {
+					accounts.logout();
+					toast({
+						title: `You are not logged in! Redirecting to login...`,
+						status: "error",
+						isClosable: true,
+					});
+					navigate("/login");
+				}
 			});
 	}, []);
 
