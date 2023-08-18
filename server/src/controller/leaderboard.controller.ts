@@ -2,12 +2,23 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import { fetchStockData } from "../utils/requests";
 
+// Cache the leaderboard for 10 minutes
+import NodeCache from "node-cache";
+const cache = new NodeCache({ stdTTL: 10 * 60 });
+
 const getLeaderboard = (req: Request, res: Response) => {
 	/* 
 	#swagger.tags = ['Leaderboard']
 	*/
+	if (cache.has("leaderboard")) {
+		const leaderboard = cache.get("leaderboard");
+		res.status(200).send({ users: leaderboard });
+		return;
+	}
+
 	getLeaderboardTopN(5)
 		.then((users) => {
+			cache.set("leaderboard", users);
 			res.status(200).send({ users });
 		})
 		.catch((err: { message: any }) => {

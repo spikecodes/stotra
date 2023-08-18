@@ -1,14 +1,16 @@
 import yahooFinance from "yahoo-finance2";
 import { Request, Response } from "express";
 import { SearchOptions } from "yahoo-finance2/dist/esm/src/modules/search";
-const { SearchApi } = require("financial-news-api");
-const searchApi = SearchApi(process.env.STOTRA_NEWSFILTER_API);
+
 import dotenv from "dotenv";
 dotenv.config();
 
-// Cache the results for 5 minutes
+const { SearchApi } = require("financial-news-api");
+const searchApi = SearchApi(process.env.STOTRA_NEWSFILTER_API);
+
+// Cache the results for 15 minutes
 import NodeCache from "node-cache";
-const cache = new NodeCache({ stdTTL: 5 * 60 });
+const cache = new NodeCache({ stdTTL: 15 * 60 });
 
 const getNews = async (req: Request, res: Response) => {
 	/* 

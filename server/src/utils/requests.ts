@@ -1,7 +1,7 @@
 import yahooFinance from "yahoo-finance2";
 import Cache from "node-cache";
 import axios from "axios";
-const stockCache = new Cache({ stdTTL: 5 }); // 5 seconds
+const stockCache = new Cache({ stdTTL: 60 }); // 1 minute
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -73,7 +73,9 @@ export const fetchHistoricalStockData = async (
 	symbol: string,
 	period: "1d" | "5d" | "1m" | "6m" | "YTD" | "1y" | "all" = "1d",
 ): Promise<any> => {
-	const cacheKey = symbol + "-historical-" + period;
+	const periodTerm =
+		period === "1d" || period === "5d" || period === "1m" ? "short" : "long";
+	const cacheKey = symbol + "-historical-" + periodTerm;
 
 	try {
 		if (stockCache.has(cacheKey)) {
@@ -81,7 +83,7 @@ export const fetchHistoricalStockData = async (
 		} else {
 			let formattedData: number[][] = [];
 
-			if (period === "1d" || period === "5d" || period === "1m") {
+			if (periodTerm == "short") {
 				// If the period is less than 1 month, use intraday data from Alpha Vantage
 				let res = await axios.get(
 					"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" +
