@@ -46,9 +46,11 @@ function StockView() {
 
 	useEffect(() => {
 		// Check if stock is on watchlist
-		accounts.getWatchlist(true).then((res: any[]) => {
-			setOnWatchlist(res.some((stock) => stock.symbol === symbol));
-		});
+		if (tokens.isAuthenticated()) {
+			accounts.getWatchlist(true).then((res: any[]) => {
+				setOnWatchlist(res.some((stock) => stock.symbol === symbol));
+			});
+		}
 
 		axios
 			.get(`/api/stocks/${symbol}/info`)

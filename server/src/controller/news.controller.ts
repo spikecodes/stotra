@@ -29,6 +29,7 @@ const getNews = async (req: Request, res: Response) => {
 		process.env.STOTRA_NEWSFILTER_API === undefined ||
 		process.env.STOTRA_NEWSFILTER_API === ""
 	) {
+		console.warn("No NewsFilter API key provided. Using Yahoo Finance API.");
 		yahooNews(symbol)
 			.then((news) => {
 				res.status(200).json(news);
