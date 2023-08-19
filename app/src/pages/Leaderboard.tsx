@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
 	Box,
+	Heading,
 	Table,
 	Tag,
 	Tbody,
@@ -39,6 +40,9 @@ function Leaderboard() {
 
 	return (
 		<Box className="leaderboard">
+			<Heading size="lg" mb={4}>
+				Leaderboard
+			</Heading>
 			<Table variant="simple" colorScheme="gray">
 				<Thead>
 					<Tr>

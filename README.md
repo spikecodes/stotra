@@ -5,7 +5,7 @@
 
 <h1 align="center">Stotra</h3>
 
-  <p align="center">
+<p align="center">
     Multiplayer stock trading simulator built with React + MERN 📈
     <br />
     <a href="https://stotra.spike.codes"><strong>View the demo »</strong></a>
@@ -44,7 +44,7 @@ I built Stotra in 60 hours split across 3 weeks of design, development, and depl
 
 The design was inspired by [Robinhood](https://robinhood.com/) and [this Dribbble shot](https://dribbble.com/shots/19488130-GoStock-Stock-Market-Dashboard). The frontend uses Chakra UI for a consistent and minimal design, with [Manrope](https://fonts.google.com/specimen/Manrope) for the headings and [Inter](https://rsms.me/inter/) for the body text.
 
-The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra's sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors). Using the toggle in the top right, one can switch between light and dark mode, as shown in the "Sign up" screenshot above.
+The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra&#39;s sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors). Using the toggle in the top right, one can switch between light and dark mode, as shown in the "Sign up" screenshot above.
 
 ## Security
 
@@ -64,8 +64,8 @@ Stotra uses a microservices architecture, with separate services for the fronten
 
 ## Technologies Used 💻
 
-- **Frontend:** React, Chakra UI, Axios, Highcharts
-- **Backend:** Express, GraphQL, MongoDB, Mongoose, JWT
+- **Frontend:** React, TypeScript Chakra UI, Axios, Highcharts
+- **Backend:** Node.js, Express, MongoDB, Mongoose, JWT
 
 ## Author
 

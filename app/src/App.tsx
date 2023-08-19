@@ -1,12 +1,12 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
-import { Container, Box, Spacer, Text, Link } from "@chakra-ui/react";
+import { Container, Box, Spacer, Text, Link, Spinner } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import StockView from "./pages/StockView";
-import Leaderboard from "./pages/Leaderboard";
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const StockView = lazy(() => import("./pages/StockView"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 import NotFound from "./pages/NotFound";
 
 export type Transaction = {
@@ -44,20 +44,22 @@ function App() {
 			<Container maxW="container.xl">
 				<Spacer h="10" />
 				<Box>
-					<Routes>
-						<Route path="/" element={<Dashboard />}></Route>
+					<Suspense fallback={<Spinner />}>
+						<Routes>
+							<Route path="/" element={<Dashboard />}></Route>
 
-						<Route path="/login" element={<Login />}></Route>
+							<Route path="/login" element={<Login />}></Route>
 
-						<Route path="/signup" element={<Signup />}></Route>
+							<Route path="/signup" element={<Signup />}></Route>
 
-						<Route path="/leaderboard" element={<Leaderboard />}></Route>
+							<Route path="/leaderboard" element={<Leaderboard />}></Route>
 
-						<Route path="/stocks/:symbol" element={<StockView />}></Route>
+							<Route path="/stocks/:symbol" element={<StockView />}></Route>
 
-						{/* Add 404*/}
-						<Route path="*" element={<NotFound />}></Route>
-					</Routes>
+							{/* Add 404*/}
+							<Route path="*" element={<NotFound />}></Route>
+						</Routes>
+					</Suspense>
 				</Box>
 			</Container>
 			<Box textAlign="center" py="10">
