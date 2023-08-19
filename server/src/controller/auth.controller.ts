@@ -67,7 +67,7 @@ const login = (req: Request, res: Response) => {
 
 					var passwordIsValid = bcrypt.compareSync(
 						req.body.password,
-						user.password,
+						user.password
 					);
 
 					if (!passwordIsValid) {
@@ -93,7 +93,7 @@ const login = (req: Request, res: Response) => {
 				});
 		})
 		.catch((err: Error) => {
-			res.status(500).send({ message: err.message });
+			res.status(400).send({ message: err.message });
 			return;
 		});
 };
@@ -121,7 +121,7 @@ const validateTurnstile = async (token: string): Promise<any> => {
 		return true;
 	} else {
 		throw new Error(
-			"Can't validate turnstile token: " + res.data["error-codes"],
+			"Can't validate turnstile token: " + res.data["error-codes"]
 		);
 	}
 };
