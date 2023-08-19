@@ -24,6 +24,22 @@ const getNews = async (req: Request, res: Response) => {
 		return;
 	}
 
+	// If no API key for NewsFilter is provided, use Yahoo Finance API
+	if (
+		process.env.STOTRA_NEWSFILTER_API === undefined ||
+		process.env.STOTRA_NEWSFILTER_API === ""
+	) {
+		yahooNews(symbol)
+			.then((news) => {
+				res.status(200).json(news);
+			})
+			.catch((err: any) => {
+				console.log(err);
+				res.status(500).json(err);
+			});
+		return;
+	}
+
 	const query = {
 		queryString:
 			symbolQuery +
@@ -51,30 +67,8 @@ const getNews = async (req: Request, res: Response) => {
 		.catch((err: any) => {
 			if (err.response && err.response.data && err.response.data.message) {
 				// Retry with Yahoo Finance API if Newsfilter quota is exceeded
-				const options: SearchOptions = {
-					quotesCount: 0,
-					newsCount: 10,
-				};
-
-				if (symbol === "") {
-					symbol = "stock";
-				}
-
-				yahooFinance
-					.search(symbol || "", options)
-					.then((response: any) => {
-						let news = response.news.map((newsItem: any) => {
-							return {
-								title: newsItem.title,
-								publishedAt: newsItem.providerPublishTime,
-								source: newsItem.publisher,
-								sourceUrl: newsItem.link,
-								symbols: newsItem.relatedTickers || [],
-								description: "",
-							};
-						});
-
-						cache.set(symbol + "-news", news);
+				yahooNews(symbol)
+					.then((news) => {
 						res.status(200).json(news);
 					})
 					.catch((err: any) => {
@@ -87,5 +81,38 @@ const getNews = async (req: Request, res: Response) => {
 			}
 		});
 };
+
+function yahooNews(symbol: string): Promise<any> {
+	const options: SearchOptions = {
+		quotesCount: 0,
+		newsCount: 10,
+	};
+
+	if (symbol === "") {
+		symbol = "stock";
+	}
+
+	return yahooFinance
+		.search(symbol || "", options)
+		.then((response: any) => {
+			let news = response.news.map((newsItem: any) => {
+				return {
+					title: newsItem.title,
+					publishedAt: newsItem.providerPublishTime,
+					source: newsItem.publisher,
+					sourceUrl: newsItem.link,
+					symbols: newsItem.relatedTickers || [],
+					description: "",
+				};
+			});
+
+			cache.set(symbol + "-news", news);
+			return news;
+		})
+		.catch((err: any) => {
+			console.log(err);
+			throw new Error(err);
+		});
+}
 
 export default { getNews };
