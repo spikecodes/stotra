@@ -20,6 +20,7 @@ import {
 	Button,
 	Center,
 } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -32,12 +33,14 @@ function TransactionPane(props: { symbol: string; price: number }) {
 	const [availableShares, setAvailableShares] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const location = useLocation();
+
 	const toast = useToast();
 
 	const submitTransaction = (
 		symbol: string,
 		quantity: number,
-		isBuy: boolean,
+		isBuy: boolean
 	) => {
 		setIsLoading(true);
 		accounts
@@ -79,6 +82,7 @@ function TransactionPane(props: { symbol: string; price: number }) {
 		});
 
 		accounts.getAvailableShares(props.symbol!).then((value) => {
+			console.log(props.symbol!, value);
 			setAvailableShares(value);
 		});
 	}, [location]);
