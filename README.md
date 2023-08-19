@@ -95,7 +95,7 @@ $ npm install
 ```py
 STOTRA_MONGODB_USERNAME=<username>
 STOTRA_MONGODB_PASSWORD=<pass>
-STOTRA_MONGODB_CLUSTER=cluster0.________.mongodb.net
+STOTRA_MONGODB_CLUSTER=<example: cluster0.example.mongodb.net>
 STOTRA_JWT_SECRET=<random string of characters>
 STOTRA_TURNSTILE_SECRET=<api key for turnstile>
 # Optional: (for real-time news and stock data)
