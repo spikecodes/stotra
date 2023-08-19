@@ -46,7 +46,7 @@ The design was inspired by [Robinhood](https://robinhood.com/) and [this Dribbbl
 
 The accent color defaults to Chakra's "Cyan 500" (`#00B5D8`), which can be changed in the app to any of [Chakra's sleek colors](https://chakra-ui.com/docs/styled-system/theme#colors). Using the toggle in the top right, one can switch between light and dark mode, as shown in the "Sign up" screenshot above.
 
-## Security
+## Security 🛡️
 
 Stotra utilizes a robust and custom-built authentication system designed to ensure the security of user data and access to its services. Developed using TypeScript, the system incorporates features for user sign-up, login, and verification. To authenticate users, Stotra employs JSON Web Tokens (JWT), issuing a JWT to users upon successful login, which is then used for identity and permission verification in subsequent requests. As an added layer of security, Stotra integrates [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/), a gatekeeping service that prevents unauthorized access to the platform.
 
@@ -61,6 +61,77 @@ Stotra utilizes a robust and custom-built authentication system designed to ensu
 Stotra uses a microservices architecture, with separate services for the frontend and backend. The two services are stored in separate directories within this monorepo and are meant to be run simultaneously on different ports of the host. The frontend is built with React which interfaces with the Node.js/Express backend over a Restful API. The backend sends to and reads from the MongoDB database (run on MongoDB Atlas for the demo version). The project is hosted on AWS, with Amplify for the frontend and Elastic Cloud Compute for the backend.
 
 ![Architecture Diagram](./assets/architecture.png)
+
+## Get Started 🚀
+
+### Prerequisites
+
+- Node.js (v14.18+)
+- MongoDB
+  - I used [MongoDB Atlas](https://www.mongodb.com/basics/get-started) for the demo version
+- Cloudflare Turnstile (for authentication)
+  - [Create a free account](https://www.cloudflare.com/products/turnstile/) to get an API key
+
+### Installation
+
+1. Clone the repo
+
+```sh
+$ git clone https://github.com/spikecodes/stotra.git
+$ cd stotra
+```
+
+2. Install NPM packages for both the frontend and backend
+
+```sh
+$ cd app
+$ npm install
+$ cd ../server
+$ npm install
+```
+
+3. Create a `.env` file in the `server` directory and add the following environment variables:
+
+```py
+STOTRA_MONGODB_USERNAME=<username>
+STOTRA_MONGODB_PASSWORD=<pass>
+STOTRA_MONGODB_CLUSTER=cluster0.________.mongodb.net
+STOTRA_JWT_SECRET=<random string of characters>
+STOTRA_TURNSTILE_SECRET=<api key for turnstile>
+# Optional: (for real-time news and stock data)
+STOTRA_NEWSFILTER_API=<api key for news descriptions>
+STOTRA_ALPHAVANTAGE_API=<api key for real-time stock data>
+```
+
+4. Run the frontend and backend in separate terminals
+
+```bash
+$ cd app
+$ npm run dev
+
+> stotra-frontend@0.0.0 dev
+> vite
+
+  VITE v4.4.9  ready in 503 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.242:5173/
+  ➜  press h to show help
+```
+
+```sh
+$ cd server
+$ npm run dev
+
+> stotra-backend@0.0.0 dev
+> ts-node-dev --respawn --pretty --transpile-only ./src/index.ts
+
+[INFO] 17:21:04 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.1, typescript ver. 5.1.6)
+Example app listening at http://0.0.0.0:3010
+Swagger-autogen:  Success ✔
+Swagger docs available at http://0.0.0.0:3010/api/docs
+Connected to Database
+```
 
 ## Technologies Used 💻
 
