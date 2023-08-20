@@ -5,6 +5,7 @@ import {
 	Heading,
 	Text,
 	useBreakpointValue,
+	Link,
 } from "@chakra-ui/react";
 import PortfolioPreview from "../components/PortfolioPreview";
 import React from "react";
@@ -12,6 +13,7 @@ import PositionsList from "../components/PositionsList";
 import Newsfeed from "../components/Newsfeed";
 import Watchlist from "../components/Watchlist";
 import tokens from "../services/tokens.service";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function Dashboard() {
 	const isOnMobile = useBreakpointValue({ base: true, md: false });
@@ -28,7 +30,14 @@ export default function Dashboard() {
 								Stotra
 							</Heading>
 							<Text fontSize="lg">
-								Create an account or login to get started!
+								<Link as={RouterLink} to="/signup">
+									Create an account
+								</Link>{" "}
+								or{" "}
+								<Link as={RouterLink} to="/login">
+									login
+								</Link>{" "}
+								to get started!
 							</Text>
 						</>
 					)}
@@ -57,7 +66,7 @@ export default function Dashboard() {
 					) : (
 						<Box>
 							<Heading as="h6" size="xs" textAlign={"center"}>
-								(Sign in to view positions and watchlist)
+								Sign in to view positions and watchlist
 							</Heading>
 						</Box>
 					)}

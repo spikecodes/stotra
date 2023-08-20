@@ -23,7 +23,7 @@ import {
 	Image,
 } from "@chakra-ui/react";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, NavLink } from "react-router-dom";
 import { HamburgerIcon, MoonIcon, StarIcon, SunIcon } from "@chakra-ui/icons";
 import SearchBox from "./SearchBox";
 import AccountMenu from "./AccountMenu";
@@ -57,16 +57,26 @@ export default function Navbar() {
 					<Image src="/logo.svg" alt="Stotra Logo" boxSize="6" />
 					<Text fontWeight="bold">Stotra</Text>
 				</Text>
-				<Text as={Link} to="/" display={{ base: "none", md: "block" }}>
-					<Text>Dashboard</Text>
-				</Text>
-				<Text
-					as={Link}
-					to="/leaderboard"
-					display={{ base: "none", md: "block" }}
+				<NavLink
+					style={({ isActive }) => {
+						return {
+							fontWeight: isActive ? "500" : "",
+						};
+					}}
+					to="/"
 				>
-					<Text>Leaderboard</Text>
-				</Text>
+					<Text display={{ base: "none", md: "block" }}>Dashboard</Text>
+				</NavLink>
+				<NavLink
+					style={({ isActive }) => {
+						return {
+							fontWeight: isActive ? "500" : "",
+						};
+					}}
+					to="/leaderboard"
+				>
+					<Text display={{ base: "none", md: "block" }}>Leaderboard</Text>
+				</NavLink>
 			</Flex>
 
 			{/* Center */}
@@ -130,7 +140,7 @@ export default function Navbar() {
 						ref={mobileMenuBtn}
 						colorScheme={
 							useTheme()["components"]["Link"]["baseStyle"]["color"].split(
-								".",
+								"."
 							)[0]
 						}
 						onClick={onOpen}
